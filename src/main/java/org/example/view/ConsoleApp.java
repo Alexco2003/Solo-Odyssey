@@ -14,6 +14,6 @@ public class ConsoleApp {
     }
 
     public void start() {
-        System.out.println("Hello World!");
+        System.out.println("Hello World2!");
     }
 }

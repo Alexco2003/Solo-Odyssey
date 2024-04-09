@@ -4,8 +4,8 @@ public class Tank extends Enemy {
 
     private int armor;
 
-    public Tank(int id_enemy, int id_dungeon, String name, int health, int damage, int armor) {
-        super(id_enemy, id_dungeon, name, health, damage);
+    public Tank(int id_enemy, int id_dungeon, String name, int health, int damage, int armor, String description) {
+        super(id_enemy, id_dungeon, name, health, damage, description);
         this.armor = armor;
     }
 

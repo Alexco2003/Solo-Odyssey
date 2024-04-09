@@ -12,8 +12,6 @@ public class Dungeon {
     private boolean completed = false;
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
-
-
     public Dungeon(int id_dungeon, int id_player, String name, String description, int level, int rewardLevel, boolean completed, ArrayList<Enemy> enemies) {
         this.id_dungeon = id_dungeon;
         this.id_player = id_player;

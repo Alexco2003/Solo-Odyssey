@@ -13,6 +13,5 @@ public interface GenericRepository<T> {
 
     public void delete(T entity);
 
-    public int getSize();
 
 }

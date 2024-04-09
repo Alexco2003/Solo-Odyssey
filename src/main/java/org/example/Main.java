@@ -10,7 +10,7 @@ public class Main {
             app = ConsoleApp.getInstance();
             app.start();
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+            System.out.println("An error occurred: " + e.getMessage() + "!" + "\n" + "Please try again!");
         }
 
     }

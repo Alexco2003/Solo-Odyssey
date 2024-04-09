@@ -1,18 +1,20 @@
 package org.example.models;
 
-public class Enemy {
+public abstract class Enemy {
     private int id_enemy;
     private int id_dungeon;
     private String name;
+    private String description;
     private int health;
     private int damage;
 
-    public Enemy(int id_enemy, int id_dungeon, String name, int health, int damage) {
+    public Enemy(int id_enemy, int id_dungeon, String name, int health, int damage, String description) {
         this.id_enemy = id_enemy;
         this.id_dungeon = id_dungeon;
         this.name = name;
         this.health = health;
         this.damage = damage;
+        this.description = description;
     }
 
     public int getId_dungeon() {
@@ -54,5 +56,13 @@ public class Enemy {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

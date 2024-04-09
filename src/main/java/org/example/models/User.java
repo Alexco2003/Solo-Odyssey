@@ -1,6 +1,6 @@
 package org.example.models;
 
-public class User {
+public abstract class User {
     protected int id_user;
     protected String username;
     protected String password;

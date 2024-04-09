@@ -4,8 +4,8 @@ public class Architect extends User{
 
     private int level;
 
-    public Architect(String username, String password, int level) {
-        super(username, password);
+    public Architect(int id_user, String username, String password, int level) {
+        super(id_user,username, password);
         this.level = level;
     }
 

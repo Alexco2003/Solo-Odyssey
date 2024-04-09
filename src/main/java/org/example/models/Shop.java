@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Shop {
 
+    private int id_shop;
+    private int id_player;
     private String name;
     private ArrayList<Item> items;
 

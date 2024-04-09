@@ -1,17 +1,36 @@
 package org.example.models;
 
 public class Quest {
-
+    private int id_quest;
+    private int id_player;
     private String name;
     private String description;
-    private int reward;
-    private boolean completed;
+    private int rewardLevel;
+    private boolean completed = false;
 
-    public Quest(String name, String description, int reward) {
+    public Quest(int id_quest, int id_player, String name, String description, int rewardLevel, boolean completed) {
+        this.id_quest = id_quest;
+        this.id_player = id_player;
         this.name = name;
         this.description = description;
-        this.reward = reward;
-        this.completed = false;
+        this.rewardLevel = rewardLevel;
+        this.completed = completed;
+    }
+
+    public int getId_quest() {
+        return id_quest;
+    }
+
+    public void setId_quest(int id_quest) {
+        this.id_quest = id_quest;
+    }
+
+    public int getId_player() {
+        return id_player;
+    }
+
+    public void setId_player(int id_player) {
+        this.id_player = id_player;
     }
 
     public String getName() {
@@ -30,19 +49,22 @@ public class Quest {
         this.description = description;
     }
 
-    public int getReward() {
-        return reward;
+    public int getRewardLevel() {
+        return rewardLevel;
     }
 
-    public void setReward(int reward) {
-        this.reward = reward;
+    public void setRewardLevel(int rewardLevel) {
+        this.rewardLevel = rewardLevel;
     }
 
-    public boolean getCompleted() {
+    public boolean isCompleted() {
         return completed;
     }
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
     }
+
+
+
 }

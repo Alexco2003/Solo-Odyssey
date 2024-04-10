@@ -9,10 +9,11 @@ public class Dungeon {
     private String description;
     private int level;
     private int rewardLevel;
+    private double rewardMoney;
     private boolean completed = false;
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
-    public Dungeon(int id_dungeon, int id_player, String name, String description, int level, int rewardLevel, boolean completed, ArrayList<Enemy> enemies) {
+    public Dungeon(int id_dungeon, int id_player, String name, String description, int level, int rewardLevel, boolean completed, ArrayList<Enemy> enemies, double rewardMoney) {
         this.id_dungeon = id_dungeon;
         this.id_player = id_player;
         this.name = name;
@@ -21,8 +22,16 @@ public class Dungeon {
         this.rewardLevel = rewardLevel;
         this.completed = completed;
         this.enemies = enemies;
+        this.rewardMoney = rewardMoney;
     }
 
+    public double getRewardMoney() {
+        return rewardMoney;
+    }
+
+    public void setRewardMoney(double rewardMoney) {
+        this.rewardMoney = rewardMoney;
+    }
     public int getId_dungeon() {
         return id_dungeon;
     }

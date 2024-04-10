@@ -6,15 +6,25 @@ public class Quest {
     private String name;
     private String description;
     private int rewardLevel;
+    private double rewardMoney;
     private boolean completed = false;
 
-    public Quest(int id_quest, int id_player, String name, String description, int rewardLevel, boolean completed) {
+    public Quest(int id_quest, int id_player, String name, String description, int rewardLevel, boolean completed, double rewardMoney) {
         this.id_quest = id_quest;
         this.id_player = id_player;
         this.name = name;
         this.description = description;
         this.rewardLevel = rewardLevel;
         this.completed = completed;
+        this.rewardMoney = rewardMoney;
+    }
+
+    public double getRewardMoney() {
+        return rewardMoney;
+    }
+
+    public void setRewardMoney(double rewardMoney) {
+        this.rewardMoney = rewardMoney;
     }
 
     public int getId_quest() {

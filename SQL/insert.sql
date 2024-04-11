@@ -401,6 +401,10 @@ BEGIN
         (NEW.id_user, 'The Void', 'A realm of nothingness where only darkness exists.', 10, 20, 500.00, false);
 
 
+    --Enemies
+
+
+
     --TO DO : Add same initial configuration of the game for every player after creation
 END;
 
@@ -408,3 +412,4 @@ DROP TRIGGER after_insert_player;
 
 INSERT INTO User(username, password) VALUES ('admin', 'admin');
 INSERT INTO Architect(id_user, level) VALUES (1, 999);
+

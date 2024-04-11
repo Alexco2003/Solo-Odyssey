@@ -68,6 +68,21 @@ public class Player extends User{
         this.money = money;
     }
 
+    @Override
+    public String toString() {
+        return "Player{" +
+                "id=" + id_user +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", level=" + level +
+                ", title='" + title + '\'' +
+                ", damage=" + damage +
+                ", health=" + health +
+                ", money=" + money +
+                ", inventory=" + inventory +
+                '}';
+    }
+
 
 
 

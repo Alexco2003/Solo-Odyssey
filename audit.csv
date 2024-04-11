@@ -1,1 +1,15 @@
+Statement 0
+INSERT INTO USER (username, password) VALUES (?, ?)
+class org.example.models.User
+Done successfully!
+
+Statement 1
+INSERT INTO Player (id_user, level, title, damage, health, money) VALUES (?, ?, ?, ?, ?, ?)
+Player{id=0, username='pp', password='22', level=22, title='22', damage=22, health=22, money=22.0, inventory=[]}
+Done successfully!
+
+Statement 2
+SELECT * FROM Player INNER JOIN User ON Player.id_user = User.id_user WHERE Player.id_user = ?
+class org.example.models.Player
+Done successfully!
 

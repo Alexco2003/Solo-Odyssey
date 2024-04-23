@@ -2,7 +2,6 @@ package org.example.repositories;
 
 import org.example.models.Player;
 import org.example.models.User;
-import org.example.services.DatabaseConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,15 +10,17 @@ import java.util.HashSet;
 public class PlayerRepository implements GenericRepository<Player> {
 
     public PlayerRepository() {
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
     }
+
+
     @Override
     public void add(Player player) {
         int userId = -1;
         String sql1 = "INSERT INTO USER (username, password) VALUES (?, ?)";
+        Connection conn = this.databaseConnection.getConnection();
 
         try  {
-            Connection conn = databaseConnection.getConnection();
+
             PreparedStatement pstmt = conn.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, player.getUsername());
@@ -30,7 +31,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             if (rs.next()) {
                 userId = rs.getInt(1);
             }
-            audit.write(sql1, User.class, "Done successfully!");
+            this.audit.write(sql1, User.class, "Done successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -39,7 +40,7 @@ public class PlayerRepository implements GenericRepository<Player> {
         String sql = "INSERT INTO Player (id_user, level, title, damage, health, money) VALUES (?, ?, ?, ?, ?, ?)";
 
         try  {
-            Connection conn = databaseConnection.getConnection();
+
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1, userId);
@@ -50,7 +51,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             pstmt.setDouble(6, player.getMoney());
 
             pstmt.executeUpdate();
-            audit.write(sql, player, "Done successfully!");
+            this.audit.write(sql, player, "Done successfully!");
 
             player.setId_user(userId);
 
@@ -64,13 +65,13 @@ public class PlayerRepository implements GenericRepository<Player> {
     @Override
     public Player get(int id) {
         String sql = "SELECT * FROM Player INNER JOIN User ON Player.id_user = User.id_user WHERE Player.id_user = ?";
-
-        try (Connection conn = databaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = this.databaseConnection.getConnection();
+        try {
+             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
-            audit.write(sql, Player.class, "Done successfully!");
+            this.audit.write(sql, Player.class, "Done successfully!");
 
             if (rs.next()) {
                 String username = rs.getString("username");
@@ -94,12 +95,13 @@ public class PlayerRepository implements GenericRepository<Player> {
     @Override
     public ArrayList<Player> getAll() {
         String sql = "SELECT * FROM Player INNER JOIN User ON Player.id_user = User.id_user";
+        Connection conn = this.databaseConnection.getConnection();
 
-        try (Connection conn = databaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             ResultSet rs = pstmt.executeQuery();
-            audit.write(sql, Player.class, "Done successfully!");
+            this.audit.write(sql, Player.class, "Done successfully!");
 
             ArrayList<Player> players = new ArrayList<>();
             while (rs.next()) {
@@ -127,9 +129,10 @@ public class PlayerRepository implements GenericRepository<Player> {
     @Override
     public void update(Player player) {
         String sql = "UPDATE Player SET level = ?, title = ?, damage = ?, health = ?, money = ? WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
 
-        try (Connection conn = databaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1, player.getLevel());
             pstmt.setString(2, player.getTitle());
@@ -139,7 +142,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             pstmt.setInt(6, player.getId_user());
 
             pstmt.executeUpdate();
-            audit.write(sql, player, "Done successfully!");
+            this.audit.write(sql, player, "Done successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -149,14 +152,15 @@ public class PlayerRepository implements GenericRepository<Player> {
     @Override
     public void delete(Player player) {
         String sql = "DELETE FROM Player WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
 
-        try (Connection conn = databaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1, player.getId_user());
 
             pstmt.executeUpdate();
-            audit.write(sql, player, "Done successfully!");
+            this.audit.write(sql, player, "Done successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

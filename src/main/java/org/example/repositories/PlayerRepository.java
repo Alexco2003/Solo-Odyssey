@@ -31,7 +31,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             if (rs.next()) {
                 userId = rs.getInt(1);
             }
-            this.audit.write(sql1, User.class, "Done successfully!");
+            this.auditDatabase.write(sql1, User.class, "Done successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -51,7 +51,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             pstmt.setDouble(6, player.getMoney());
 
             pstmt.executeUpdate();
-            this.audit.write(sql, player, "Done successfully!");
+            this.auditDatabase.write(sql, player, "Done successfully!");
 
             player.setId_user(userId);
 
@@ -71,7 +71,7 @@ public class PlayerRepository implements GenericRepository<Player> {
 
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
-            this.audit.write(sql, Player.class, "Done successfully!");
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
 
             if (rs.next()) {
                 String username = rs.getString("username");
@@ -101,7 +101,7 @@ public class PlayerRepository implements GenericRepository<Player> {
              PreparedStatement pstmt = conn.prepareStatement(sql);
 
             ResultSet rs = pstmt.executeQuery();
-            this.audit.write(sql, Player.class, "Done successfully!");
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
 
             ArrayList<Player> players = new ArrayList<>();
             while (rs.next()) {
@@ -142,7 +142,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             pstmt.setInt(6, player.getId_user());
 
             pstmt.executeUpdate();
-            this.audit.write(sql, player, "Done successfully!");
+            this.auditDatabase.write(sql, player, "Done successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -160,7 +160,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             pstmt.setInt(1, player.getId_user());
 
             pstmt.executeUpdate();
-            this.audit.write(sql, player, "Done successfully!");
+            this.auditDatabase.write(sql, player, "Done successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

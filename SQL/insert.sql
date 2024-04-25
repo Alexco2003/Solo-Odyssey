@@ -215,10 +215,9 @@ AFTER INSERT
 ON Player
 FOR EACH ROW
 BEGIN
-    DECLARE new_id_shop INT;
 
     --Shop
-    INSERT INTO Shop(id_player, name) VALUES (NEW.id_user, 'The Architect''s Emporium');
+    INSERT INTO Shop(id_shop,id_player, name) VALUES (NEW.id_user,NEW.id_user, 'The Architect''s Emporium');
 
     --Quests
 
@@ -259,149 +258,209 @@ BEGIN
         (NEW.id_user, 'Defeated 4 Players', 'Successfully defeat 4 players in PVP.', 40, 1000.00, false),
         (NEW.id_user, 'Defeated 5 Players', 'Successfully defeat 5 players in PVP.', 50, 1250.00, false);
 
-    --Get the id of the player's shop
-    SELECT id_shop INTO new_id_shop FROM Shop WHERE id_player = NEW.id_user;
-
     --Items
     INSERT INTO Item (id_shop, name, description, price, damage, health, isBought)
     VALUES
-        (new_id_shop, 'Wooden Sword', 'A basic wooden sword.', 10.50, 10, 5, false),
-        (new_id_shop, 'Health Potion', 'Boosts health.', 20.25, 0, 15, false),
-        (new_id_shop, 'Iron Armor', 'Protects against damage.', 30.75, 0, 25, false),
-        (new_id_shop, 'Magic Wand', 'A wand that enhances magic abilities.', 40.80, 20, 5, false),
-        (new_id_shop, 'Speed Boots', 'Increases movement speed.', 50.60, 0, 5, false),
-        (new_id_shop, 'Fireball Scroll', 'Unleashes a powerful fireball.', 60.95, 30, 0, false),
-        (new_id_shop, 'Ice Shield', 'Creates a shield of ice.', 70.35, 0, 20, false),
-        (new_id_shop, 'Poison Dagger', 'Inflicts poison damage.', 80.20, 15, 5, false),
-        (new_id_shop, 'Thunder Staff', 'Summons lightning bolts.', 90.45, 25, 5, false),
-        (new_id_shop, 'Healing Staff', 'Restores health to allies.', 100.15, 0, 30, false),
-        (new_id_shop, 'Shadow Cloak', 'Grants invisibility.', 110.70, 0, 5, false),
-        (new_id_shop, 'Soul Gem', 'Absorbs enemy souls.', 120.90, 30, 5, false),
-        (new_id_shop, 'Dragon Scale Armor', 'Legendary armor.', 130.80, 0, 40, false),
-        (new_id_shop, 'Phoenix Feather', 'Blesses the player.', 140.45, 0, 10, false),
-        (new_id_shop, 'Elixir of Immortality', 'Grants eternal life.', 150.30, 0, 10, false),
-        (new_id_shop, 'Ancient Rune', 'Unleashes ancient powers.', 160.70, 40, 20, false),
-        (new_id_shop, 'Celestial Bow', 'Shoots arrows of light.', 170.60, 35, 5, false),
-        (new_id_shop, 'Vampire Fang', 'Drains enemy health.', 180.25, 20, 5, false),
-        (new_id_shop, 'Titan Gauntlet', 'Crushes enemies with immense strength.', 190.85, 50, 5, false),
-        (new_id_shop, 'Mystic Orb', 'Manipulates the elements.', 200.75, 45, 25, false),
-        (new_id_shop, 'Golden Apple', 'Grants permanent health boost.', 210.90, 0, 5, false),
-        (new_id_shop, 'Divine Sword', 'A sword blessed by the gods.', 220.55, 60, 5, false),
-        (new_id_shop, 'Crystal Staff', 'Channels crystal energy.', 230.35, 55, 5, false),
-        (new_id_shop, 'Shadow Amulet', 'Conceals the user in darkness.', 240.20, 0, 30, false),
-        (new_id_shop, 'Soul Reaper Scythe', 'Harvests enemy souls.', 250.45, 65, 5, false),
-        (new_id_shop, 'Dragonfire Shield', 'Blocks dragonfire attacks.', 260.95, 0, 35, false),
-        (new_id_shop, 'Phoenix Tear', 'Revives the soul of the Phoenix.', 270.30, 0, 15, false),
-        (new_id_shop, 'Elixir of Ascension', 'Ascends the user to a higher plane.', 280.80, 0, 15, false),
-        (new_id_shop, 'Ancient Scroll', 'Unlocks ancient knowledge.', 290.75, 70, 10, false),
-        (new_id_shop, 'Celestial Staff', 'Channels celestial energy.', 300.60, 75, 5, false),
-        (new_id_shop, 'Vampire Cloak', 'Drains enemy health over time.', 310.25, 25, 5, false),
-        (new_id_shop, 'Titan Hammer', 'Crushes enemies with divine power.', 320.85, 80, 5, false),
-        (new_id_shop, 'Mystic Crystal', 'Harnesses the power of crystals.', 330.70, 85, 5, false),
-        (new_id_shop, 'Golden Shield', 'Grants permanent armor boost.', 340.90, 0, 500, false),
-        (new_id_shop, 'Divine Bow', 'Shoots arrows of divine light.', 350.55, 80, 5, false),
-        (new_id_shop, 'Crystal Orb', 'Manipulates crystal elements.', 360.35, 90, 5, false),
-        (new_id_shop, 'Shadow Cloak', 'Conceals the user in shadow.', 370.20, 0, 5, false),
+        (NEW.id_user, 'Wooden Sword', 'A basic wooden sword.', 10.50, 10, 5, false),
+        (NEW.id_user, 'Health Potion', 'Boosts health.', 20.25, 0, 15, false),
+        (NEW.id_user, 'Iron Armor', 'Protects against damage.', 30.75, 0, 25, false),
+        (NEW.id_user, 'Magic Wand', 'A wand that enhances magic abilities.', 40.80, 20, 5, false),
+        (NEW.id_user, 'Speed Boots', 'Increases movement speed.', 50.60, 0, 5, false),
+        (NEW.id_user, 'Fireball Scroll', 'Unleashes a powerful fireball.', 60.95, 30, 0, false),
+        (NEW.id_user, 'Ice Shield', 'Creates a shield of ice.', 70.35, 0, 20, false),
+        (NEW.id_user, 'Poison Dagger', 'Inflicts poison damage.', 80.20, 15, 5, false),
+        (NEW.id_user, 'Thunder Staff', 'Summons lightning bolts.', 90.45, 25, 5, false),
+        (NEW.id_user, 'Healing Staff', 'Restores health to allies.', 100.15, 0, 30, false),
+        (NEW.id_user, 'Shadow Cloak', 'Grants invisibility.', 110.70, 0, 5, false),
+        (NEW.id_user, 'Soul Gem', 'Absorbs enemy souls.', 120.90, 30, 5, false),
+        (NEW.id_user, 'Dragon Scale Armor', 'Legendary armor.', 130.80, 0, 40, false),
+        (NEW.id_user, 'Phoenix Feather', 'Blesses the player.', 140.45, 0, 10, false),
+        (NEW.id_user, 'Elixir of Immortality', 'Grants eternal life.', 150.30, 0, 10, false),
+        (NEW.id_user, 'Ancient Rune', 'Unleashes ancient powers.', 160.70, 40, 20, false),
+        (NEW.id_user, 'Celestial Bow', 'Shoots arrows of light.', 170.60, 35, 5, false),
+        (NEW.id_user, 'Vampire Fang', 'Drains enemy health.', 180.25, 20, 5, false),
+        (NEW.id_user, 'Titan Gauntlet', 'Crushes enemies with immense strength.', 190.85, 50, 5, false),
+        (NEW.id_user, 'Mystic Orb', 'Manipulates the elements.', 200.75, 45, 25, false),
+        (NEW.id_user, 'Golden Apple', 'Grants permanent health boost.', 210.90, 0, 5, false),
+        (NEW.id_user, 'Divine Sword', 'A sword blessed by the gods.', 220.55, 60, 5, false),
+        (NEW.id_user, 'Crystal Staff', 'Channels crystal energy.', 230.35, 55, 5, false),
+        (NEW.id_user, 'Shadow Amulet', 'Conceals the user in darkness.', 240.20, 0, 30, false),
+        (NEW.id_user, 'Soul Reaper Scythe', 'Harvests enemy souls.', 250.45, 65, 5, false),
+        (NEW.id_user, 'Dragonfire Shield', 'Blocks dragonfire attacks.', 260.95, 0, 35, false),
+        (NEW.id_user, 'Phoenix Tear', 'Revives the soul of the Phoenix.', 270.30, 0, 15, false),
+        (NEW.id_user, 'Elixir of Ascension', 'Ascends the user to a higher plane.', 280.80, 0, 15, false),
+        (NEW.id_user, 'Ancient Scroll', 'Unlocks ancient knowledge.', 290.75, 70, 10, false),
+        (NEW.id_user, 'Celestial Staff', 'Channels celestial energy.', 300.60, 75, 5, false),
+        (NEW.id_user, 'Vampire Cloak', 'Drains enemy health over time.', 310.25, 25, 5, false),
+        (NEW.id_user, 'Titan Hammer', 'Crushes enemies with divine power.', 320.85, 80, 5, false),
+        (NEW.id_user, 'Mystic Crystal', 'Harnesses the power of crystals.', 330.70, 85, 5, false),
+        (NEW.id_user, 'Golden Shield', 'Grants permanent armor boost.', 340.90, 0, 500, false),
+        (NEW.id_user, 'Divine Bow', 'Shoots arrows of divine light.', 350.55, 80, 5, false),
+        (NEW.id_user, 'Crystal Orb', 'Manipulates crystal elements.', 360.35, 90, 5, false),
+        (NEW.id_user, 'Shadow Cloak', 'Conceals the user in shadow.', 370.20, 0, 5, false),
 
         --Boss items
 
         --Assassin
-        (new_id_shop, 'Vorpal Shadowblade''s Helmet', 'A helm worn by the Vorpal Shadowblade.', 200.00, 150, 0, false),
-        (new_id_shop, 'Vorpal Shadowblade''s Armor', 'Protective armor worn by the Vorpal Shadowblade.', 300.00, 50, 100, false),
-        (new_id_shop, 'Vorpal Shadowblade''s Glove', 'A glove used by the Vorpal Shadowblade.', 150.00, 350, 0, false),
-        (new_id_shop, 'Vorpal Shadowblade''s Shoe', 'A shoe worn by the Vorpal Shadowblade.', 150.00, 0, 40, false),
-        (new_id_shop, 'Vorpal Shadowblade''s Ring', 'A ring imbued with the power of the Vorpal Shadowblade.', 250.00, 200, 20, false),
-        (new_id_shop, 'Vorpal Shadowblade''s Necklace', 'A necklace worn by the Vorpal Shadowblade.', 250.00, 150, 25, false),
+        (NEW.id_user, 'Vorpal Shadowblade''s Helmet', 'A helm worn by the Vorpal Shadowblade.', 200.00, 150, 0, false),
+        (NEW.id_user, 'Vorpal Shadowblade''s Armor', 'Protective armor worn by the Vorpal Shadowblade.', 300.00, 50, 100, false),
+        (NEW.id_user, 'Vorpal Shadowblade''s Glove', 'A glove used by the Vorpal Shadowblade.', 150.00, 350, 0, false),
+        (NEW.id_user, 'Vorpal Shadowblade''s Shoe', 'A shoe worn by the Vorpal Shadowblade.', 150.00, 0, 40, false),
+        (NEW.id_user, 'Vorpal Shadowblade''s Ring', 'A ring imbued with the power of the Vorpal Shadowblade.', 250.00, 200, 20, false),
+        (NEW.id_user, 'Vorpal Shadowblade''s Necklace', 'A necklace worn by the Vorpal Shadowblade.', 250.00, 150, 25, false),
 
         --Tank
-        (new_id_shop, 'Colossus Steelhide''s Helmet', 'A massive helmet forged from steel.', 150.00, 0, 100, false),
-        (new_id_shop, 'Colossus Steelhide''s Armor', 'Thick armor made from the toughest steel.', 250.00, 0, 200, false),
-        (new_id_shop, 'Colossus Steelhide''s Gauntlets', 'Heavy gauntlets that pack a punch.', 200.00, 50, 100, false),
-        (new_id_shop, 'Colossus Steelhide''s Boots', 'Boots designed for stomping enemies.', 200.00, 100, 50, false),
-        (new_id_shop, 'Colossus Steelhide''s Ring', 'A ring imbued with protective magic.', 300.00, 0, 300, false),
-        (new_id_shop, 'Colossus Steelhide''s Necklace', 'A necklace that enhances endurance.', 300.00, 0, 300, false),
+        (NEW.id_user, 'Colossus Steelhide''s Helmet', 'A massive helmet forged from steel.', 150.00, 0, 100, false),
+        (NEW.id_user, 'Colossus Steelhide''s Armor', 'Thick armor made from the toughest steel.', 250.00, 0, 200, false),
+        (NEW.id_user, 'Colossus Steelhide''s Gauntlets', 'Heavy gauntlets that pack a punch.', 200.00, 50, 100, false),
+        (NEW.id_user, 'Colossus Steelhide''s Boots', 'Boots designed for stomping enemies.', 200.00, 100, 50, false),
+        (NEW.id_user, 'Colossus Steelhide''s Ring', 'A ring imbued with protective magic.', 300.00, 0, 300, false),
+        (NEW.id_user, 'Colossus Steelhide''s Necklace', 'A necklace that enhances endurance.', 300.00, 0, 300, false),
 
         --Mage
-        (new_id_shop, 'Ignis Pyreborn''s Helm', 'A helm infused with the essence of fire.', 200.00, 80, 80, false),
-        (new_id_shop, 'Ignis Pyreborn''s Robe', 'A robe woven from flames.', 300.00, 40, 120, false),
-        (new_id_shop, 'Ignis Pyreborn''s Bracers', 'Bracers that channel fiery magic.', 150.00, 60, 60, false),
-        (new_id_shop, 'Ignis Pyreborn''s Boots', 'Boots that leave behind trails of fire.', 150.00, 20, 100, false),
-        (new_id_shop, 'Ignis Pyreborn''s Ring', 'A ring forged in the heart of a volcano.', 250.00, 100, 50, false),
-        (new_id_shop, 'Ignis Pyreborn''s Amulet', 'An amulet pulsating with fiery energy.', 250.00, 80, 80, false),
+        (NEW.id_user, 'Ignis Pyreborn''s Helm', 'A helm infused with the essence of fire.', 200.00, 80, 80, false),
+        (NEW.id_user, 'Ignis Pyreborn''s Robe', 'A robe woven from flames.', 300.00, 40, 120, false),
+        (NEW.id_user, 'Ignis Pyreborn''s Bracers', 'Bracers that channel fiery magic.', 150.00, 60, 60, false),
+        (NEW.id_user, 'Ignis Pyreborn''s Boots', 'Boots that leave behind trails of fire.', 150.00, 20, 100, false),
+        (NEW.id_user, 'Ignis Pyreborn''s Ring', 'A ring forged in the heart of a volcano.', 250.00, 100, 50, false),
+        (NEW.id_user, 'Ignis Pyreborn''s Amulet', 'An amulet pulsating with fiery energy.', 250.00, 80, 80, false),
 
         --Assassin
-        (new_id_shop, 'Frostbite''s Frostfang', 'A dagger forged from enchanted ice.', 200.00, 180, 0, false),
-        (new_id_shop, 'Frostbite''s Frostcloak', 'A cloak that freezes the air around it.', 300.00, 0, 250, false),
-        (new_id_shop, 'Frostbite''s Frostblade', 'A blade as cold as the heart of winter.', 150.00, 250, 0, false),
-        (new_id_shop, 'Frostbite''s Frostboots', 'Boots that leave frozen footprints in their wake.', 150.00, 0, 180, false),
-        (new_id_shop, 'Frostbite''s Frostband', 'A band that channels the chill of the tundra.', 250.00, 220, 0, false),
-        (new_id_shop, 'Frostbite''s Frostpendant', 'A pendant that emanates an icy aura.', 250.00, 0, 200, false),
+        (NEW.id_user, 'Frostbite''s Frostfang', 'A dagger forged from enchanted ice.', 200.00, 180, 0, false),
+        (NEW.id_user, 'Frostbite''s Frostcloak', 'A cloak that freezes the air around it.', 300.00, 0, 250, false),
+        (NEW.id_user, 'Frostbite''s Frostblade', 'A blade as cold as the heart of winter.', 150.00, 250, 0, false),
+        (NEW.id_user, 'Frostbite''s Frostboots', 'Boots that leave frozen footprints in their wake.', 150.00, 0, 180, false),
+        (NEW.id_user, 'Frostbite''s Frostband', 'A band that channels the chill of the tundra.', 250.00, 220, 0, false),
+        (NEW.id_user, 'Frostbite''s Frostpendant', 'A pendant that emanates an icy aura.', 250.00, 0, 200, false),
 
         --Mage
-        (new_id_shop, 'Eldritch Spellbinder''s Helm', 'A mystical helmet imbued with eldritch power.', 150.00, 10, 20, false),
-        (new_id_shop, 'Eldritch Spellbinder''s Armor', 'Enchanted armor that harnesses eldritch energy.', 250.00, 15, 25, false),
-        (new_id_shop, 'Eldritch Spellbinder''s Gauntlets', 'Magical gauntlets that enhance spellcasting.', 200.00, 20, 15, false),
-        (new_id_shop, 'Eldritch Spellbinder''s Boots', 'Boots infused with otherworldly agility.', 180.00, 15, 20, false),
-        (new_id_shop, 'Eldritch Spellbinder''s Ring', 'A ring pulsating with eldritch power.', 300.00, 10, 30, false),
-        (new_id_shop, 'Eldritch Spellbinder''s Necklace', 'A mystical necklace that boosts magical prowess.', 350.00, 20, 15, false),
+        (NEW.id_user, 'Eldritch Spellbinder''s Helm', 'A mystical helmet imbued with eldritch power.', 150.00, 10, 20, false),
+        (NEW.id_user, 'Eldritch Spellbinder''s Armor', 'Enchanted armor that harnesses eldritch energy.', 250.00, 15, 25, false),
+        (NEW.id_user, 'Eldritch Spellbinder''s Gauntlets', 'Magical gauntlets that enhance spellcasting.', 200.00, 20, 15, false),
+        (NEW.id_user, 'Eldritch Spellbinder''s Boots', 'Boots infused with otherworldly agility.', 180.00, 15, 20, false),
+        (NEW.id_user, 'Eldritch Spellbinder''s Ring', 'A ring pulsating with eldritch power.', 300.00, 10, 30, false),
+        (NEW.id_user, 'Eldritch Spellbinder''s Necklace', 'A mystical necklace that boosts magical prowess.', 350.00, 20, 15, false),
 
          --Tank
-        (new_id_shop, 'Leviathan''s Helm', 'A helm crafted from Leviathan scales.', 150.00, 0, 200, false),
-        (new_id_shop, 'Leviathan''s Shell', 'A shell capable of withstanding immense pressure.', 250.00, 0, 300, false),
-        (new_id_shop, 'Leviathan''s Gauntlets', 'Gauntlets forged from hardened coral.', 200.00, 0, 250, false),
-        (new_id_shop, 'Leviathan''s Greaves', 'Greaves reinforced with underwater alloys.', 200.00, 0, 200, false),
-        (new_id_shop, 'Leviathan''s Ring', 'A ring infused with the essence of the ocean depths.', 300.00, 0, 350, false),
-        (new_id_shop, 'Leviathan''s Amulet', 'An amulet that grants dominion over the seas.', 300.00, 0, 300, false),
+        (NEW.id_user, 'Leviathan''s Helm', 'A helm crafted from Leviathan scales.', 150.00, 0, 200, false),
+        (NEW.id_user, 'Leviathan''s Shell', 'A shell capable of withstanding immense pressure.', 250.00, 0, 300, false),
+        (NEW.id_user, 'Leviathan''s Gauntlets', 'Gauntlets forged from hardened coral.', 200.00, 0, 250, false),
+        (NEW.id_user, 'Leviathan''s Greaves', 'Greaves reinforced with underwater alloys.', 200.00, 0, 200, false),
+        (NEW.id_user, 'Leviathan''s Ring', 'A ring infused with the essence of the ocean depths.', 300.00, 0, 350, false),
+        (NEW.id_user, 'Leviathan''s Amulet', 'An amulet that grants dominion over the seas.', 300.00, 0, 300, false),
 
         --Mage
-        (new_id_shop, 'Celestial Archon''s Circlet', 'A circlet adorned with celestial gemstones.', 200.00, 80, 80, false),
-        (new_id_shop, 'Celestial Archon''s Robes', 'Robes infused with celestial energy.', 300.00, 50, 100, false),
-        (new_id_shop, 'Celestial Archon''s Gloves', 'Gloves that channel divine magic.', 150.00, 100, 50, false),
-        (new_id_shop, 'Celestial Archon''s Sandals', 'Sandals that grant ethereal mobility.', 150.00, 0, 100, false),
-        (new_id_shop, 'Celestial Archon''s Ring', 'A ring blessed by celestial beings.', 250.00, 50, 100, false),
-        (new_id_shop, 'Celestial Archon''s Pendant', 'A pendant imbued with celestial power.', 250.00, 100, 50, false),
+        (NEW.id_user, 'Celestial Archon''s Circlet', 'A circlet adorned with celestial gemstones.', 200.00, 80, 80, false),
+        (NEW.id_user, 'Celestial Archon''s Robes', 'Robes infused with celestial energy.', 300.00, 50, 100, false),
+        (NEW.id_user, 'Celestial Archon''s Gloves', 'Gloves that channel divine magic.', 150.00, 100, 50, false),
+        (NEW.id_user, 'Celestial Archon''s Sandals', 'Sandals that grant ethereal mobility.', 150.00, 0, 100, false),
+        (NEW.id_user, 'Celestial Archon''s Ring', 'A ring blessed by celestial beings.', 250.00, 50, 100, false),
+        (NEW.id_user, 'Celestial Archon''s Pendant', 'A pendant imbued with celestial power.', 250.00, 100, 50, false),
 
         --Assassin
-        (new_id_shop, 'Infernal Revenant''s Mask', 'A mask veiled in flames.', 200.00, 150, 0, false),
-        (new_id_shop, 'Infernal Revenant''s Cloak', 'A cloak engulfed in infernal fire.', 300.00, 0, 200, false),
-        (new_id_shop, 'Infernal Revenant''s Blades', 'Blades forged from hellfire.', 150.00, 200, 0, false),
-        (new_id_shop, 'Infernal Revenant''s Boots', 'Boots that leave trails of fire.', 150.00, 0, 150, false),
-        (new_id_shop, 'Infernal Revenant''s Ring', 'A ring infused with infernal power.', 250.00, 200, 0, false),
-        (new_id_shop, 'Infernal Revenant''s Amulet', 'An amulet that harnesses hellfire.', 250.00, 0, 200, false),
+        (NEW.id_user, 'Infernal Revenant''s Mask', 'A mask veiled in flames.', 200.00, 150, 0, false),
+        (NEW.id_user, 'Infernal Revenant''s Cloak', 'A cloak engulfed in infernal fire.', 300.00, 0, 200, false),
+        (NEW.id_user, 'Infernal Revenant''s Blades', 'Blades forged from hellfire.', 150.00, 200, 0, false),
+        (NEW.id_user, 'Infernal Revenant''s Boots', 'Boots that leave trails of fire.', 150.00, 0, 150, false),
+        (NEW.id_user, 'Infernal Revenant''s Ring', 'A ring infused with infernal power.', 250.00, 200, 0, false),
+        (NEW.id_user, 'Infernal Revenant''s Amulet', 'An amulet that harnesses hellfire.', 250.00, 0, 200, false),
 
         --Tank
-        (new_id_shop, 'Astral Overlord''s Helmet', 'A helm worn by the Astral Overlord.', 200.00, 150, 0, false),
-        (new_id_shop, 'Astral Overlord''s Armor', 'Protective armor worn by the Astral Overlord.', 300.00, 50, 100, false),
-        (new_id_shop, 'Astral Overlord''s Glove', 'A glove used by the Astral Overlord.', 150.00, 350, 0, false),
-        (new_id_shop, 'Astral Overlord''s Shoe', 'A shoe worn by the Astral Overlord.', 150.00, 0, 40, false),
-        (new_id_shop, 'Astral Overlord''s Ring', 'A ring imbued with the power of the Astral Overlord.', 250.00, 200, 20, false),
-        (new_id_shop, 'Astral Overlord''s Necklace', 'A necklace worn by the Astral Overlord.', 250.00, 150, 25, false),
+        (NEW.id_user, 'Astral Overlord''s Helmet', 'A helm worn by the Astral Overlord.', 200.00, 150, 0, false),
+        (NEW.id_user, 'Astral Overlord''s Armor', 'Protective armor worn by the Astral Overlord.', 300.00, 50, 100, false),
+        (NEW.id_user, 'Astral Overlord''s Glove', 'A glove used by the Astral Overlord.', 150.00, 350, 0, false),
+        (NEW.id_user, 'Astral Overlord''s Shoe', 'A shoe worn by the Astral Overlord.', 150.00, 0, 40, false),
+        (NEW.id_user, 'Astral Overlord''s Ring', 'A ring imbued with the power of the Astral Overlord.', 250.00, 200, 20, false),
+        (NEW.id_user, 'Astral Overlord''s Necklace', 'A necklace worn by the Astral Overlord.', 250.00, 150, 25, false),
 
         --Mage
-        (new_id_shop, 'Void Phantom''s Helmet', 'A helm worn by the Void Phantom.', 200.00, 150, 0, false),
-        (new_id_shop, 'Void Phantom''s Armor', 'Protective armor worn by the Void Phantom.', 300.00, 50, 100, false),
-        (new_id_shop, 'Void Phantom''s Glove', 'A glove used by the Void Phantom.', 150.00, 350, 0, false),
-        (new_id_shop, 'Void Phantom''s Shoe', 'A shoe worn by the Void Phantom.', 150.00, 0, 40, false),
-        (new_id_shop, 'Void Phantom''s Ring', 'A ring imbued with the power of the Void Phantom.', 250.00, 200, 20, false),
-        (new_id_shop, 'Void Phantom''s Necklace', 'A necklace worn by the Void Phantom.', 250.00, 150, 25, false);
+        (NEW.id_user, 'Void Phantom''s Helmet', 'A helm worn by the Void Phantom.', 200.00, 150, 0, false),
+        (NEW.id_user, 'Void Phantom''s Armor', 'Protective armor worn by the Void Phantom.', 300.00, 50, 100, false),
+        (NEW.id_user, 'Void Phantom''s Glove', 'A glove used by the Void Phantom.', 150.00, 350, 0, false),
+        (NEW.id_user, 'Void Phantom''s Shoe', 'A shoe worn by the Void Phantom.', 150.00, 0, 40, false),
+        (NEW.id_user, 'Void Phantom''s Ring', 'A ring imbued with the power of the Void Phantom.', 250.00, 200, 20, false),
+        (NEW.id_user, 'Void Phantom''s Necklace', 'A necklace worn by the Void Phantom.', 250.00, 150, 25, false);
 
 
     --Dungeons
-    INSERT INTO Dungeon (id_player, name, description, level, rewardLevel, rewardMoney, completed)
+    INSERT INTO Dungeon (id_dungeon,id_player, name, description, level, rewardLevel, rewardMoney, completed)
     VALUES
-        (NEW.id_user, 'The Dark Forest', 'A dense forest filled with dangerous creatures.', 1, 2, 50.00, false),
-        (NEW.id_user, 'The Cursed Castle', 'An ancient castle haunted by vengeful spirits.', 2, 4, 100.00, false),
-        (NEW.id_user, 'The Fiery Volcano', 'A volcano spewing molten lava and fiery monsters.', 3, 6, 150.00, false),
-        (NEW.id_user, 'The Frozen Tundra', 'A frozen wasteland inhabited by ice creatures.', 4, 8, 200.00, false),
-        (NEW.id_user, 'The Shadow Realm', 'A dark dimension filled with shadowy beings.', 5, 10, 250.00, false),
-        (NEW.id_user, 'The Abyssal Depths', 'An underwater abyss teeming with aquatic horrors.', 6, 12, 300.00, false),
-        (NEW.id_user, 'The Celestial Plane', 'A heavenly realm where divine beings reside.', 7, 14, 350.00, false),
-        (NEW.id_user, 'The Infernal Abyss', 'A hellish realm of fire and brimstone.', 8, 16, 400.00, false),
-        (NEW.id_user, 'The Astral Plane', 'A plane of existence beyond mortal comprehension.', 9, 18, 450.00, false),
-        (NEW.id_user, 'The Void', 'A realm of nothingness where only darkness exists.', 10, 20, 500.00, false);
-
+        (NEW.id_user*10,NEW.id_user, 'The Dark Forest', 'A dense forest filled with dangerous creatures.', 1, 2, 50.00, false),
+        (NEW.id_user*10+1,NEW.id_user, 'The Cursed Castle', 'An ancient castle haunted by vengeful spirits.', 2, 4, 100.00, false),
+        (NEW.id_user*10+2,NEW.id_user, 'The Fiery Volcano', 'A volcano spewing molten lava and fiery monsters.', 3, 6, 150.00, false),
+        (NEW.id_user*10+3,NEW.id_user, 'The Frozen Tundra', 'A frozen wasteland inhabited by ice creatures.', 4, 8, 200.00, false),
+        (NEW.id_user*10+4,NEW.id_user, 'The Shadow Realm', 'A dark dimension filled with shadowy beings.', 5, 10, 250.00, false),
+        (NEW.id_user*10+5,NEW.id_user, 'The Abyssal Depths', 'An underwater abyss teeming with aquatic horrors.', 6, 12, 300.00, false),
+        (NEW.id_user*10+6,NEW.id_user, 'The Celestial Plane', 'A heavenly realm where divine beings reside.', 7, 14, 350.00, false),
+        (NEW.id_user*10+7,NEW.id_user, 'The Infernal Abyss', 'A hellish realm of fire and brimstone.', 8, 16, 400.00, false),
+        (NEW.id_user*10+8,NEW.id_user, 'The Astral Plane', 'A plane of existence beyond mortal comprehension.', 9, 18, 450.00, false),
+        (NEW.id_user*10+9,NEW.id_user, 'The Void', 'A realm of nothingness where only darkness exists.', 10, 20, 500.00, false);
 
     --Enemies
+
+    --Dungeon 1
+
+    -- Tank enemy
+    INSERT INTO Enemy (id_dungeon, name, description, health, damage)
+    VALUES
+        (NEW.id_user*10, 'Forest Guardian', 'A massive creature with thick bark-like skin, guarding the heart of the forest.', 200, 50);
+
+    INSERT INTO Tank (id_enemy, armor)
+    VALUES
+        (LAST_INSERT_ID(), 100);
+
+    -- Mage enemy
+    INSERT INTO Enemy (id_dungeon, name, description, health, damage)
+    VALUES
+        (NEW.id_user*10, 'Wispweaver', 'An ethereal being that weaves spells from the very essence of the forest.', 150, 80);
+
+    INSERT INTO Mage (id_enemy, mana)
+    VALUES
+        (LAST_INSERT_ID(), 200);
+
+    -- Assassin enemy
+    INSERT INTO Enemy (id_dungeon, name, description, health, damage)
+    VALUES
+        (NEW.id_user*10, 'Shadowstalker', 'A stealthy predator lurking in the shadows, waiting to strike.', 100, 120);
+
+    INSERT INTO Assassin (id_enemy, criticalChance)
+    VALUES
+        (LAST_INSERT_ID(), 30);
+
+    -- Assassin Boss enemy
+    INSERT INTO Enemy (id_dungeon, name, description, health, damage)
+    VALUES
+        (NEW.id_user*10, 'Vorpal Shadowblade', 'A formidable assassin, master of The Dark Forest, that deadly strikes.', 100, 120);
+
+    INSERT INTO Assassin (id_enemy, criticalChance)
+    VALUES
+        (LAST_INSERT_ID(), 50);
+
+    INSERT INTO BossAssassin (id_enemy)
+    VALUES
+        (LAST_INSERT_ID());
+
+    INSERT INTO BossAssassinInventory (id_item, id_enemy)
+    VALUES
+        (NEW.id_user*10+1, LAST_INSERT_ID()),
+        (NEW.id_user*10+2, LAST_INSERT_ID()),
+        (NEW.id_user*10+3, LAST_INSERT_ID()),
+        (NEW.id_user*10+4, LAST_INSERT_ID()),
+        (NEW.id_user*10+5, LAST_INSERT_ID()),
+        (NEW.id_user*10+6, LAST_INSERT_ID());
+        -- Find items id for the boss
+
+
+--    INSERT INTO Enemy (id_dungeon, name, description, health, damage)
+--    values
+--        (1, 'Goblin', 'A small, green-skinned creature with a penchant for mischief.', 10, 5),
+--        (1, 'Wolf', 'A fierce predator with sharp teeth and claws.', 15, 7),
+--        (1, 'Ent', 'A massive tree-like creature that guards the forest.', 20, 10),
+--        (1, 'Witch', 'A spellcaster who uses dark magic to ensnare her foes.', 25, 12),
+--        (1, 'Troll', 'A hulking brute with thick skin and a bad temper.', 30, 15),
+--        (1, 'Orc', 'A fierce warrior with a lust for battle.', 35, 17),
+--        (1, 'Harpy', 'A winged creature that attacks from the skies.', 40, 20),
+--        (1, 'Basilisk', 'A serpent-like monster with a petrifying gaze.', 45, 22)
 
 
 

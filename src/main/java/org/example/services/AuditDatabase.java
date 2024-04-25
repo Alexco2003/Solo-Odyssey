@@ -5,13 +5,13 @@ import com.opencsv.CSVWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Audit {
-    private static Audit instance = null;
+public class AuditDatabase {
+    private static AuditDatabase instance = null;
     private static CSVWriter writer;
-    private static String path = "audit.csv";
+    private static String path = "auditDatabase.csv";
     private static int count = 0;
 
-    private Audit() {
+    private AuditDatabase() {
         try {
 
             writer = new CSVWriter(new FileWriter(path));
@@ -20,9 +20,9 @@ public class Audit {
             throw new RuntimeException(e);
         }
     }
-    public static Audit getInstance() {
+    public static AuditDatabase getInstance() {
         if (instance == null) {
-            instance = new Audit();
+            instance = new AuditDatabase();
         }
         return instance;
     }

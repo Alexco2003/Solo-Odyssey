@@ -32,6 +32,7 @@ public class Dungeon {
     public void setRewardMoney(double rewardMoney) {
         this.rewardMoney = rewardMoney;
     }
+
     public int getId_dungeon() {
         return id_dungeon;
     }

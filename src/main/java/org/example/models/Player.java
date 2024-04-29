@@ -1,5 +1,6 @@
 package org.example.models;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Player extends User{
@@ -8,10 +9,10 @@ public class Player extends User{
     private int damage;
     private int health;
     private double money=0;
-    private HashSet<Item> inventory = new HashSet<Item>();
+    private HashMap<Item, Integer> inventory = new HashMap<Item, Integer>();
 
 
-    public Player(int id_user, String username, String password, int level, String title, int damage, int health, double money, HashSet<Item> inventory) {
+    public Player(int id_user, String username, String password, int level, String title, int damage, int health, double money, HashMap<Item, Integer> inventory) {
         super(id_user,username, password);
         this.level = level;
         this.title = title;
@@ -52,11 +53,11 @@ public class Player extends User{
         this.health = health;
     }
 
-    public HashSet<Item> getInventory() {
+    public HashMap<Item, Integer> getInventory() {
         return inventory;
     }
 
-    public void setInventory(HashSet<Item> inventory) {
+    public void setInventory(HashMap<Item, Integer> inventory) {
         this.inventory = inventory;
     }
 

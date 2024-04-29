@@ -1,10 +1,12 @@
 package org.example.repositories;
 
+import org.example.models.Item;
 import org.example.models.Player;
 import org.example.models.User;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class PlayerRepository implements GenericRepository<Player> {
@@ -81,7 +83,7 @@ public class PlayerRepository implements GenericRepository<Player> {
                 int damage = rs.getInt("damage");
                 int health = rs.getInt("health");
                 double money = rs.getDouble("money");
-                return new Player(id, username, password, level, title, damage, health, money, new HashSet<>());
+                return new Player(id, username, password, level, title, damage, health, money, new HashMap<Item, Integer>());
                 //TODO: get inventory
             }
 
@@ -113,7 +115,7 @@ public class PlayerRepository implements GenericRepository<Player> {
                 int damage = rs.getInt("damage");
                 int health = rs.getInt("health");
                 double money = rs.getDouble("money");
-                players.add(new Player(id, username, password, level, title, damage, health, money, new HashSet<>()));
+                players.add(new Player(id, username, password, level, title, damage, health, money, new HashMap<Item, Integer>()));
                 //TODO: get inventory
             }
 

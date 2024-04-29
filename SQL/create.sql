@@ -51,7 +51,9 @@ CREATE TABLE Item (
     price DECIMAL(19,2),
     damage INT,
     health INT,
+    quantity INT CHECK (quantity >= 0),
     isBought BOOLEAN,
+    isStolen BOOLEAN,
     FOREIGN KEY(id_shop) REFERENCES Shop(id_shop),
     PRIMARY KEY(id_item)
 );
@@ -79,13 +81,19 @@ CREATE TABLE Dungeon (
 
 CREATE TABLE Enemy (
     id_enemy INT AUTO_INCREMENT,
-    id_dungeon INT,
     name VARCHAR(255),
     description TEXT,
     health INT,
     damage INT,
-    FOREIGN KEY(id_dungeon) REFERENCES Dungeon(id_dungeon),
     PRIMARY KEY(id_enemy)
+);
+
+CREATE TABLE DungeonEnemy (
+    id_dungeon INT,
+    id_enemy INT,
+    FOREIGN KEY(id_dungeon) REFERENCES Dungeon(id_dungeon),
+    FOREIGN KEY(id_enemy) REFERENCES Enemy(id_enemy),
+    PRIMARY KEY(id_dungeon, id_enemy)
 );
 
 CREATE TABLE Tank (
@@ -161,6 +169,7 @@ DROP TABLE Item;
 DROP TABLE PlayerInventory;
 DROP TABLE Dungeon;
 DROP TABLE Enemy;
+DROP TABLE DungeonEnemy;
 DROP TABLE Tank;
 DROP TABLE Assassin;
 DROP TABLE Mage;
@@ -180,6 +189,7 @@ DELETE FROM Item;
 DELETE FROM PlayerInventory;
 DELETE FROM Dungeon;
 DELETE FROM Enemy;
+DELETE FROM DungeonEnemy;
 DELETE FROM Tank;
 DELETE FROM Assassin;
 DELETE FROM Mage;
@@ -199,6 +209,7 @@ SELECT * FROM Item;
 SELECT * FROM PlayerInventory;
 SELECT * FROM Dungeon;
 SELECT * FROM Enemy;
+SELECT * FROM DungeonEnemy;
 SELECT * FROM Tank;
 SELECT * FROM Assassin;
 SELECT * FROM Mage;

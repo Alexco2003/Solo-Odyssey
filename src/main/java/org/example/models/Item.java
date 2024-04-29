@@ -9,9 +9,11 @@ public class Item {
     private double price;
     private int damage;
     private int health;
+    private int quantity;
     private boolean isBought = false;
+    private boolean isStolen = false;
 
-    public Item(int id_item, int id_shop, String name, String description, double price, int damage, int health, boolean isBought) {
+    public Item(int id_item, int id_shop, String name, String description, double price, int damage, int health, int quantity, boolean isBought, boolean isStolen) {
         this.id_item = id_item;
         this.id_shop = id_shop;
         this.name = name;
@@ -19,7 +21,25 @@ public class Item {
         this.price = price;
         this.damage = damage;
         this.health = health;
+        this.quantity = quantity;
         this.isBought = isBought;
+        this.isStolen = isStolen;
+    }
+
+    public boolean isStolen() {
+        return isStolen;
+    }
+
+    public void setStolen(boolean isStolen) {
+        this.isStolen = isStolen;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public boolean isBought() {

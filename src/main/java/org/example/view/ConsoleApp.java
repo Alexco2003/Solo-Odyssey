@@ -1,9 +1,11 @@
 package org.example.view;
 
+import org.example.models.Item;
 import org.example.models.Player;
 import org.example.repositories.PlayerRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -53,7 +55,7 @@ public class ConsoleApp {
                     System.out.println("Enter player money:");
                     double money = Double.parseDouble(scanner.nextLine());
 
-                    Player player = new Player(0, username, password, level, title, damage, health, money, new HashSet<>());
+                    Player player = new Player(0, username, password, level, title, damage, health, money, new HashMap<Item, Integer>());
 
                     PlayerRepository playerRepository = new PlayerRepository();
                     playerRepository.add(player);

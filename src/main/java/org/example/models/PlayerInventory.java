@@ -4,10 +4,20 @@ public class PlayerInventory {
 
     private int id_item;
     private int id_player;
+    private int quantity;
 
-    public PlayerInventory(int id_item, int id_player) {
+    public PlayerInventory(int id_item, int id_player, int quantity) {
         this.id_item = id_item;
         this.id_player = id_player;
+        this.quantity = quantity;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public int getId_item() {

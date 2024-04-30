@@ -1,60 +1,3 @@
-DROP TABLE User;
-DROP TABLE Architect;
-DROP TABLE Player;
-DROP TABLE Quest;
-DROP TABLE Shop;
-DROP TABLE Item;
-DROP TABLE PlayerInventory;
-DROP TABLE Dungeon;
-DROP TABLE Enemy;
-DROP TABLE Tank;
-DROP TABLE Assassin;
-DROP TABLE Mage;
-DROP TABLE BossTank;
-DROP TABLE BossMage;
-DROP TABLE BossAssassin;
-DROP TABLE BossTankInventory;
-DROP TABLE BossMageInventory;
-DROP TABLE BossAssassinInventory;
-
-DELETE FROM User;
-DELETE FROM Player;
-DELETE FROM Architect;
-DELETE FROM Quest;
-DELETE FROM Shop;
-DELETE FROM Item;
-DELETE FROM PlayerInventory;
-DELETE FROM Dungeon;
-DELETE FROM Enemy;
-DELETE FROM Tank;
-DELETE FROM Assassin;
-DELETE FROM Mage;
-DELETE FROM BossTank;
-DELETE FROM BossMage;
-DELETE FROM BossAssassin;
-DELETE FROM BossTankInventory;
-DELETE FROM BossMageInventory;
-DELETE FROM BossAssassinInventory;
-
-SELECT * FROM User;
-SELECT * FROM Architect;
-SELECT * FROM Player;
-SELECT * FROM Quest;
-SELECT * FROM Shop;
-SELECT * FROM Item;
-SELECT * FROM PlayerInventory;
-SELECT * FROM Dungeon;
-SELECT * FROM Enemy;
-SELECT * FROM Tank;
-SELECT * FROM Assassin;
-SELECT * FROM Mage;
-SELECT * FROM BossTank;
-SELECT * FROM BossMage;
-SELECT * FROM BossAssassin;
-SELECT * FROM BossTankInventory;
-SELECT * FROM BossMageInventory;
-SELECT * FROM BossAssassinInventory;
-
 
 CREATE TRIGGER after_insert_player
 AFTER INSERT
@@ -228,6 +171,9 @@ BEGIN
         (NEW.id_user*97+96, NEW.id_user, 'Void Phantom''s Necklace', 'A necklace worn by the Void Phantom.', 250.00, 150, 25, false);
 
 
+--    --Player Inventory - TODO: Add starting items
+--    INSERT INTO PlayerInventory (id_player, id_item, quantity)
+
     --Dungeons
     INSERT INTO Dungeon (id_dungeon, id_player, name, description, level, rewardLevel, rewardMoney, completed)
     VALUES
@@ -243,34 +189,223 @@ BEGIN
         (NEW.id_user*10+9,NEW.id_user, 'The Void', 'A realm of nothingness where only darkness exists.', 10, 20, 500.00, false);
 
     --Enemies
-    --TO DO : Add enemies for each dungeon
-    INSERT INTO Enemy (id_enemy, name, description, health, damage)
+    INSERT INTO Enemy (id_enemy, name, description, health, damage, encountered)
     VALUES
         --Assassins
-        (1, 'Shadow Panther', 'A stealthy panther that strikes from the shadows.', 80, 140),
-        (1, 'Night Serpent', 'A deadly serpent that hunts under the cover of darkness.', 80, 140),
-        (1, 'Ghost Wolf', 'A spectral wolf that moves like a phantom.', 80, 140),
-        (1, 'Silent Owl', 'An owl known for its silent but deadly swoop.', 80, 140),
-        (1, 'Crimson Fox', 'A cunning fox with a deadly bite.', 80, 140),
+        (NEW.id_user*25, 'Shadow Panther', 'A stealthy panther that strikes from the shadows.', 80, 140, false),
+        (NEW.id_user*25+1, 'Night Serpent', 'A deadly serpent that hunts under the cover of darkness.', 80, 140, false),
+        (NEW.id_user*25+2, 'Ghost Wolf', 'A spectral wolf that moves like a phantom.', 80, 140, false),
+        (NEW.id_user*25+3, 'Silent Owl', 'An owl known for its silent but deadly swoop.', 80, 140, false),
+        (NEW.id_user*25+4, 'Crimson Fox', 'A cunning fox with a deadly bite.', 80, 140, false),
         --Boss Assassins
-        (1, 'Vorpal Shadowblade', 'A formidable assassin, master of The Dark Forest, that deadly strikes.', 100, 200),
+        --Dungeon 1
+        (NEW.id_user*25+5, 'Vorpal Shadowblade', 'A formidable assassin, master of The Dark Forest, that deadly strikes.', 100, 200, false),
+        --Dungeon 4
+        (NEW.id_user*25+6, 'Frostbite', 'The ruler of The Frozen Tundra is a deadly assassin wielding a dagger forged from enchanted ice.', 200, 180, false),
+        --Dungeon 8
+        (NEW.id_user*25+7, 'Infernal Revenant', 'The ruler of The Infernal Abyss is a fearsome assassin wreathed in infernal flames.', 200, 200, false),
 
         --Tanks
-        (1, 'Iron Tortoise', 'A tortoise with an impenetrable iron shell.', 250, 30),
-        (1, 'Stone Golem', 'A golem made of solid stone, impervious to most attacks.', 250, 30),
-        (1, 'Steel Rhino', 'A rhino known for its steel-like hide.', 250, 30),
-        (1, 'Granite Elephant', 'An elephant whose skin is as hard as granite.', 250, 30),
-        (1, 'Diamond Armadillo', 'An armadillo with a diamond-hard shell.', 250, 30),
+        (NEW.id_user*25+8, 'Iron Tortoise', 'A tortoise with an impenetrable iron shell.', 250, 30, false),
+        (NEW.id_user*25+9, 'Stone Golem', 'A golem made of solid stone, impervious to most attacks.', 250, 30, false),
+        (NEW.id_user*25+10, 'Steel Rhino', 'A rhino known for its steel-like hide.', 250, 30, false),
+        (NEW.id_user*25+11, 'Granite Elephant', 'An elephant whose skin is as hard as granite.', 250, 30, false),
+        (NEW.id_user*25+12, 'Diamond Armadillo', 'An armadillo with a diamond-hard shell.', 250, 30, false),
         --Boss Tanks
-        (1, 'Colossus Steelhide', 'The guardian of The Cursed Castle, Colossus Steelhide is a massive creature with armor as tough as the castle walls.', 300, 50),
-
+        --Dungeon 2
+        (NEW.id_user*25+13, 'Colossus Steelhide', 'The guardian of The Cursed Castle, Colossus Steelhide is a massive creature with armor as tough as the castle walls.', 300, 50, false),
+        --Dungeon 6
+        (NEW.id_user*25+14, 'Leviathan', 'The ruler of The Abyssal Depths, Leviathan is a massive sea creature with impenetrable scales.', 300, 50, false),
+        --Dungeon 9
+        (NEW.id_user*25+15, 'Astral Overlord', 'The ruler of The Astral Plane, Astral Overlord is a divine being with impenetrable armor made of celestial energy .', 300, 50, false),
 
         --Mages
-        (1, 'Fire Sprite', 'A sprite that manipulates fire to attack its enemies.', 125, 125),
-        (1, 'Wind Sylph', 'A sylph that controls the wind to buffet its foes.', 125, 125),
-        (1, 'Water Nymph', 'A nymph that uses water magic to attack.', 125, 125),
-        (1, 'Earth Pixie', 'A pixie that uses earth magic to defend itself.', 125, 125),
-        (1, 'Lightning Djinn', 'A djinn that uses lightning magic to shock its enemies.', 125, 125);
+        (NEW.id_user*25+16, 'Fire Sprite', 'A sprite that manipulates fire to attack its enemies.', 125, 125, false),
+        (NEW.id_user*25+17, 'Wind Sylph', 'A sylph that controls the wind to buffet its foes.', 125, 125, false),
+        (NEW.id_user*25+18, 'Water Nymph', 'A nymph that uses water magic to attack.', 125, 125, false),
+        (NEW.id_user*25+19, 'Earth Pixie', 'A pixie that uses earth magic to defend itself.', 125, 125, false),
+        (NEW.id_user*25+20, 'Lightning Djinn', 'A djinn that uses lightning magic to shock its enemies.', 125, 125, false),
+        --Boss Mages
+        --Dungeon 3
+        (NEW.id_user*25+21, 'Ignis Pyreborn', 'The ruler of The Fiery Volcano, Ignis Pyreborn commands the power of fire.', 200, 80, false),
+        --Dungeon 5
+        (NEW.id_user*25+22, 'Eldritch Spellbinder', 'The ruler of The Shadow Realm, Eldritch Spellbinder commands the dark forces within this realm.', 200, 80, false),
+        --Dungeon 7
+        (NEW.id_user*25+23, 'Celestial Archon', 'The ruler of The Celestial Plane, Celestial Archon is a divine being with immense power.', 200, 80, false),
+        --Dungeon 10
+        (NEW.id_user*25+24, 'Void Phantom', 'The ruler of The Void, Void Phantom is a being of pure darkness.', 200, 80, false);
+
+    --Enemies Assasin
+    INSERT INTO Assassin (id_enemy, criticalChance)
+    VALUES
+        (NEW.id_user*25, 30),
+        (NEW.id_user*25+1, 30),
+        (NEW.id_user*25+2, 30),
+        (NEW.id_user*25+3, 30),
+        (NEW.id_user*25+4, 30),
+
+        --Boss Assassins
+        (NEW.id_user*25+5, 50),
+        (NEW.id_user*25+6, 50),
+        (NEW.id_user*25+7, 50);
+
+    --Enemies Tank
+    INSERT INTO Tank (id_enemy, armor)
+    VALUES
+        (NEW.id_user*25+8, 100),
+        (NEW.id_user*25+9, 100),
+        (NEW.id_user*25+10, 100),
+        (NEW.id_user*25+11, 100),
+        (NEW.id_user*25+12, 100),
+
+        --Boss Tanks
+        (NEW.id_user*25+13, 150),
+        (NEW.id_user*25+14, 150),
+        (NEW.id_user*25+15, 150);
+
+    --Enemies Mage
+    INSERT INTO Mage (id_enemy, mana)
+    VALUES
+        (NEW.id_user*25+16, 200),
+        (NEW.id_user*25+17, 200),
+        (NEW.id_user*25+18, 200),
+        (NEW.id_user*25+19, 200),
+        (NEW.id_user*25+20, 200),
+
+        --Boss Mages
+        (NEW.id_user*25+21, 250),
+        (NEW.id_user*25+22, 250),
+        (NEW.id_user*25+23, 250),
+        (NEW.id_user*25+24, 250);
+
+     --Enemies Assassin Boss
+    INSERT INTO BossAssassin (id_enemy)
+    VALUES
+        (NEW.id_user*25+5),
+        (NEW.id_user*25+6),
+        (NEW.id_user*25+7);
+
+    --Enemies Tank Boss
+    INSERT INTO BossTank (id_enemy)
+    VALUES
+        (NEW.id_user*25+13),
+        (NEW.id_user*25+14),
+        (NEW.id_user*25+15);
+
+    --Enemies Mage Boss
+    INSERT INTO BossMage (id_enemy)
+    VALUES
+        (NEW.id_user*25+21),
+        (NEW.id_user*25+22),
+        (NEW.id_user*25+23),
+        (NEW.id_user*25+24);
+
+
+    --Boss Assassin Inventory
+    INSERT INTO BossAssassinInventory (id_item, id_enemy)
+    VALUES
+        --Boss Assassin 1
+        (NEW.id_user*97+37, NEW.id_user*25+5),
+        (NEW.id_user*97+38, NEW.id_user*25+5),
+        (NEW.id_user*97+39, NEW.id_user*25+5),
+        (NEW.id_user*97+40, NEW.id_user*25+5),
+        (NEW.id_user*97+41, NEW.id_user*25+5),
+        (NEW.id_user*97+42, NEW.id_user*25+5),
+
+        --Boss Assassin 2
+        (NEW.id_user*97+55, NEW.id_user*25+6),
+        (NEW.id_user*97+56, NEW.id_user*25+6),
+        (NEW.id_user*97+57, NEW.id_user*25+6),
+        (NEW.id_user*97+58, NEW.id_user*25+6),
+        (NEW.id_user*97+59, NEW.id_user*25+6),
+        (NEW.id_user*97+60, NEW.id_user*25+6),
+
+        --Boss Assassin 3
+        (NEW.id_user*97+79, NEW.id_user*25+7),
+        (NEW.id_user*97+80, NEW.id_user*25+7),
+        (NEW.id_user*97+81, NEW.id_user*25+7),
+        (NEW.id_user*97+82, NEW.id_user*25+7),
+        (NEW.id_user*97+83, NEW.id_user*25+7),
+        (NEW.id_user*97+84, NEW.id_user*25+7);
+
+    --Boss Tank Inventory
+    INSERT INTO BossTankInventory (id_item, id_enemy)
+    VALUES
+        --Boss Tank 1
+        (NEW.id_user*97+43, NEW.id_user*25+13),
+        (NEW.id_user*97+44, NEW.id_user*25+13),
+        (NEW.id_user*97+45, NEW.id_user*25+13),
+        (NEW.id_user*97+46, NEW.id_user*25+13),
+        (NEW.id_user*97+47, NEW.id_user*25+13),
+        (NEW.id_user*97+48, NEW.id_user*25+13),
+
+        --Boss Tank 2
+        (NEW.id_user*97+67, NEW.id_user*25+14),
+        (NEW.id_user*97+68, NEW.id_user*25+14),
+        (NEW.id_user*97+69, NEW.id_user*25+14),
+        (NEW.id_user*97+70, NEW.id_user*25+14),
+        (NEW.id_user*97+71, NEW.id_user*25+14),
+        (NEW.id_user*97+72, NEW.id_user*25+14),
+
+        --Boss Tank 3
+        (NEW.id_user*97+85, NEW.id_user*25+15),
+        (NEW.id_user*97+86, NEW.id_user*25+15),
+        (NEW.id_user*97+87, NEW.id_user*25+15),
+        (NEW.id_user*97+88, NEW.id_user*25+15),
+        (NEW.id_user*97+89, NEW.id_user*25+15),
+        (NEW.id_user*97+90, NEW.id_user*25+15);
+
+    --Boss Mage Inventory
+    INSERT INTO BossMageInventory (id_item, id_enemy)
+    VALUES
+        --Boss Mage 1
+        (NEW.id_user*97+49, NEW.id_user*25+21),
+        (NEW.id_user*97+50, NEW.id_user*25+21),
+        (NEW.id_user*97+51, NEW.id_user*25+21),
+        (NEW.id_user*97+52, NEW.id_user*25+21),
+        (NEW.id_user*97+53, NEW.id_user*25+21),
+        (NEW.id_user*97+54, NEW.id_user*25+21),
+
+        --Boss Mage 2
+        (NEW.id_user*97+61, NEW.id_user*25+22),
+        (NEW.id_user*97+62, NEW.id_user*25+22),
+        (NEW.id_user*97+63, NEW.id_user*25+22),
+        (NEW.id_user*97+64, NEW.id_user*25+22),
+        (NEW.id_user*97+65, NEW.id_user*25+22),
+        (NEW.id_user*97+66, NEW.id_user*25+22),
+
+        --Boss Mage 3
+        (NEW.id_user*97+73, NEW.id_user*25+23),
+        (NEW.id_user*97+74, NEW.id_user*25+23),
+        (NEW.id_user*97+75, NEW.id_user*25+23),
+        (NEW.id_user*97+76, NEW.id_user*25+23),
+        (NEW.id_user*97+77, NEW.id_user*25+23),
+        (NEW.id_user*97+78, NEW.id_user*25+23),
+
+        --Boss Mage 4
+        (NEW.id_user*97+91, NEW.id_user*25+24),
+        (NEW.id_user*97+92, NEW.id_user*25+24),
+        (NEW.id_user*97+93, NEW.id_user*25+24),
+        (NEW.id_user*97+94, NEW.id_user*25+24),
+        (NEW.id_user*97+95, NEW.id_user*25+24),
+        (NEW.id_user*97+96, NEW.id_user*25+24);
+
+
+--TODO: Add dungeon enemies
+--TODO: BALANCE VALUES
+
+--    --Boss Assassin Inventory
+--    INSERT INTO BossAssassinInventory (id_item, id_enemy)
+--    VALUES
+--        --Boss Assassin 1
+--        (NEW.id_user*97+37, NEW.id_user*25+5),
+--        (NEW.id_user*97+38, NEW.id_user*25+5),
+--        (NEW.id_user*97+39, NEW.id_user*25+5),
+--        (NEW.id_user*97+40, NEW.id_user*25+5),
+--
+
+
+
 
 --    --Dungeon 1
 --
@@ -338,7 +473,7 @@ BEGIN
 
 
 
-    --TO DO : Add same initial configuration of the game for every player after creation
+    --TODO : Add same initial configuration of the game for every player after creation
 END;
 
 DROP TRIGGER after_insert_player;

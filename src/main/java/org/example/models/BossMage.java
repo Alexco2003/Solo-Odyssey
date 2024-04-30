@@ -6,8 +6,8 @@ public class BossMage extends Mage{
 
     private ArrayList<Item> items;
 
-    public BossMage(int id_enemy, int id_dungeon, String name, int health, int damage, int mana, ArrayList<Item> items, String description) {
-        super(id_enemy, id_dungeon, name, health, damage, mana, description);
+    public BossMage(int id_enemy, String name, int health, int damage, int mana, ArrayList<Item> items, String description, boolean encountered) {
+        super(id_enemy, name, health, damage, mana, description, encountered);
         this.items = items;
     }
 

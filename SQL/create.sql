@@ -61,6 +61,7 @@ CREATE TABLE Item (
 CREATE TABLE PlayerInventory (
     id_item INT,
     id_player INT,
+    quantity INT CHECK (quantity >= 0),
     FOREIGN KEY(id_item) REFERENCES Item(id_item),
     FOREIGN KEY(id_player) REFERENCES Player(id_user),
     PRIMARY KEY(id_item, id_player)
@@ -85,6 +86,7 @@ CREATE TABLE Enemy (
     description TEXT,
     health INT,
     damage INT,
+    encountered BOOLEAN,
     PRIMARY KEY(id_enemy)
 );
 

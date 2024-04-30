@@ -2,8 +2,8 @@ package org.example.models;
 
 public class DungeonEnemy {
 
-    public int id_dungeon;
-    public int id_enemy;
+   private int id_dungeon;
+   private int id_enemy;
 
     public DungeonEnemy(int id_dungeon, int id_enemy) {
         this.id_dungeon = id_dungeon;

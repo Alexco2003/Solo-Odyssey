@@ -4,8 +4,8 @@ public class Assassin extends Enemy{
 
     private int criticalChance;
 
-    public Assassin(int id_enemy, int id_dungeon, String name, int health, int damage, int criticalChance, String description) {
-        super(id_enemy, id_dungeon, name, health, damage, description);
+    public Assassin(int id_enemy, String name, int health, int damage, int criticalChance, String description, boolean encountered) {
+        super(id_enemy, name, health, damage, description, encountered);
         this.criticalChance = criticalChance;
     }
 

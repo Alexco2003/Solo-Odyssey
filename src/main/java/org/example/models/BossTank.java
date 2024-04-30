@@ -6,8 +6,8 @@ public class BossTank extends Tank{
 
     private ArrayList<Item> items;
 
-    public BossTank(int id_enemy, int id_dungeon, String name, int health, int damage, int armor, ArrayList<Item> items, String description) {
-        super(id_enemy, id_dungeon, name, health, damage, armor, description);
+    public BossTank(int id_enemy, String name, int health, int damage, int armor, ArrayList<Item> items, String description, boolean encountered) {
+        super(id_enemy, name, health, damage, armor, description, encountered);
         this.items = items;
     }
 

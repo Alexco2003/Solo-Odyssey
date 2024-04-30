@@ -7,8 +7,8 @@ public class BossAssassin extends Assassin{
     private ArrayList<Item> items;
 
 
-    public BossAssassin(int id_enemy, int id_dungeon, String name, int health, int damage, int criticalChance, ArrayList<Item> items, String description) {
-        super(id_enemy, id_dungeon, name, health, damage, criticalChance, description);
+    public BossAssassin(int id_enemy, String name, int health, int damage, int criticalChance, ArrayList<Item> items, String description, boolean encountered) {
+        super(id_enemy, name, health, damage, criticalChance, description, encountered);
         this.items = items;
     }
 

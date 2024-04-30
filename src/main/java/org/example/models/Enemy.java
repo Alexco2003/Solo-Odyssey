@@ -6,13 +6,23 @@ public abstract class Enemy {
     private String description;
     private int health;
     private int damage;
+    private boolean encountered = false;
 
-    public Enemy(int id_enemy, String name, int health, int damage, String description) {
+    public Enemy(int id_enemy, String name, int health, int damage, String description, boolean encountered) {
         this.id_enemy = id_enemy;
         this.name = name;
         this.health = health;
         this.damage = damage;
         this.description = description;
+        this.encountered = encountered;
+    }
+
+    public boolean isEncountered() {
+        return encountered;
+    }
+
+    public void setEncountered(boolean encountered) {
+        this.encountered = encountered;
     }
 
     public int getId_enemy() {

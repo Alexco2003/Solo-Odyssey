@@ -1,6 +1,0 @@
-"Statement 0","SELECT * FROM Player INNER JOIN User ON Player.id_user = User.id_user","class org.example.models.Player","Done successfully!"
-"Statement 1","INSERT INTO USER (username, password) VALUES (?, ?)","class org.example.models.User","Done successfully!"
-"Statement 2","INSERT INTO Player (id_user, level, title, damage, health, money) VALUES (?, ?, ?, ?, ?, ?)","Player{id=0, username='78', password='7', level=87, title='87', damage=87, health=8, money=787.0, inventory=[]}","Done successfully!"
-"Statement 3","SELECT * FROM Player INNER JOIN User ON Player.id_user = User.id_user WHERE Player.id_user = ?","class org.example.models.Player","Done successfully!"
-"Statement 4","SELECT * FROM Player INNER JOIN User ON Player.id_user = User.id_user","class org.example.models.Player","Done successfully!"
-"Statement 5","SELECT * FROM Player INNER JOIN User ON Player.id_user = User.id_user WHERE Player.id_user = ?","class org.example.models.Player","Done successfully!"

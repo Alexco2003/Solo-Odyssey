@@ -1,0 +1,1 @@
+"Statement 1","SELECT * FROM Player INNER JOIN User ON Player.id_user = User.id_user","class org.example.models.Player","Done successfully!"

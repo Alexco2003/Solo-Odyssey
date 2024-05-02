@@ -54,6 +54,7 @@ public class PlayerRepository implements GenericRepository<Player> {
 
             pstmt.executeUpdate();
             this.auditDatabase.write(sql, player, "Done successfully!");
+            this.auditSession.write("Player " + player.getUsername() + " has awaken! The System is pleased!");
 
             player.setId_user(userId);
 
@@ -115,8 +116,9 @@ public class PlayerRepository implements GenericRepository<Player> {
                 int damage = rs.getInt("damage");
                 int health = rs.getInt("health");
                 double money = rs.getDouble("money");
+                HashMap<Item, Integer> inventory = getInventory(id);
                 players.add(new Player(id, username, password, level, title, damage, health, money, new HashMap<Item, Integer>()));
-                //TODO: get inventory
+                //TODO: check inventory
             }
 
             return players;
@@ -163,13 +165,81 @@ public class PlayerRepository implements GenericRepository<Player> {
 
             pstmt.executeUpdate();
             this.auditDatabase.write(sql, player, "Done successfully!");
+            this.auditSession.write("Player " + player.getUsername() + " has been terminated by The System!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
+    public boolean checkCredentials(String username, String password) {
+        String sql = "SELECT * FROM User WHERE username = ? AND password = ?";
+        Connection conn = this.databaseConnection.getConnection();
 
+        try {
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+
+            ResultSet rs = pstmt.executeQuery();
+            this.auditDatabase.write(sql, User.class, "Done successfully!");
+
+            return rs.next();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
+
+    public HashMap<Item, Integer> getInventory(int playerId) {
+        String sql = "SELECT * FROM PlayerInventory WHERE id_player = ?";
+        Connection conn = this.databaseConnection.getConnection();
+        HashMap<Item, Integer> inventory = new HashMap<>();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, playerId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int itemId = rs.getInt("id_item");
+                int quantity = rs.getInt("quantity");
+
+                Item item = getItem(itemId);
+                if (item != null) {
+                    inventory.put(item, quantity);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return inventory;
+    }
+
+    private Item getItem(int itemId) {
+        String sql = "SELECT * FROM Item WHERE id_item = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, itemId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new Item(rs.getInt("id_item"), rs.getInt("id_shop"), rs.getString("name"),rs.getString("description"), rs.getDouble("price"), rs.getInt("damage"), rs.getInt("health"), rs.getInt("quantity"), rs.getBoolean("isBought"), rs.getBoolean("isStolen"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
 
 
 }

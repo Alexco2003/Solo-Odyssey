@@ -6,6 +6,7 @@ public class Main {
 
     private static ConsoleApp app;
     public static void main(String[] args) {
+
         try {
             app = ConsoleApp.getInstance();
             app.start();
@@ -14,4 +15,6 @@ public class Main {
         }
 
     }
+
 }
+

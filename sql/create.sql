@@ -8,7 +8,7 @@ CREATE TABLE User (
 CREATE TABLE Architect (
     id_user INT,
     level INT,
-    FOREIGN KEY(id_user) REFERENCES User(id_user),
+    FOREIGN KEY(id_user) REFERENCES User(id_user) ON DELETE CASCADE,
     PRIMARY KEY(id_user)
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE Player (
     damage INT,
     health INT,
     money DECIMAL(19,2),
-    FOREIGN KEY(id_user) REFERENCES User(id_user),
+    FOREIGN KEY(id_user) REFERENCES User(id_user) ON DELETE CASCADE,
     PRIMARY KEY(id_user)
 );
 
@@ -31,7 +31,7 @@ CREATE TABLE Quest (
     rewardLevel INT,
     rewardMoney DECIMAL(19,2),
     completed BOOLEAN,
-    FOREIGN KEY(id_player) REFERENCES Player(id_user),
+    FOREIGN KEY(id_player) REFERENCES Player(id_user) ON DELETE CASCADE,
     PRIMARY KEY(id_quest)
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE Shop (
     id_shop INT AUTO_INCREMENT,
     id_player INT,
     name VARCHAR(255),
-    FOREIGN KEY(id_player) REFERENCES Player(id_user),
+    FOREIGN KEY(id_player) REFERENCES Player(id_user) ON DELETE CASCADE,
     PRIMARY KEY(id_shop)
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE Item (
     quantity INT CHECK (quantity >= 0),
     isBought BOOLEAN,
     isStolen BOOLEAN,
-    FOREIGN KEY(id_shop) REFERENCES Shop(id_shop),
+    FOREIGN KEY(id_shop) REFERENCES Shop(id_shop) ON DELETE CASCADE,
     PRIMARY KEY(id_item)
 );
 
@@ -62,8 +62,8 @@ CREATE TABLE PlayerInventory (
     id_item INT,
     id_player INT,
     quantity INT CHECK (quantity >= 0),
-    FOREIGN KEY(id_item) REFERENCES Item(id_item),
-    FOREIGN KEY(id_player) REFERENCES Player(id_user),
+    FOREIGN KEY(id_item) REFERENCES Item(id_item) ON DELETE CASCADE,
+    FOREIGN KEY(id_player) REFERENCES Player(id_user) ON DELETE CASCADE,
     PRIMARY KEY(id_item, id_player)
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE Dungeon (
     rewardLevel INT,
     rewardMoney DECIMAL(19,2),
     completed BOOLEAN,
-    FOREIGN KEY(id_player) REFERENCES Player(id_user),
+    FOREIGN KEY(id_player) REFERENCES Player(id_user) ON DELETE CASCADE,
     PRIMARY KEY(id_dungeon)
 );
 
@@ -93,47 +93,47 @@ CREATE TABLE Enemy (
 CREATE TABLE DungeonEnemy (
     id_dungeon INT,
     id_enemy INT,
-    FOREIGN KEY(id_dungeon) REFERENCES Dungeon(id_dungeon),
-    FOREIGN KEY(id_enemy) REFERENCES Enemy(id_enemy),
+    FOREIGN KEY(id_dungeon) REFERENCES Dungeon(id_dungeon) ON DELETE CASCADE,
+    FOREIGN KEY(id_enemy) REFERENCES Enemy(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_dungeon, id_enemy)
 );
 
 CREATE TABLE Tank (
     id_enemy INT,
     armor INT,
-    FOREIGN KEY(id_enemy) REFERENCES Enemy(id_enemy),
+    FOREIGN KEY(id_enemy) REFERENCES Enemy(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_enemy)
 );
 
 CREATE TABLE Assassin (
     id_enemy INT,
     criticalChance INT,
-    FOREIGN KEY(id_enemy) REFERENCES Enemy(id_enemy),
+    FOREIGN KEY(id_enemy) REFERENCES Enemy(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_enemy)
 );
 
 CREATE TABLE Mage (
     id_enemy INT,
     mana INT,
-    FOREIGN KEY(id_enemy) REFERENCES Enemy(id_enemy),
+    FOREIGN KEY(id_enemy) REFERENCES Enemy(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_enemy)
 );
 
 CREATE TABLE BossTank (
     id_enemy INT,
-    FOREIGN KEY(id_enemy) REFERENCES Tank(id_enemy),
+    FOREIGN KEY(id_enemy) REFERENCES Tank(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_enemy)
 );
 
 CREATE TABLE BossMage (
     id_enemy INT,
-    FOREIGN KEY(id_enemy) REFERENCES Mage(id_enemy),
+    FOREIGN KEY(id_enemy) REFERENCES Mage(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_enemy)
 );
 
 CREATE TABLE BossAssassin (
     id_enemy INT,
-    FOREIGN KEY(id_enemy) REFERENCES Assassin(id_enemy),
+    FOREIGN KEY(id_enemy) REFERENCES Assassin(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_enemy)
 );
 
@@ -141,24 +141,24 @@ CREATE TABLE BossAssassin (
 CREATE TABLE BossTankInventory (
     id_item INT,
     id_enemy INT,
-    FOREIGN KEY(id_item) REFERENCES Item(id_item),
-    FOREIGN KEY(id_enemy) REFERENCES BossTank(id_enemy),
+    FOREIGN KEY(id_item) REFERENCES Item(id_item) ON DELETE CASCADE,
+    FOREIGN KEY(id_enemy) REFERENCES BossTank(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_item, id_enemy)
 );
 
 CREATE TABLE BossMageInventory (
     id_item INT,
     id_enemy INT,
-    FOREIGN KEY(id_item) REFERENCES Item(id_item),
-    FOREIGN KEY(id_enemy) REFERENCES BossMage(id_enemy),
+    FOREIGN KEY(id_item) REFERENCES Item(id_item) ON DELETE CASCADE,
+    FOREIGN KEY(id_enemy) REFERENCES BossMage(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_item, id_enemy)
 );
 
 CREATE TABLE BossAssassinInventory (
     id_item INT,
     id_enemy INT,
-    FOREIGN KEY(id_item) REFERENCES Item(id_item),
-    FOREIGN KEY(id_enemy) REFERENCES BossAssassin(id_enemy),
+    FOREIGN KEY(id_item) REFERENCES Item(id_item) ON DELETE CASCADE,
+    FOREIGN KEY(id_enemy) REFERENCES BossAssassin(id_enemy) ON DELETE CASCADE,
     PRIMARY KEY(id_item, id_enemy)
 );
 

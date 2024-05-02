@@ -526,3 +526,69 @@ END;
 DROP TRIGGER after_insert_player;
 
 SELECT * FROM INFORMATION_SCHEMA.TRIGGERS WHERE TRIGGER_NAME = 'after_insert_player';
+
+--  Created a trigger to delete the player's data when a player is deleted
+CREATE TRIGGER before_delete_player
+BEFORE DELETE
+ON Player
+FOR EACH ROW
+BEGIN
+    -- User
+    DELETE FROM User WHERE id_user = OLD.id_user;
+    -- Enemy
+    DELETE FROM Enemy WHERE id_enemy >= OLD.id_user*25 AND id_enemy < (OLD.id_user+1)*25;
+END;
+
+DROP TRIGGER before_delete_player;
+
+SELECT * FROM INFORMATION_SCHEMA.TRIGGERS WHERE TRIGGER_NAME = 'before_delete_player';
+
+SHOW TRIGGERS;
+
+
+
+
+-- Testing and stuff
+INSERT INTO User(username,password) VALUES('admin','admin'); -- The Architect (for testing)
+INSERT INTO Architect(id_user,level) VALUES(1,1000);
+
+INSERT INTO User(id_user, username,password) VALUES(2,'user','user'); -- A Player (for testing)
+INSERT INTO Player(id_user,level,title,damage,health,money) VALUES(2,1,'Adventurer',50,10000,145.50);
+
+
+DELETE FROM Player WHERE id_user = 2;
+
+select * from User;
+select * from Player;
+select * from Architect;
+
+delete from Enemy;
+delete from player;
+
+select * from enemy;
+
+select * from PlayerInventory;
+
+select * from Dungeon;
+
+SELECT * FROM User;
+SELECT * FROM Architect;
+SELECT * FROM Player;
+SELECT * FROM Quest;
+SELECT * FROM Shop;
+SELECT * FROM Item;
+SELECT * FROM PlayerInventory;
+SELECT * FROM Dungeon;
+SELECT * FROM Enemy;
+SELECT * FROM DungeonEnemy;
+SELECT * FROM Tank;
+SELECT * FROM Assassin;
+SELECT * FROM Mage;
+SELECT * FROM BossTank;
+SELECT * FROM BossMage;
+SELECT * FROM BossAssassin;
+SELECT * FROM BossTankInventory;
+SELECT * FROM BossMageInventory;
+SELECT * FROM BossAssassinInventory;
+
+

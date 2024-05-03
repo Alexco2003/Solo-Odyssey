@@ -11,7 +11,7 @@ public class Main {
             app = ConsoleApp.getInstance();
             app.start();
         } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage() + "!" + "\n" + "Please try again!");
+            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "encountered an error: " + e.getMessage() + "!" + "\n" + "\033[0;35m" + "The System " + "\033[0;33m" + "wants you to try again!" + "\033[0m");
         }
 
     }

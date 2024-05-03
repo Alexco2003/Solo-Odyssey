@@ -17,6 +17,16 @@ public class Architect extends User{
         this.level = level;
     }
 
+    @Override
+    public String toString() {
+        return "Architect{" +
+                "level=" + level +
+                ", id_user=" + id_user +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
 
 
 

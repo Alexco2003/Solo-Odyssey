@@ -14,7 +14,7 @@ public class PlayerRepository implements GenericRepository<Player> {
     public PlayerRepository() {
     }
 
-
+    // Basic CRUD operations
     @Override
     public void add(Player player) {
         int userId = -1;
@@ -37,6 +37,7 @@ public class PlayerRepository implements GenericRepository<Player> {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+
         }
 
         String sql = "INSERT INTO Player (id_user, level, title, damage, health, money) VALUES (?, ?, ?, ?, ?, ?)";
@@ -84,8 +85,9 @@ public class PlayerRepository implements GenericRepository<Player> {
                 int damage = rs.getInt("damage");
                 int health = rs.getInt("health");
                 double money = rs.getDouble("money");
-                return new Player(id, username, password, level, title, damage, health, money, new HashMap<Item, Integer>());
-                //TODO: get inventory
+                HashMap<Item, Integer> inventory = getInventory(id);
+                return new Player(id, username, password, level, title, damage, health, money, inventory);
+
             }
 
         } catch (SQLException e) {
@@ -117,8 +119,8 @@ public class PlayerRepository implements GenericRepository<Player> {
                 int health = rs.getInt("health");
                 double money = rs.getDouble("money");
                 HashMap<Item, Integer> inventory = getInventory(id);
-                players.add(new Player(id, username, password, level, title, damage, health, money, new HashMap<Item, Integer>()));
-                //TODO: check inventory
+                players.add(new Player(id, username, password, level, title, damage, health, money, inventory));
+
             }
 
             return players;
@@ -172,18 +174,39 @@ public class PlayerRepository implements GenericRepository<Player> {
         }
     }
 
-    public boolean checkCredentials(String username, String password) {
-        String sql = "SELECT * FROM User WHERE username = ? AND password = ?";
+    // Functions related to the login
+    public int checkLogin(String username, String password) {
+        String sql = "SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?";
         Connection conn = this.databaseConnection.getConnection();
 
         try {
-             PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, username);
             pstmt.setString(2, password);
 
             ResultSet rs = pstmt.executeQuery();
             this.auditDatabase.write(sql, User.class, "Done successfully!");
+
+            if (rs.next()) {
+                return rs.getInt("id_user");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return -1;
+    }
+
+    public boolean checkPlayerExists(int id) {
+        String sql = "SELECT * FROM Player WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
 
             return rs.next();
 
@@ -194,6 +217,26 @@ public class PlayerRepository implements GenericRepository<Player> {
         return false;
     }
 
+    public boolean checkUsernameExists(String username) {
+        String sql = "SELECT * FROM User WHERE BINARY username = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
+            return rs.next();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
+
+
+    // Functions related to the inventory
     public HashMap<Item, Integer> getInventory(int playerId) {
         String sql = "SELECT * FROM PlayerInventory WHERE id_player = ?";
         Connection conn = this.databaseConnection.getConnection();

@@ -3,27 +3,143 @@ package org.example.test;
 import org.example.models.Item;
 import org.example.models.Player;
 import org.example.repositories.PlayerRepository;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.io.Console;
 
 public class Test {
     public static void main(String[] args) {
+        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "encountered an error: "  + "!" + "\n" + "\033[0;35m" + "The System " + "\033[0;33m" + "wants you to try again!" + "\033[0m");
+        Console console = System.console();
+        if (console == null) {
+            System.out.println("Couldn't get Console instance");
+            System.exit(0);
+        }
+
+        System.out.println("\033[0;33m" + "Enter username: " + "\033[0m");
+        String username = console.readLine();
+
+        System.out.println("\033[0;33m" + "Enter password: " + "\033[0m");
+        char[] passwordChars = console.readPassword();
+        String password = new String(passwordChars);
 
 
-            System.out.println(".▄▄ ·       ▄▄▌                  ·▄▄▄▄   ▄· ▄▌.▄▄ · .▄▄ · ▄▄▄ . ▄· ▄▌");
-            System.out.println("▐█ ▀. ▪     ██•  ▪         ▪     ██▪ ██ ▐█▪██▌▐█ ▀. ▐█ ▀. ▀▄.▀·▐█▪██▌");
-            System.out.println("▄▀▀▀█▄ ▄█▀▄ ██▪   ▄█▀▄      ▄█▀▄ ▐█· ▐█▌▐█▌▐█▪▄▀▀▀█▄▄▀▀▀█▄▐▀▀▪▄▐█▌▐█▪");
-            System.out.println("▐█▄▪▐█▐█▌.▐▌▐█▌▐▌▐█▌.▐▌    ▐█▌.▐▌██. ██  ▐█▀·.▐█▄▪▐█▐█▄▪▐█▐█▄▄▌ ▐█▀·.");
-            System.out.println(" ▀▀▀▀  ▀█▄▀▪.▀▀▀  ▀█▄▀▪     ▀█▄▀▪▀▀▀▀▀•   ▀ •  ▀▀▀▀  ▀▀▀▀  ▀▀▀   ▀ •");
-            System.out.println();
 
-
-
-
+        System.out.println("Player added successfully!");
     }
 }
+//// mask password with asterisk java console
+//public class Test {
+//
+//    public void consoleFunc() {
+//        Console console = System.console();
+//        if (console == null) {
+//            System.out.println("Couldn't get Console instance");
+//            System.exit(0);
+//        }
+//
+//        char[] passwordArray = console.readPassword("Enter your  password: ");
+//        for (int i = 0; i < passwordArray.length; i++) {
+//            System.out.print("*");
+//        }
+//        System.out.println();
+//        console.printf("Password entered was: \n", new String(passwordArray));
+//
+//    }
+//
+//    public static void main(String[] args) {
+//        new Test().consoleFunc();
+//    }
+//}
+//import java.io.Console;
+//import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.Scanner;
+//import javax.swing.*;
+//import java.io.Console;
+//
+//public class Test {
+//    public static void main(String[] args) {
+//        System.out.println("Enter username: ");
+//        String username = new Scanner(System.in).nextLine();
+//
+//        String password = getPassword();
+//        // Rest of your code...
+//    }
+//
+//    public static String getPassword() {
+//        String password;
+//        Console console = System.console();
+//        if (console == null) {
+//            password = getPasswordWithoutConsole("Enter password: ");
+//        } else {
+//            password = String.valueOf(console.readPassword("Enter password: "));
+//        }
+//        return password;
+//    }
+//
+//    public static String getPasswordWithoutConsole(String prompt) {
+//        final JPasswordField passwordField = new JPasswordField();
+//        return JOptionPane.showConfirmDialog(
+//                null,
+//                passwordField,
+//                prompt,
+//                JOptionPane.OK_CANCEL_OPTION,
+//                JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION ? new String(passwordField.getPassword()) : "";
+//    }
+//}
+//import org.jline.reader.LineReader;
+//import org.jline.reader.LineReaderBuilder;
+//import org.jline.terminal.Terminal;
+//import org.jline.terminal.TerminalBuilder;
+//
+//public class Test{
+//    public static void main(String[] args) {
+//        try {
+//            Terminal terminal = TerminalBuilder.terminal();
+//            LineReader reader = LineReaderBuilder.builder()
+//                    .terminal(terminal)
+//                    .build();
+//
+//            System.out.println("\033[0;33m" + "Enter username: " + "\033[0m");
+//            String username = reader.readLine();
+//
+//            System.out.println("\033[0;33m" + "Enter password: " + "\033[0m");
+//            String password = reader.readLine("", '*');
+//
+//            // Rest of your code...
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//}
+//public class Test {
+//    public static void main(String[] args) {
+//
+//        Console console = System.console();
+//        if (console == null) {
+//            System.out.println("Couldn't get Console instance");
+//            System.exit(0);
+//        }
+//
+//        System.out.println("\033[0;33m" + "Enter username: " + "\033[0m");
+//        String username = console.readLine();
+//
+//        System.out.println("\033[0;33m" + "Enter password: " + "\033[0m");
+//        char[] passwordChars = console.readPassword();
+//        String password = new String(passwordChars);
+
+//            System.out.println(".▄▄ ·       ▄▄▌                  ·▄▄▄▄   ▄· ▄▌.▄▄ · .▄▄ · ▄▄▄ . ▄· ▄▌");
+//            System.out.println("▐█ ▀. ▪     ██•  ▪         ▪     ██▪ ██ ▐█▪██▌▐█ ▀. ▐█ ▀. ▀▄.▀·▐█▪██▌");
+//            System.out.println("▄▀▀▀█▄ ▄█▀▄ ██▪   ▄█▀▄      ▄█▀▄ ▐█· ▐█▌▐█▌▐█▪▄▀▀▀█▄▄▀▀▀█▄▐▀▀▪▄▐█▌▐█▪");
+//            System.out.println("▐█▄▪▐█▐█▌.▐▌▐█▌▐▌▐█▌.▐▌    ▐█▌.▐▌██. ██  ▐█▀·.▐█▄▪▐█▐█▄▪▐█▐█▄▄▌ ▐█▀·.");
+//            System.out.println(" ▀▀▀▀  ▀█▄▀▪.▀▀▀  ▀█▄▀▪     ▀█▄▀▪▀▀▀▀▀•   ▀ •  ▀▀▀▀  ▀▀▀▀  ▀▀▀   ▀ •");
+//            System.out.println();
+
+
+//
+//
+//    }
+//}
 
 
 //package org.example.view;

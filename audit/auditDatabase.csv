@@ -1,1 +1,3 @@
-"Statement 1","SELECT * FROM Player INNER JOIN User ON Player.id_user = User.id_user","class org.example.models.Player","Done successfully!"
+"Statement 1","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
+"Statement 2","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
+"Statement 3","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"

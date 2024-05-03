@@ -1,9 +1,12 @@
 CREATE TABLE User (
     id_user INT AUTO_INCREMENT,
-    username VARCHAR(255) UNIQUE,
+    username VARCHAR(255),
     password VARCHAR(255),
     PRIMARY KEY(id_user)
 );
+
+ALTER TABLE User MODIFY username VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin UNIQUE;
+ALTER TABLE User MODIFY password VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_bin;
 
 CREATE TABLE Architect (
     id_user INT,

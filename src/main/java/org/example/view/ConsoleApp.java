@@ -1,10 +1,12 @@
 package org.example.view;
 
+import org.example.exceptions.InvalidDataException;
 import org.example.models.Architect;
 import org.example.models.Player;
 import org.example.services.UserService;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleApp {
@@ -233,7 +235,7 @@ public class ConsoleApp {
 
                 case "4":
                     System.out.println();
-                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is exiting the profile of Player " + "\033[0;34m" + username + "\033[0;33m" + "..." + "\033[0m");
+                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is exiting the profile of " + "\033[0;34m" +  "Player " + "\033[0;34m" + username + "\033[0;33m" + "..." + "\033[0m");
                     System.out.println();
                     exit = true;
                     break;
@@ -280,68 +282,102 @@ public class ConsoleApp {
             switch (input) {
 
                 case "1":
-                    System.out.println();
-                    System.out.println("\033[0;35m" + "Enter username:" + "\033[0m");
-                    String username2 = scanner.nextLine();
-                    System.out.println("\033[0;35m" + "Enter password:" + "\033[0m");
-                    String password2 = scanner.nextLine();
-                    System.out.println("\033[0;35m" + "Enter level:" + "\033[0m");
-                    int level = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.println("\033[0;35m" + "Enter title:" + "\033[0m");
-                    String title = scanner.nextLine();
-                    System.out.println("\033[0;35m" + "Enter damage:" + "\033[0m");
-                    int damage = scanner.nextInt();
-                    System.out.println("\033[0;35m" + "Enter health:" + "\033[0m");
-                    int health = scanner.nextInt();
-                    System.out.println("\033[0;35m" + "Enter money:" + "\033[0m");
-                    double money = scanner.nextDouble();
-                    scanner.nextLine();
-                    userService.addPlayer(username2, password2, level, title, damage, health, money);
-                    System.out.println();
-                    break;
+                    try {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "Enter username:" + "\033[0m");
+                        String username2 = scanner.nextLine();
+                        System.out.println("\033[0;35m" + "Enter password:" + "\033[0m");
+                        String password2 = scanner.nextLine();
+                        System.out.println("\033[0;35m" + "Enter level:" + "\033[0m");
+                        int level = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.println("\033[0;35m" + "Enter title:" + "\033[0m");
+                        String title = scanner.nextLine();
+                        System.out.println("\033[0;35m" + "Enter damage:" + "\033[0m");
+                        int damage = scanner.nextInt();
+                        System.out.println("\033[0;35m" + "Enter health:" + "\033[0m");
+                        int health = scanner.nextInt();
+                        System.out.println("\033[0;35m" + "Enter money:" + "\033[0m");
+                        double money = scanner.nextDouble();
+                        scanner.nextLine();
+                        userService.addPlayer(username2, password2, level, title, damage, health, money);
+                        System.out.println();
+                        break;
+
+                    } catch (InputMismatchException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        scanner.nextLine();
+                        System.out.println();
+                        break;
+                    }
+
 
                 case "2":
-                    System.out.println();
-                    System.out.println("\033[0;35m" + "Enter username:" + "\033[0m");
-                    String username1 = scanner.nextLine();
-                    System.out.println("\033[0;35m" + "Enter password:" + "\033[0m");
-                    String password1 = scanner.nextLine();
-                    System.out.println("\033[0;35m" + "Enter level:" + "\033[0m");
-                    int level1 = scanner.nextInt();
-                    scanner.nextLine();
-                    userService.addArchitect(username1, password1, level1);
-                    System.out.println();
-                    break;
+                    try {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "Enter username:" + "\033[0m");
+                        String username1 = scanner.nextLine();
+                        System.out.println("\033[0;35m" + "Enter password:" + "\033[0m");
+                        String password1 = scanner.nextLine();
+                        System.out.println("\033[0;35m" + "Enter level:" + "\033[0m");
+                        int level1 = scanner.nextInt();
+                        scanner.nextLine();
+                        userService.addArchitect(username1, password1, level1);
+                        System.out.println();
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        scanner.nextLine();
+                        System.out.println();
+                        break;
+                    }
 
 
                 case "3":
-                    System.out.println();
-                    System.out.println("Enter player id:");
-                    int id = Integer.parseInt(scanner.nextLine());
+                    try {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "Enter player id:" + "\033[0m");
+                        int id = Integer.parseInt(scanner.nextLine());
 
-                    Player player = userService.getPlayer(id);
+                        Player player = userService.getPlayer(id);
 
-                    if (player != null) {
-                        System.out.println(player);
-                    } else {
-                        System.out.println("Player not found!");
-                    }                    System.out.println();
-                    break;
+                        if (player != null) {
+                            System.out.println(player);
+                        } else {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize the player with the given id." + "\033[0m");
+                        }
+                        System.out.println();
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        System.out.println();
+                        break;
+                    }
 
                 case "4":
-                    System.out.println();
-                    System.out.println("Enter architect id:");
-                    int id1 = Integer.parseInt(scanner.nextLine());
+                    try {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "Enter architect id:" + "\033[0m");
+                        int id1 = Integer.parseInt(scanner.nextLine());
 
-                    Architect architect = userService.getArchitect(id1);
+                        Architect architect = userService.getArchitect(id1);
 
-                    if (architect != null) {
-                        System.out.println(architect);
-                    } else {
-                        System.out.println("Architect not found!");
-                    }                    System.out.println();
-                    break;
+                        if (architect != null) {
+                            System.out.println(architect);
+                        } else {
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize the architect with the given id." + "\033[0m");
+                        }
+                        System.out.println();
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        System.out.println();
+                    }
 
                 case "5":
                     System.out.println();
@@ -389,6 +425,22 @@ public class ConsoleApp {
                     int level3 = scanner.nextInt();
                     scanner.nextLine();
                     userService.updateArchitect(id3, "", "", level3);
+                    System.out.println();
+                    break;
+
+                case "9":
+                    System.out.println();
+                    System.out.println("Enter player id:");
+                    int id4 = Integer.parseInt(scanner.nextLine());
+                    userService.deletePlayer(id4);
+                    System.out.println();
+                    break;
+
+                case "10":
+                    System.out.println();
+                    System.out.println("Enter architect id:");
+                    int id5 = Integer.parseInt(scanner.nextLine());
+                    userService.deleteArchitect(id5);
                     System.out.println();
                     break;
 

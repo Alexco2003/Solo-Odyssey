@@ -36,7 +36,9 @@ public class PlayerRepository implements GenericRepository<Player> {
             this.auditDatabase.write(sql1, User.class, "Done successfully!");
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println();
+            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "has already assigned this username!" + "\033[0m");
+
 
         }
 
@@ -60,7 +62,8 @@ public class PlayerRepository implements GenericRepository<Player> {
             player.setId_user(userId);
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+
+
         }
 
 
@@ -91,7 +94,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println();
         }
 
         return null;

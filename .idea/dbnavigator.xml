@@ -35,8 +35,10 @@
   <component name="DBNavigator.Project.FileConnectionMappingManager">
     <mapping file-url="file://$PROJECT_DIR$/sql/insert.sql" connection-id="ed3c0cc4-4177-4882-8887-0fd4c19d03ab" session-id="MAIN" current-schema="soloodyssey" />
     <mapping file-url="file://$PROJECT_DIR$/sql/create.sql" connection-id="ed3c0cc4-4177-4882-8887-0fd4c19d03ab" session-id="MAIN" current-schema="soloodyssey" />
+    <mapping file-url="file://$APPLICATION_CONFIG_DIR$/consoles/db/e6e17b9f-8036-4d33-b5e3-d484b0251835/console_13.sql" connection-id="ed3c0cc4-4177-4882-8887-0fd4c19d03ab" session-id="MAIN" current-schema="soloodyssey" />
     <mapping file-url="file://$PROJECT_DIR$/SQL/insert.sql" connection-id="ed3c0cc4-4177-4882-8887-0fd4c19d03ab" session-id="MAIN" current-schema="soloodyssey" />
     <mapping file-url="file://$PROJECT_DIR$/SQL/create.sql" connection-id="ed3c0cc4-4177-4882-8887-0fd4c19d03ab" session-id="MAIN" current-schema="soloodyssey" />
+    <mapping file-url="file://$APPLICATION_CONFIG_DIR$/consoles/db/e6e17b9f-8036-4d33-b5e3-d484b0251835/console_14.sql" connection-id="ed3c0cc4-4177-4882-8887-0fd4c19d03ab" session-id="MAIN" current-schema="soloodyssey" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />

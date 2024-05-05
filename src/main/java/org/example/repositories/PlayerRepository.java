@@ -2,6 +2,7 @@ package org.example.repositories;
 
 import org.example.models.Item;
 import org.example.models.Player;
+import org.example.models.PlayerInventory;
 import org.example.models.User;
 
 import java.sql.*;
@@ -56,7 +57,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             pstmt.setDouble(6, player.getMoney());
 
             pstmt.executeUpdate();
-            this.auditDatabase.write(sql, player, "Done successfully!");
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
             this.auditSession.write("Player " + player.getUsername() + " has awaken! The System is pleased!");
 
             player.setId_user(userId);
@@ -151,7 +152,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             pstmt.setInt(6, player.getId_user());
 
             pstmt.executeUpdate();
-            this.auditDatabase.write(sql, player, "Done successfully!");
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -169,7 +170,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             pstmt.setInt(1, player.getId_user());
 
             pstmt.executeUpdate();
-            this.auditDatabase.write(sql, player, "Done successfully!");
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
             this.auditSession.write("Player " + player.getUsername() + " has been terminated by The System!");
 
         } catch (SQLException e) {
@@ -210,6 +211,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
 
             return rs.next();
 
@@ -228,6 +230,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
+            this.auditDatabase.write(sql, User.class, "Done successfully!");
 
             return rs.next();
 
@@ -249,6 +252,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, playerId);
             ResultSet rs = pstmt.executeQuery();
+            this.auditDatabase.write(sql, PlayerInventory.class, "Done successfully!");
 
             while (rs.next()) {
                 int itemId = rs.getInt("id_item");
@@ -275,6 +279,7 @@ public class PlayerRepository implements GenericRepository<Player> {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, itemId);
             ResultSet rs = pstmt.executeQuery();
+            this.auditDatabase.write(sql, Item.class, "Done successfully!");
 
             if (rs.next()) {
                 return new Item(rs.getInt("id_item"), rs.getInt("id_shop"), rs.getString("name"),rs.getString("description"), rs.getDouble("price"), rs.getInt("damage"), rs.getInt("health"), rs.getInt("quantity"), rs.getBoolean("isBought"), rs.getBoolean("isStolen"));

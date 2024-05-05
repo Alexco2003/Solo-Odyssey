@@ -52,7 +52,7 @@ public class ArchitectRepository implements GenericRepository<Architect> {
             pstmt.setInt(2, architect.getLevel());
 
             pstmt.executeUpdate();
-            this.auditDatabase.write(sql, architect, "Done successfully!");
+            this.auditDatabase.write(sql, Architect.class, "Done successfully!");
             this.auditSession.write("Architect " + architect.getUsername() + " has awaken! The System is pleased!");
 
         } catch (SQLException e) {
@@ -130,7 +130,7 @@ public class ArchitectRepository implements GenericRepository<Architect> {
             pstmt.setInt(2, architect.getId_user());
 
             pstmt.executeUpdate();
-            this.auditDatabase.write(sql, architect, "Done successfully!");
+            this.auditDatabase.write(sql, Architect.class, "Done successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -149,7 +149,7 @@ public class ArchitectRepository implements GenericRepository<Architect> {
             pstmt.setInt(1, architect.getId_user());
 
             pstmt.executeUpdate();
-            this.auditDatabase.write(sql, architect, "Done successfully!");
+            this.auditDatabase.write(sql, Architect.class, "Done successfully!");
             this.auditSession.write("Architect " + architect.getUsername() + " has been terminated by The System!");
 
         } catch (SQLException e) {
@@ -167,6 +167,7 @@ public class ArchitectRepository implements GenericRepository<Architect> {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
+            this.auditDatabase.write(sql, Architect.class, "Done successfully!");
 
             return rs.next();
 

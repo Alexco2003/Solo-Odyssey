@@ -19,14 +19,13 @@ public class Architect extends User{
 
     @Override
     public String toString() {
-        return "Architect{" +
-                "level=" + level +
-                ", id_user=" + id_user +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("<<-- Architect " + id_user + " -->>\n");
+        sb.append("username='" + username + "'\n");
+        sb.append("password='" + password + "'\n");
+        sb.append("level=" + level + "\n");
+        return sb.toString();
     }
-
 
 
 

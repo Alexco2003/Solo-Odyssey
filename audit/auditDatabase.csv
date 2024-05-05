@@ -1,3 +1,20 @@
 "Statement 1","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
 "Statement 2","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
 "Statement 3","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
+"Statement 4","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
+"Statement 5","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
+"Statement 6","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
+"Statement 7","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
+"Statement 8","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
+"Statement 9","SELECT * FROM User WHERE BINARY username = ? AND BINARY password = ?","class org.example.models.User","Done successfully!"
+"Statement 10","INSERT INTO USER (username, password) VALUES (?, ?)","class org.example.models.User","Done successfully!"
+"Statement 11","INSERT INTO Player (id_user, level, title, damage, health, money) VALUES (?, ?, ?, ?, ?, ?)","<<-- Player 0 -->>
+username='Alexco'
+password='2003'
+level=1
+title='Noob'
+damage=10
+health=100
+money=25.5
+Inventory:
+","Done successfully!"

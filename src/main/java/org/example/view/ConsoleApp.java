@@ -1,8 +1,9 @@
 package org.example.view;
 
-import org.example.exceptions.InvalidDataException;
 import org.example.models.Architect;
 import org.example.models.Player;
+import org.example.config.seeders.DatabaseSeeder;
+import org.example.config.DatabaseSetup;
 import org.example.services.UserService;
 
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class ConsoleApp {
     public void start() {
 
         boolean exit = false;
+        DatabaseSetup databaseSetup = new DatabaseSetup();
+        databaseSetup.setup();
+        DatabaseSeeder databaseSeeder = new DatabaseSeeder();
+        databaseSeeder.seed();
         //displayTitleStart();
         //displayTitleMotto();
 
@@ -80,7 +85,7 @@ public class ConsoleApp {
 
                         }
                     }
-                 
+
                     break;
 
                 case "2":
@@ -312,7 +317,6 @@ public class ConsoleApp {
                         break;
                     }
 
-
                 case "2":
                     try {
                         System.out.println();
@@ -334,7 +338,6 @@ public class ConsoleApp {
                         break;
                     }
 
-
                 case "3":
                     try {
                         System.out.println();
@@ -344,12 +347,14 @@ public class ConsoleApp {
                         Player player = userService.getPlayer(id);
 
                         if (player != null) {
-                            System.out.println(player);
+                            System.out.println();
+                            System.out.println("\033[0;34m" + player + "\033[0m");
                         } else {
                             System.out.println();
                             System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize the player with the given id." + "\033[0m");
+                            System.out.println();
                         }
-                        System.out.println();
+
                         break;
                     } catch (NumberFormatException e) {
                         System.out.println();
@@ -367,88 +372,185 @@ public class ConsoleApp {
                         Architect architect = userService.getArchitect(id1);
 
                         if (architect != null) {
-                            System.out.println(architect);
+                            System.out.println();
+                            System.out.println("\033[0;35m" + architect + "\033[0m");
                         } else {
+                            System.out.println();
                             System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize the architect with the given id." + "\033[0m");
+                            System.out.println();
                         }
+
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        System.out.println();
+                        break;
+                    }
+
+                case "5":
+                    System.out.println();
+                    ArrayList<Player> players = userService.getAllPlayers();
+                    if (players.isEmpty()) {
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize any players." + "\033[0m");
+                        System.out.println();
+                        break;
+                    }
+                    for (Player player1 : players) {
+                        System.out.println("\033[0;34m" + player1 + "\033[0m");
+
+                    }
+
+                    break;
+
+                case "6":
+                    System.out.println();
+                    ArrayList<Architect> architects = userService.getAllArchitects();
+                    if (architects.isEmpty()) {
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize any architects." + "\033[0m");
+                        System.out.println();
+                        break;
+                    }
+                    for (Architect architect1 : architects) {
+                        System.out.println("\033[0;35m" + architect1 + "\033[0m");
+                    }
+
+                    break;
+
+                case "7":
+                    try {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "Enter player id:" + "\033[0m");
+                        int id2 = Integer.parseInt(scanner.nextLine());
+                        if (userService.getPlayer(id2) == null) {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize the player with the given id." + "\033[0m");
+                            System.out.println();
+                            break;
+                        }
+                        System.out.println("\033[0;35m" + "Enter level:" + "\033[0m");
+                        int level2 = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.println("\033[0;35m" + "Enter title:" + "\033[0m");
+                        String title1 = scanner.nextLine();
+                        System.out.println("\033[0;35m" + "Enter damage:" + "\033[0m");
+                        int damage1 = scanner.nextInt();
+                        System.out.println("\033[0;35m" + "Enter health:" + "\033[0m");
+                        int health1 = scanner.nextInt();
+                        System.out.println("\033[0;35m" + "Enter money:" + "\033[0m");
+                        double money1 = scanner.nextDouble();
+                        scanner.nextLine();
+                        userService.updatePlayer(id2, "", "", level2, title1, damage1, health1, money1);
                         System.out.println();
                         break;
                     } catch (NumberFormatException e) {
                         System.out.println();
                         System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
                         System.out.println();
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        scanner.nextLine();
+                        System.out.println();
+                        break;
                     }
-
-                case "5":
-                    System.out.println();
-                    ArrayList<Player> players = userService.getAllPlayers();
-                    for (Player player1 : players) {
-                        System.out.println(player1);
-                    }
-                    System.out.println();
-                    break;
-
-                case "6":
-                    System.out.println();
-                    ArrayList<Architect> architects = userService.getAllArchitects();
-                    for (Architect architect1 : architects) {
-                        System.out.println(architect1);
-                    }
-                    System.out.println();
-                    break;
-
-                case "7":
-                    System.out.println();
-                    System.out.println("Enter player id:");
-                    int id2 = Integer.parseInt(scanner.nextLine());
-                    System.out.println("\033[0;35m" + "Enter level:" + "\033[0m");
-                    int level2 = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.println("\033[0;35m" + "Enter title:" + "\033[0m");
-                    String title1 = scanner.nextLine();
-                    System.out.println("\033[0;35m" + "Enter damage:" + "\033[0m");
-                    int damage1 = scanner.nextInt();
-                    System.out.println("\033[0;35m" + "Enter health:" + "\033[0m");
-                    int health1 = scanner.nextInt();
-                    System.out.println("\033[0;35m" + "Enter money:" + "\033[0m");
-                    double money1 = scanner.nextDouble();
-                    scanner.nextLine();
-                    userService.updatePlayer(id2, "", "", level2, title1, damage1, health1, money1);
-                    System.out.println();
-                    break;
 
                 case "8":
-                    System.out.println();
-                    System.out.println("Enter architect id:");
-                    int id3 = Integer.parseInt(scanner.nextLine());
-                    System.out.println("\033[0;35m" + "Enter level:" + "\033[0m");
-                    int level3 = scanner.nextInt();
-                    scanner.nextLine();
-                    userService.updateArchitect(id3, "", "", level3);
-                    System.out.println();
-                    break;
+                    try {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "Enter architect id:" + "\033[0m");
+                        int id3 = Integer.parseInt(scanner.nextLine());
+                        if (id3==1) {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "does not allow alteration of the original Architect..." + "\033[0m");
+                            System.out.println();
+                            break;
+                        }
+                        if (userService.getArchitect(id3) == null) {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize the architect with the given id." + "\033[0m");
+                            System.out.println();
+                            break;
+                        }
+                        System.out.println("\033[0;35m" + "Enter level:" + "\033[0m");
+                        int level3 = scanner.nextInt();
+                        scanner.nextLine();
+                        userService.updateArchitect(id3, "", "", level3);
+                        System.out.println();
+                        break;
+                    } catch (InputMismatchException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        scanner.nextLine();
+                        System.out.println();
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        System.out.println();
+                        break;
+                    }
 
                 case "9":
-                    System.out.println();
-                    System.out.println("Enter player id:");
-                    int id4 = Integer.parseInt(scanner.nextLine());
-                    userService.deletePlayer(id4);
-                    System.out.println();
-                    break;
+                    try {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "Enter player id:" + "\033[0m");
+                        int id4 = Integer.parseInt(scanner.nextLine());
+                        if (userService.getPlayer(id4) == null) {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize the player with the given id." + "\033[0m");
+                            System.out.println();
+                            break;
+                        }
+                        userService.deletePlayer(id4);
+                        System.out.println();
+                        exit = true;
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        System.out.println();
+                        break;
+                    }
 
                 case "10":
-                    System.out.println();
-                    System.out.println("Enter architect id:");
-                    int id5 = Integer.parseInt(scanner.nextLine());
-                    userService.deleteArchitect(id5);
-                    System.out.println();
-                    break;
-
+                    try {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "Enter architect id:" + "\033[0m");
+                        int id5 = Integer.parseInt(scanner.nextLine());
+                        if (id5==1) {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "does not allow termination of the original Architect..." + "\033[0m");
+                            System.out.println();
+                            break;
+                        }
+                        if (userService.getArchitect(id5) == null) {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "did not recognize the architect with the given id." + "\033[0m");
+                            System.out.println();
+                            break;
+                        }
+                        userService.deleteArchitect(id5);
+                        System.out.println();
+                        exit = true;
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        System.out.println();
+                        break;
+                    }
 
                 case "11":
                     System.out.println();
                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is exiting the profile of " + "\033[0;35m" + "The Architect" +"\033[0;33m" + "..." + "\033[0m");
                     System.out.println();
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     exit = true;
                     break;
 

@@ -2,6 +2,7 @@ package org.example.models;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class Player extends User{
     private int level=1;
@@ -71,17 +72,20 @@ public class Player extends User{
 
     @Override
     public String toString() {
-        return "Player{" +
-                "id=" + id_user +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", level=" + level +
-                ", title='" + title + '\'' +
-                ", damage=" + damage +
-                ", health=" + health +
-                ", money=" + money +
-                ", inventory=" + inventory +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("<<-- Player " + id_user + " -->>\n");
+        sb.append("username='" + username + "'\n");
+        sb.append("password='" + password + "'\n");
+        sb.append("level=" + level + "\n");
+        sb.append("title='" + title + "'\n");
+        sb.append("damage=" + damage + "\n");
+        sb.append("health=" + health + "\n");
+        sb.append("money=" + money + "\n");
+        sb.append("Inventory:\n");
+        for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
+            sb.append(entry.getKey().getName() + ": " + entry.getValue() + "\n");
+        }
+        return sb.toString();
     }
 
 

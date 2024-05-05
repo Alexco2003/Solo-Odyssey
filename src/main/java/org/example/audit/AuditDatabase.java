@@ -1,17 +1,17 @@
-package org.example.services;
+package org.example.audit;
 
 import com.opencsv.CSVWriter;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class AuditSession {
-    private static AuditSession instance = null;
+public class AuditDatabase {
+    private static AuditDatabase instance = null;
     private static CSVWriter writer;
-    private static String path = "audit/AuditSession.csv";
+    private static String path = "audit/auditDatabase.csv";
     private static int count = 1;
 
-    private AuditSession() {
+    private AuditDatabase() {
         try {
 
             writer = new CSVWriter(new FileWriter(path));
@@ -20,16 +20,16 @@ public class AuditSession {
             throw new RuntimeException(e);
         }
     }
-    public static AuditSession getInstance() {
+    public static AuditDatabase getInstance() {
         if (instance == null) {
-            instance = new AuditSession();
+            instance = new AuditDatabase();
         }
         return instance;
     }
 
-    public void write(String Action) {
+    public <T> void write(String sqlStatement, T entity, String result) {
         try {
-            String[] entries = {"Action " + count++, Action};
+            String[] entries = {"Statement " + count++, sqlStatement, String.valueOf(entity), result};
             writer.writeNext(entries);
             writer.flush();
         } catch (IOException e) {

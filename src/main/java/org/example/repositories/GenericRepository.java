@@ -1,8 +1,8 @@
 package org.example.repositories;
 
-import org.example.services.AuditDatabase;
-import org.example.services.AuditSession;
-import org.example.services.DatabaseConnection;
+import org.example.audit.AuditDatabase;
+import org.example.audit.AuditSession;
+import org.example.config.DatabaseConnection;
 
 import java.util.ArrayList;
 public interface GenericRepository<T> {

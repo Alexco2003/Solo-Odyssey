@@ -543,17 +543,42 @@ DROP TRIGGER before_delete_player;
 
 SELECT * FROM INFORMATION_SCHEMA.TRIGGERS WHERE TRIGGER_NAME = 'before_delete_player';
 
+--  Created a trigger to delete the architect's data when an architect is deleted
+CREATE TRIGGER before_delete_architect
+BEFORE DELETE
+ON Architect
+FOR EACH ROW
+BEGIN
+    -- User
+    DELETE FROM User WHERE id_user = OLD.id_user;
+END;
+
+DROP TRIGGER before_delete_architect;
+
+SELECT * FROM INFORMATION_SCHEMA.TRIGGERS WHERE TRIGGER_NAME = 'before_delete_architect';
+
 SHOW TRIGGERS;
+
+-- Initital Data
+INSERT INTO User(id_user,username,password) VALUES(1,'The Architect','2003');
+INSERT INTO Architect(id_user,level) VALUES(1,1000);
+
+
+
+
+
 
 
 
 
 -- Testing and stuff
-INSERT INTO User(username,password) VALUES('admin','admin'); -- The Architect (for testing)
+INSERT INTO User(username,password) VALUES('admin1','admin1');
+INSERT INTO User(id_user,username,password) VALUES(1,'admin','admin');
+INSERT INTO User(id_user,username,password) VALUES(1,'The Architect','admin');-- The Architect (for testing)
 INSERT INTO Architect(id_user,level) VALUES(1,1000);
 
 INSERT INTO User(id_user, username,password) VALUES(2,'user','user'); -- A Player (for testing)
-INSERT INTO Player(id_user,level,title,damage,health,money) VALUES(2,1,'Adventurer',50,10000,145.50);
+INSERT INTO Player(id_user,level,title,damage,health,money) VALUES(42,1,'Adventurer',50,10000,145.50);
 
 
 DELETE FROM Player WHERE id_user = 2;
@@ -562,6 +587,8 @@ select * from User;
 select * from Player;
 select * from Architect;
 
+delete from User;
+delete from Architect;
 delete from Enemy;
 delete from player;
 

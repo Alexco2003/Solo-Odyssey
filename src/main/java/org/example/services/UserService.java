@@ -88,5 +88,14 @@ public class UserService {
         architectRepository.delete(architectRepository.get(id));
     }
 
+    //Related to buying items
+    public void updatePlayerMoneyOnBuy(int playerId, double price) {
+        playerRepository.updateMoneyOnBuy(playerId, price);
+    }
+
+    public void updateStatsOnBuy(int playerId, int damage, int health) {
+        playerRepository.updateDamageHealthOnBuy(playerId, damage, health);
+    }
+
 
 }

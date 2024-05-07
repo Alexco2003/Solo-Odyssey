@@ -1,5 +1,7 @@
 package org.example.models;
 
+import java.util.Map;
+
 public class Item {
 
     private int id_item;
@@ -104,6 +106,19 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Item Name: " + name + "\n");
+        sb.append("->Description: " + description + "\n");
+        sb.append("->Price: " + price + "\n");
+        sb.append("->Quantity: " + quantity + "\n");
+        sb.append("->Damage: " + damage + "\n");
+        sb.append("->Health: " + health + "\n");
+        return sb.toString();
     }
 
 

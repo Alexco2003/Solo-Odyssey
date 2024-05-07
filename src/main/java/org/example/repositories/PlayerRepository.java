@@ -292,5 +292,41 @@ public class PlayerRepository implements GenericRepository<Player> {
         return null;
     }
 
+    //Related to buying items
+    public void updateMoneyOnBuy(int playerId, double price) {
+        String sql = "UPDATE Player SET money = money - ? WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setDouble(1, price);
+            pstmt.setInt(2, playerId);
+
+            pstmt.executeUpdate();
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateDamageHealthOnBuy(int playerId, int damage, int health) {
+        String sql = "UPDATE Player SET damage = damage + ?, health = health + ? WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, damage);
+            pstmt.setInt(2, health);
+            pstmt.setInt(3, playerId);
+
+            pstmt.executeUpdate();
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }

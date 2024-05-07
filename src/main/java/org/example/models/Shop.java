@@ -2,16 +2,34 @@ package org.example.models;
 
 import java.util.ArrayList;
 
-public class Shop {
+public class  Shop {
 
     private int id_shop;
     private int id_player;
     private String name;
     private ArrayList<Item> items;
 
-    public Shop(String name, ArrayList<Item> items) {
+    public Shop(int id_shop, int id_player, String name, ArrayList<Item> items) {
+        this.id_shop = id_shop;
+        this.id_player = id_player;
         this.name = name;
         this.items = items;
+    }
+
+    public int getId_shop() {
+        return id_shop;
+    }
+
+    public void setId_shop(int id_shop) {
+        this.id_shop = id_shop;
+    }
+
+    public int getId_player() {
+        return id_player;
+    }
+
+    public void setId_player(int id_player) {
+        this.id_player = id_player;
     }
 
     public String getName() {

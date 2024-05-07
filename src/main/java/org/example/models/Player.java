@@ -74,17 +74,18 @@ public class Player extends User{
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("<<-- Player " + id_user + " -->>\n");
-        sb.append("username='" + username + "'\n");
-        sb.append("password='" + password + "'\n");
-        sb.append("level=" + level + "\n");
-        sb.append("title='" + title + "'\n");
-        sb.append("damage=" + damage + "\n");
-        sb.append("health=" + health + "\n");
-        sb.append("money=" + money + "\n");
+        sb.append("Username = '" + username + "'\n");
+        sb.append("Password = '" + password + "'\n");
+        sb.append("Level = " + level + "\n");
+        sb.append("Title = '" + title + "'\n");
+        sb.append("Damage = " + damage + "\n");
+        sb.append("Health = " + health + "\n");
+        sb.append("Money = " + money + "\n");
         sb.append("Inventory:\n");
         for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
             sb.append(entry.getKey().getName() + ": " + entry.getValue() + "\n");
         }
+
         return sb.toString();
     }
 

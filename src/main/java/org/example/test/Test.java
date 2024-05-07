@@ -2,28 +2,34 @@ package org.example.test;
 
 import org.example.models.Item;
 import org.example.models.Player;
+import org.example.repositories.ItemRepository;
 import org.example.repositories.PlayerRepository;
 import java.io.Console;
 
 public class Test {
     public static void main(String[] args) {
-        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "encountered an error: "  + "!" + "\n" + "\033[0;35m" + "The System " + "\033[0;33m" + "wants you to try again!" + "\033[0m");
-        Console console = System.console();
-        if (console == null) {
-            System.out.println("Couldn't get Console instance");
-            System.exit(0);
-        }
+         ItemRepository itemRepository;
 
-        System.out.println("\033[0;33m" + "Enter username: " + "\033[0m");
-        String username = console.readLine();
+         itemRepository = new ItemRepository();
+         itemRepository.updateItemQuantityOnBuy(292);
 
-        System.out.println("\033[0;33m" + "Enter password: " + "\033[0m");
-        char[] passwordChars = console.readPassword();
-        String password = new String(passwordChars);
-
-
-
-        System.out.println("Player added successfully!");
+//        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "encountered an error: "  + "!" + "\n" + "\033[0;35m" + "The System " + "\033[0;33m" + "wants you to try again!" + "\033[0m");
+//        Console console = System.console();
+//        if (console == null) {
+//            System.out.println("Couldn't get Console instance");
+//            System.exit(0);
+//        }
+//
+//        System.out.println("\033[0;33m" + "Enter username: " + "\033[0m");
+//        String username = console.readLine();
+//
+//        System.out.println("\033[0;33m" + "Enter password: " + "\033[0m");
+//        char[] passwordChars = console.readPassword();
+//        String password = new String(passwordChars);
+//
+//
+//
+//        System.out.println("Player added successfully!");
     }
 }
 //// mask password with asterisk java console

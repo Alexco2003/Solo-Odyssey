@@ -9,10 +9,7 @@ import org.example.models.Shop;
 import org.example.services.ShopService;
 import org.example.services.UserService;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class ConsoleApp {
     private static ConsoleApp instance = null;
@@ -210,17 +207,29 @@ public class ConsoleApp {
         System.out.println();
         System.out.println("\033[0;35m" + "The System " + "\033[0;34m" + "is designed to make the Player " + username + " stronger." + "\033[0m");
         System.out.println();
-        System.out.println("\033[0;34m" + "1. View your Profile" + "\033[0m");
-        System.out.println("\033[0;34m" + "2. View your Inventory" + "\033[0m");
-        System.out.println("\033[0;34m" + "3. View your Shop" + "\033[0m");
-        System.out.println("\033[0;34m" + "4. View your Shop (Sorted by Price)" + "\033[0m");
-        System.out.println("\033[0;34m" + "5. View your Shop (Sorted by Damage)" + "\033[0m");
-        System.out.println("\033[0;34m" + "6. View your Shop (Sorted by Health)" + "\033[0m");
-        System.out.println("\033[0;34m" + "7. Buy an Item" + "\033[0m");
-        System.out.println("\033[0;34m" + "8. Sell an Item" + "\033[0m");
-
-
-        System.out.println("\033[0;34m" + "200. Exit" + "\033[0m");
+        System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
+        System.out.println("\033[0;34m" + "1. View your Profile                 |" + "\033[0m");
+        System.out.println("\033[0;34m" + "2. View your Inventory               |" + "\033[0m");
+        System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
+        System.out.println("\033[0;34m" + "3. View your Shop                    |" + "\033[0m");
+        System.out.println("\033[0;34m" + "4. View your Shop (Sorted by Price)  |" + "\033[0m");
+        System.out.println("\033[0;34m" + "5. View your Shop (Sorted by Damage) |" + "\033[0m");
+        System.out.println("\033[0;34m" + "6. View your Shop (Sorted by Health) |" + "\033[0m");
+        System.out.println("\033[0;34m" + "7. Buy an Item                       |" + "\033[0m");
+        System.out.println("\033[0;34m" + "8. Sell an Item                      |" + "\033[0m");
+        System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
+        System.out.println("\033[0;34m" + "9. Play Dungeons                     |" + "\033[0m");
+        System.out.println("\033[0;34m" + "10. Play Quests                      |" + "\033[0m");
+        System.out.println("\033[0;34m" + "11. Play PVP                         |" + "\033[0m");
+        System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
+        System.out.println("\033[0;34m" + "12. Codex                            |" + "\033[0m");
+        System.out.println("\033[0;34m" + "13. Achievements                     |" + "\033[0m");
+        System.out.println("\033[0;34m" + "14. Leaderboard                      |" + "\033[0m");
+        System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
+        System.out.println("\033[0;34m" + "15. Tutorial                         |" + "\033[0m");
+        System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
+        System.out.println("\033[0;34m" + "200. Exit                            |" + "\033[0m");
+        System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
         System.out.println("\033[0;34m" + "Enter command: " + "\033[0m");
 
     }
@@ -348,6 +357,41 @@ public class ConsoleApp {
                         shopService.buyItem(id, idItem);
                         userService.updatePlayerMoneyOnBuy(id, shop1.getItems().get(itemNumber - 1).getPrice());
                         userService.updateStatsOnBuy(id, shop1.getItems().get(itemNumber - 1).getDamage(), shop1.getItems().get(itemNumber - 1).getHealth());
+                        System.out.println();
+                        break;
+
+                    } catch (InputMismatchException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter a valid number..." + "\033[0m");
+                        scanner.nextLine();
+                        System.out.println();
+                        break;
+                    }
+
+                case "8":
+                    try {
+                        System.out.println();
+                        Player player = userService.getPlayer(id);
+                        HashMap<Item, Integer> inventory = player.getInventory();
+                        ArrayList<Item> items = new ArrayList<>(inventory.keySet());
+                        for (int i = 0; i < items.size(); i++) {
+                            int itemNumber = i + 1;
+                            System.out.println("\033[0;35m" + itemNumber + ". " + items.get(i).toString2() + "\033[0m");
+                        }
+                        System.out.println("\033[0;35m" + "Enter the number of the item you want to sell: " + "\033[0m");
+                        int itemNumber = scanner.nextInt();
+                        scanner.nextLine();
+                        if (itemNumber < 1 || itemNumber > items.size())
+                        {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter a valid number..." + "\033[0m");
+                            System.out.println();
+                            break;
+                        }
+                        int idItem = items.get(itemNumber - 1).getId_item();
+                        shopService.sellItem(id, idItem);
+                        userService.updatePlayerMoneyOnSell(id, items.get(itemNumber - 1).getPrice()*0.75);
+                        userService.updateStatsOnSell(id, items.get(itemNumber - 1).getDamage(), items.get(itemNumber - 1).getHealth());
                         System.out.println();
                         break;
 

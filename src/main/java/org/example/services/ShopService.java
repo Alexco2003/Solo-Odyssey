@@ -23,4 +23,9 @@ public class ShopService {
         shopRepository.buyItem(idPlayer, idItem);
 
     }
+
+    public void sellItem(int idPlayer, int idItem) {
+        itemRepository.updateItemQuantityOnSell(idItem);
+        shopRepository.sellItem(idPlayer, idItem);
+    }
 }

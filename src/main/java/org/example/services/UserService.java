@@ -97,5 +97,14 @@ public class UserService {
         playerRepository.updateDamageHealthOnBuy(playerId, damage, health);
     }
 
+    //Related to selling items
+    public void updatePlayerMoneyOnSell(int playerId, double price) {
+        playerRepository.updateMoneyOnSell(playerId, price);
+    }
+
+    public void updateStatsOnSell(int playerId, int damage, int health) {
+        playerRepository.updateDamageHealthOnSell(playerId, damage, health);
+    }
+
 
 }

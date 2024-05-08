@@ -123,6 +123,36 @@ public class ShopRepository implements GenericRepository<Shop> {
         }
     }
 
+    public void sellItem(int playerId, int itemId) {
+        String sqlUpdate = "UPDATE PlayerInventory SET quantity = quantity - 1 WHERE id_player = ? AND id_item = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmtUpdate = conn.prepareStatement(sqlUpdate);
+            pstmtUpdate.setInt(1, playerId);
+            pstmtUpdate.setInt(2, itemId);
+            pstmtUpdate.executeUpdate();
+            this.auditDatabase.write(sqlUpdate, PlayerInventory.class, "Done successfully!");
+
+            String sqlCheck = "SELECT quantity FROM PlayerInventory WHERE id_player = ? AND id_item = ?";
+            PreparedStatement pstmtCheck = conn.prepareStatement(sqlCheck);
+            pstmtCheck.setInt(1, playerId);
+            pstmtCheck.setInt(2, itemId);
+            ResultSet rs = pstmtCheck.executeQuery();
+            if (rs.next() && rs.getInt("quantity") == 0) {
+                String sqlDelete = "DELETE FROM PlayerInventory WHERE id_player = ? AND id_item = ?";
+                PreparedStatement pstmtDelete = conn.prepareStatement(sqlDelete);
+                pstmtDelete.setInt(1, playerId);
+                pstmtDelete.setInt(2, itemId);
+                pstmtDelete.executeUpdate();
+                this.auditDatabase.write(sqlDelete, PlayerInventory.class, "Done successfully!");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 
 }

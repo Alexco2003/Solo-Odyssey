@@ -121,6 +121,17 @@ public class Item {
         return sb.toString();
     }
 
+    public String toString2() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Item Name: " + name + "\n");
+        sb.append("->Description: " + description + "\n");
+        sb.append("->Sell Price: " + price*0.75 + "\n");
+        sb.append("->Quantity: " + quantity + "\n");
+        sb.append("->Damage: " + damage + "\n");
+        sb.append("->Health: " + health + "\n");
+        return sb.toString();
+    }
+
 
 
 

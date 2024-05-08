@@ -71,4 +71,20 @@ public class ItemRepository implements GenericRepository<Item> {
             System.out.println(e.getMessage());
         }
     }
+
+    public void updateItemQuantityOnSell(int itemId) {
+        String sql = "UPDATE Item SET quantity = quantity + 1 WHERE id_item = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, itemId);
+
+            pstmt.executeUpdate();
+            this.auditDatabase.write(sql, Item.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

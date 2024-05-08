@@ -259,6 +259,7 @@ public class PlayerRepository implements GenericRepository<Player> {
                 int quantity = rs.getInt("quantity");
 
                 Item item = getItem(itemId);
+                item.setQuantity(quantity);
                 if (item != null) {
                     inventory.put(item, quantity);
                 }
@@ -312,6 +313,43 @@ public class PlayerRepository implements GenericRepository<Player> {
 
     public void updateDamageHealthOnBuy(int playerId, int damage, int health) {
         String sql = "UPDATE Player SET damage = damage + ?, health = health + ? WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, damage);
+            pstmt.setInt(2, health);
+            pstmt.setInt(3, playerId);
+
+            pstmt.executeUpdate();
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //Related to selling items
+
+    public void updateMoneyOnSell(int playerId, double price) {
+        String sql = "UPDATE Player SET money = money + ? WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setDouble(1, price);
+            pstmt.setInt(2, playerId);
+
+            pstmt.executeUpdate();
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateDamageHealthOnSell(int playerId, int damage, int health) {
+        String sql = "UPDATE Player SET damage = damage - ?, health = health - ? WHERE id_user = ?";
         Connection conn = this.databaseConnection.getConnection();
 
         try {

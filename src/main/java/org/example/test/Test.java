@@ -5,13 +5,17 @@ import org.example.models.Player;
 import org.example.repositories.ItemRepository;
 import org.example.repositories.PlayerRepository;
 import java.io.Console;
+import java.util.HashMap;
 
 public class Test {
     public static void main(String[] args) {
-         ItemRepository itemRepository;
 
-         itemRepository = new ItemRepository();
-         itemRepository.updateItemQuantityOnBuy(292);
+        HashMap<Item, Integer> items = new HashMap<>();
+
+//         ItemRepository itemRepository;
+//
+//         itemRepository = new ItemRepository();
+//         itemRepository.updateItemQuantityOnBuy(292);
 
 //        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "encountered an error: "  + "!" + "\n" + "\033[0;35m" + "The System " + "\033[0;33m" + "wants you to try again!" + "\033[0m");
 //        Console console = System.console();

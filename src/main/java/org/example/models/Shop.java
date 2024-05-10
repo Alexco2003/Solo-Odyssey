@@ -47,4 +47,14 @@ public class  Shop {
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Shop{id_shop=" + id_shop);
+        sb.append(", id_player=" + id_player);
+        sb.append(", name=" + name);
+        sb.append(", items=" + items + "}\n");
+        return sb.toString();
+    }
 }

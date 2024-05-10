@@ -16,4 +16,11 @@ public class Assassin extends Enemy{
     public void setCriticalChance(int criticalChance) {
         this.criticalChance = criticalChance;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append("criticalChance=" + criticalChance + "\n");
+        return sb.toString();
+    }
 }

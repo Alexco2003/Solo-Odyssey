@@ -26,4 +26,12 @@ public class DungeonEnemy {
         this.id_enemy = id_enemy;
     }
 
+    @Override
+    public String toString() {
+        return "DungeonEnemy{" +
+                "id_dungeon=" + id_dungeon +
+                ", id_enemy=" + id_enemy +
+                '}';
+    }
+
 }

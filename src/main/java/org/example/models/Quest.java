@@ -76,5 +76,19 @@ public class Quest {
     }
 
 
+    @Override
+    public String toString() {
+        return "Quest{" +
+                "id_quest=" + id_quest +
+                ", id_player=" + id_player +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", rewardLevel=" + rewardLevel +
+                ", rewardMoney=" + rewardMoney +
+                ", completed=" + completed +
+                '}';
+    }
+
+
 
 }

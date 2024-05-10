@@ -16,4 +16,11 @@ public class Mage extends Enemy {
         public void setMana(int mana) {
             this.mana = mana;
         }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder(super.toString());
+            sb.append("mana=" + mana + "\n");
+            return sb.toString();
+        }
 }

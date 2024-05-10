@@ -38,8 +38,8 @@ public class ConsoleApp {
         databaseSetup.setup();
         DatabaseSeeder databaseSeeder = new DatabaseSeeder();
         databaseSeeder.seed();
-        //displayTitleStart();
-        //displayTitleMotto();
+        displayTitleStart();
+        displayTitleMotto();
 
 
         while (!exit) {

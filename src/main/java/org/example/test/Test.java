@@ -1,16 +1,28 @@
 package org.example.test;
 
+import org.example.models.Assassin;
 import org.example.models.Item;
 import org.example.models.Player;
-import org.example.repositories.ItemRepository;
-import org.example.repositories.PlayerRepository;
+import org.example.models.Tank;
+import org.example.repositories.*;
+
 import java.io.Console;
 import java.util.HashMap;
 
 public class Test {
     public static void main(String[] args) {
 
-        HashMap<Item, Integer> items = new HashMap<>();
+        AssassinRepository assassinRepository = new AssassinRepository();
+        Assassin assassin = assassinRepository.get(75);
+        System.out.println(assassin);
+
+        MageRepository mageRepository = new MageRepository();
+        System.out.println(mageRepository.get(91));
+
+        TankRepository tankRepository = new TankRepository();
+        System.out.println(tankRepository.get(83));
+
+//        HashMap<Item, Integer> items = new HashMap<>();
 
 //         ItemRepository itemRepository;
 //

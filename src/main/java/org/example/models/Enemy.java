@@ -64,4 +64,16 @@ public abstract class Enemy {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<<-- Enemy " + id_enemy + " -->>\n");
+        sb.append("name='" + name + "'\n");
+        sb.append("health=" + health + "\n");
+        sb.append("damage=" + damage + "\n");
+        sb.append("description='" + description + "'\n");
+        sb.append("encountered=" + encountered + "\n");
+        return sb.toString();
+    }
 }

@@ -36,5 +36,14 @@ public class PlayerInventory {
         this.id_player = id_player;
     }
 
+    @Override
+    public String toString() {
+        return "PlayerInventory{" +
+                "id_item=" + id_item +
+                ", id_player=" + id_player +
+                ", quantity=" + quantity +
+                '}';
+    }
+
 
 }

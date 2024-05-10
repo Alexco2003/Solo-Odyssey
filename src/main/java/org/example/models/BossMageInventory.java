@@ -25,4 +25,12 @@ public class BossMageInventory {
     public void setId_item(int id_item) {
         this.id_item = id_item;
     }
+
+    @Override
+    public String toString() {
+        return "BossMageInventory{" +
+                "id_bossMage=" + id_bossMage +
+                ", id_item=" + id_item +
+                '}';
+    }
 }

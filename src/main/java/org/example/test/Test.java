@@ -1,9 +1,6 @@
 package org.example.test;
 
-import org.example.models.Assassin;
-import org.example.models.Item;
-import org.example.models.Player;
-import org.example.models.Tank;
+import org.example.models.*;
 import org.example.repositories.*;
 
 import java.io.Console;
@@ -12,15 +9,34 @@ import java.util.HashMap;
 public class Test {
     public static void main(String[] args) {
 
+        BossAssassinRepository bossAssassinRepository = new BossAssassinRepository();
+        System.out.println(bossAssassinRepository.get(81));
+
         AssassinRepository assassinRepository = new AssassinRepository();
-        Assassin assassin = assassinRepository.get(75);
+        Assassin assassin = assassinRepository.get(81);
         System.out.println(assassin);
 
+        BossMageRepository bossMageRepository = new BossMageRepository();
+        System.out.println(bossMageRepository.get(97));
+
         MageRepository mageRepository = new MageRepository();
-        System.out.println(mageRepository.get(91));
+        Mage mage = mageRepository.get(97);
+        System.out.println(mage);
+
+        BossTankRepository bossTankRepository = new BossTankRepository();
+        System.out.println(bossTankRepository.get(140));
 
         TankRepository tankRepository = new TankRepository();
-        System.out.println(tankRepository.get(83));
+        Tank tank = tankRepository.get(140);
+        System.out.println(tank);
+
+
+//
+//        MageRepository mageRepository = new MageRepository();
+//        System.out.println(mageRepository.get(91));
+//
+//        TankRepository tankRepository = new TankRepository();
+//        System.out.println(tankRepository.get(83));
 
 //        HashMap<Item, Integer> items = new HashMap<>();
 

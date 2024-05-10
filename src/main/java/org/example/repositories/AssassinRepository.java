@@ -40,7 +40,7 @@ public class AssassinRepository implements GenericRepository<Assassin> {
                 int damage = rs.getInt("damage");
                 boolean encountered = rs.getBoolean("encountered");
                 int criticalChance = rs.getInt("criticalChance");
-
+                this.auditDatabase.write(sql, Assassin.class, "Done successfully!");
                 assassin = new Assassin(id_enemy, name, health, damage, criticalChance, description, encountered);
             }
 

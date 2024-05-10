@@ -37,7 +37,7 @@ public class MageRepository implements GenericRepository<Mage> {
                 int damage = rs.getInt("damage");
                 boolean encountered = rs.getBoolean("encountered");
                 int mana = rs.getInt("mana");
-
+                this.auditDatabase.write(sql, Mage.class, "Done successfully!");
                 mage = new Mage(id_enemy, name, health, damage, mana, description, encountered);
             }
 

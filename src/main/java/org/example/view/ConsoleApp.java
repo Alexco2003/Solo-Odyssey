@@ -38,8 +38,8 @@ public class ConsoleApp {
         databaseSetup.setup();
         DatabaseSeeder databaseSeeder = new DatabaseSeeder();
         databaseSeeder.seed();
-        displayTitleStart();
-        displayTitleMotto();
+        //displayTitleStart();
+        //displayTitleMotto();
 
 
         while (!exit) {
@@ -402,6 +402,18 @@ public class ConsoleApp {
                         System.out.println();
                         break;
                     }
+
+                case "14":
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<<-- The System's Leaderboard -->>" + "\033[0m");
+                    System.out.println();
+                    ArrayList<Player> players = userService.getAllPlayers();
+                    players.sort(Comparator.comparingInt(Player::getLevel).reversed());
+                    for (int i = 0; i < players.size(); i++) {
+                        int playerNumber = i + 1;
+                        System.out.println("\033[0;34m" + playerNumber + ". " + players.get(i).toString2() + "\033[0m");
+                    }
+                    break;
 
                     
 

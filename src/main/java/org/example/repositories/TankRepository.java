@@ -37,7 +37,7 @@ public class TankRepository implements GenericRepository<Tank> {
                 int damage = rs.getInt("damage");
                 boolean encountered = rs.getBoolean("encountered");
                 int armor = rs.getInt("armor");
-
+                this.auditDatabase.write(sql, Tank.class, "Done successfully!");
                 tank = new Tank(id_enemy, name, health, damage, armor, description, encountered);
             }
 

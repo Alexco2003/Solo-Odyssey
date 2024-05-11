@@ -106,5 +106,10 @@ public class UserService {
         playerRepository.updateDamageHealthOnSell(playerId, damage, health);
     }
 
+    //Related to get money reward/level reward
+    public void updatePlayerLevelOnReward(int playerId, int level) {
+        playerRepository.updateLevelOnReward(playerId, level);
+    }
+
 
 }

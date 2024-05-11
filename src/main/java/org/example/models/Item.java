@@ -129,6 +129,10 @@ public class Item {
         sb.append("->Quantity: " + quantity + "\n");
         sb.append("->Damage: " + damage + "\n");
         sb.append("->Health: " + health + "\n");
+        if (isStolen)
+        {
+            sb.append("->Stolen: Yes\n");
+        }
         return sb.toString();
     }
 

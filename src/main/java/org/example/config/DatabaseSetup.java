@@ -1,8 +1,6 @@
 package org.example.config;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DatabaseSetup {
 
@@ -710,9 +708,15 @@ public class DatabaseSetup {
 
         try {
             Statement stmt = conn.createStatement();
-            stmt.execute(createTableSql);
-            stmt.execute(alterTableSql);
-            stmt.execute(alterTableSql1);
+            DatabaseMetaData dbm = conn.getMetaData();
+            ResultSet tables = dbm.getTables(null, null, "User", null);
+            if (!tables.next()) {
+                stmt.execute(createTableSql);
+                stmt.execute(alterTableSql);
+                stmt.execute(alterTableSql1);
+            } else {
+
+            }
             stmt.execute(createTableSql1);
             stmt.execute(createTableSql2);
             stmt.execute(createTableSql3);

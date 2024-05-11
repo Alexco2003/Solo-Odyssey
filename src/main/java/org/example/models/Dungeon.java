@@ -100,15 +100,10 @@ public class Dungeon {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("id_dungeon=" + id_dungeon + "\n");
-        sb.append("id_player=" + id_player + "\n");
-        sb.append("name=" + name + "\n");
-        sb.append("description=" + description + "\n");
-        sb.append("level=" + level + "\n");
-        sb.append("rewardLevel=" + rewardLevel + "\n");
-        sb.append("rewardMoney=" + rewardMoney + "\n");
-        sb.append("completed=" + completed + "\n");
-        sb.append("enemies=" + enemies + "\n");
+        sb.append(name + "\n");
+        sb.append("Description: " + description + "\n");
+        sb.append("Level: " + level + "\n");
+        sb.append("Reward: " + rewardLevel + " level, " + rewardMoney + " gold\n");
         return sb.toString();
     }
 

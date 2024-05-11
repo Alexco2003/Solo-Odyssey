@@ -1,14 +1,11 @@
 package org.example.view;
 
-import org.example.models.Architect;
-import org.example.models.Item;
-import org.example.models.Player;
+import org.example.models.*;
 import org.example.config.seeders.DatabaseSeeder;
 import org.example.config.DatabaseSetup;
-import org.example.models.Shop;
-import org.example.services.ShopService;
-import org.example.services.UserService;
+import org.example.services.*;
 
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class ConsoleApp {
@@ -17,10 +14,16 @@ public class ConsoleApp {
     
     private UserService userService;
     private ShopService shopService;
+    private DungeonService dungeonService;
+    private EnemyService enemyService;
+    private QuestService questService;
 
     private ConsoleApp() {
         this.userService = new UserService();
         this.shopService = new ShopService();
+        this.dungeonService = new DungeonService();
+        this.enemyService = new EnemyService();
+        this.questService = new QuestService();
     }
 
     public static ConsoleApp getInstance() {
@@ -257,6 +260,10 @@ public class ConsoleApp {
                         System.out.println("->Quantity: " + value);
                         System.out.println("->Damage: " + key.getDamage());
                         System.out.println("->Health: " + key.getHealth() + "\033[0m");
+                        if (key.isStolen())
+                        {
+                            System.out.println("\033[0;34m" + "->Stolen: " + "Yes" + "\033[0m");
+                        }
                         System.out.println();
                     });
 
@@ -402,6 +409,236 @@ public class ConsoleApp {
                         System.out.println();
                         break;
                     }
+
+                case "9":
+                    System.out.println();
+                    ArrayList<Dungeon> dungeons = dungeonService.getDungeonByPlayerId(id);
+                    for (int i = 0; i < dungeons.size(); i++) {
+                        ArrayList<Integer> enemiesId = dungeonService.getEnemiesByDungeonId(dungeons.get(i).getId_dungeon());
+                        ArrayList<Enemy> enemies = enemyService.getEnemiesByEnemiesId(enemiesId);
+                        dungeons.get(i).setEnemies(enemies);
+                    }
+                    int dungeonId = displayDungeons(dungeons);
+                    if (dungeonId == -1)
+                    {
+                        System.out.println();
+                        System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared all Dungeons! " + "\033[0;35m" + "The System " + "\033[0;33m"+ "is pleased with your progress." + "\033[0m");
+                        System.out.println();
+                        //                    try {
+//                        Thread.sleep(3000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                        break;
+                    }
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the Unlocked Dungeon for you..." + "\033[0m");
+                    //                    try {
+//                        Thread.sleep(3000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+
+                    Player player = userService.getPlayer(id);
+                    boolean exit5 = false;
+                    for (Enemy enemy : dungeons.get(dungeonId).getEnemies()) {
+                        if (exit5==true)
+                        {
+                            break;
+                        }
+                        enemyService.updateEnemyEncountered(enemy.getId_enemy());
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the " + enemy.getName() + " for you..." + "\033[0m");
+                        //                    try {
+//                        Thread.sleep(3000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                        while (enemy.getHealth()>0)
+                        {
+                            System.out.println();
+                            System.out.println("\033[0;32m" + "Enemy Health: " + enemy.getHealth() + " \033[0;31m" + "Enemy Damage: " + enemy.getDamage() + "\033[0m");
+                            System.out.println("\033[0;32m" + "Your Health: " + player.getHealth() + " \033[0;31m" + "Your Damage: " + player.getDamage() + "\033[0m");
+
+                            if (enemy instanceof Assassin) {
+
+
+                                enemy.setHealth(enemy.getHealth() - player.getDamage());
+                                System.out.println("\033[0;33m" + "You attacked the " + enemy.getName() + " with " + player.getDamage() + " damage." + "\033[0m");
+                                //                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+
+                                if (enemy.getHealth() <= 0)
+                                {
+                                    System.out.println();
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
+                                    break;
+                                }
+
+                                int damage = enemy.getDamage();
+                                int criticalChance = ((Assassin) enemy).getCriticalChance();
+                                int random = (int) (Math.random() * 100) + 1;
+
+                                if (random <= criticalChance) {
+                                    System.out.println("\033[0;33m" + "The " + enemy.getName() + " will use a critical strike!" + "\033[0m");
+                                    damage *= 2;
+                                }
+
+                                System.out.println("\033[0;33m" + "The " + enemy.getName() + " attacked you with " + damage + " damage." + "\033[0m");
+                                player.setHealth(player.getHealth() - damage);
+
+                                if (player.getHealth() <= 0)
+                                {
+                                    System.out.println();
+                                    System.out.println("\033[0;33m" + "The System " + "\033[0;35m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
+                                    System.out.println();
+                                    //                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                                    exit5 = true;
+                                    break;
+                                }
+
+                            }
+
+                            if (enemy instanceof Mage)
+                            {
+
+
+                                enemy.setHealth(enemy.getHealth() - player.getDamage());
+                                System.out.println("\033[0;33m" + "You attacked the " + enemy.getName() + " with " + player.getDamage() + " damage." + "\033[0m");
+                                //                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+
+                                if (enemy.getHealth() <= 0)
+                                {
+                                    System.out.println();
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
+                                    break;
+                                }
+
+                                int damage = enemy.getDamage();
+                                int mana = ((Mage) enemy).getMana();
+                                int random = (int) (Math.random() * 2);
+                                int heal = 0;
+
+                                if (mana>0)
+                                {
+                                    if (random == 0) {
+                                        damage = (int) (damage * 1.5);
+                                        ((Mage) enemy).setMana(mana - 20);
+                                        System.out.println("\033[0;33m" + "The " + enemy.getName() + " will have increased damage!" + "\033[0m");
+
+                                    } else {
+
+                                        heal = (int) (enemy.getHealth() * 0.1);
+                                        enemy.setHealth(enemy.getHealth() + heal);
+                                        ((Mage) enemy).setMana(mana - 20);
+                                        System.out.println("\033[0;33m" + "The " + enemy.getName() + " will heal itself!" + "\033[0m");
+
+                                    }
+                                }
+                                else
+                                {
+                                    System.out.println("\033[0;33m" + "The " + enemy.getName() + " has no mana left!" + "\033[0m");
+                                }
+
+                                System.out.println("\033[0;33m" + "The " + enemy.getName() + " attacked you with " + damage + " damage." + "\033[0m");
+                                player.setHealth(player.getHealth() - damage);
+
+                                if (player.getHealth() <= 0)
+                                {
+                                    System.out.println();
+                                    System.out.println("\033[0;33m" + "The System " + "\033[0;35m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
+                                    System.out.println();
+                                    //                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                                    exit5 = true;
+                                    break;
+                                }
+
+
+
+                            }
+
+                            if (enemy instanceof Tank)
+                            {
+                                int armor = ((Tank) enemy).getArmor();
+                                if(armor>0)
+                                {
+                                    System.out.println("\033[0;33m" + "The " + enemy.getName() + " has armor!" + "\033[0m");
+                                    ((Tank) enemy).setArmor(armor - player.getDamage());
+                                    armor = ((Tank) enemy).getArmor();
+                                    if (armor < 0)
+                                    {
+                                        enemy.setHealth(enemy.getHealth() - Math.abs(armor));
+                                        ((Tank) enemy).setArmor(0);
+
+                                    }
+                                }
+                                else
+                                {
+                                    System.out.println("\033[0;33m" + "The " + enemy.getName() + " has no armor!" + "\033[0m");
+                                    enemy.setHealth(enemy.getHealth() - player.getDamage());
+                                }
+
+                                System.out.println("\033[0;33m" + "You attacked the " + enemy.getName() + " with " + player.getDamage() + " damage." + "\033[0m");
+                                //                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+
+                                if (enemy.getHealth() <= 0)
+                                {
+                                    System.out.println();
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
+                                    break;
+                                }
+
+                                int damage = enemy.getDamage();
+
+                                System.out.println("\033[0;33m" + "The " + enemy.getName() + " attacked you with " + damage + " damage." + "\033[0m");
+                                player.setHealth(player.getHealth() - damage);
+
+                                if (player.getHealth() <= 0)
+                                {
+                                    System.out.println();
+                                    System.out.println("\033[0;33m" + "The System " + "\033[0;35m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
+                                    System.out.println();
+                                    //                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                                    exit5 = true;
+                                    break;
+                                }
+
+                            }
+
+
+
+
+                        }
+                    }
+
+
+
+                    System.out.println();
+                    break;
+
 
                 case "14":
                     System.out.println();
@@ -790,6 +1027,42 @@ public class ConsoleApp {
             }
         }
     }
+
+    public int displayDungeons(ArrayList<Dungeon> dungeons)
+    {
+        int dungeonId = -1;
+        System.out.println("\033[0;35m" + "<<-- Dungeons -->>" + "\033[0m");
+        System.out.println();
+        for (int i = 0; i < dungeons.size(); i++) {
+            System.out.println();
+            int dungeonNumber = i + 1;
+            if (i == 0) {
+                if (!dungeons.get(i).isCompleted()) {
+                    System.out.println("\033[0;33m" + dungeonNumber + ". " + dungeons.get(i) + "\033[0;33m" + "(Unlocked)" + "\033[0m");
+                    dungeonId = i;
+                } else {
+                    System.out.println("\033[0;32m" + dungeonNumber + ". " + dungeons.get(i) + "\033[0;32m" + "(Completed)" + "\033[0m");
+                }
+            } else {
+                if (!dungeons.get(i).isCompleted()) {
+                    if (dungeons.get(i - 1).isCompleted()) {
+                        System.out.println("\033[0;33m" + dungeonNumber + ". " + dungeons.get(i) + "\033[0;33m" + "(Unlocked)" + "\033[0m");
+                        dungeonId = i;
+                    } else {
+                        System.out.println("\033[0;31m" + dungeonNumber + ". " + dungeons.get(i) + "\033[0;31m" + "(Locked)" + "\033[0m");
+                    }
+                } else {
+                    System.out.println("\033[0;32m" + dungeonNumber + ". " + dungeons.get(i) + "\033[0;32m" + "(Completed)" + "\033[0m");
+                }
+            }
+        }
+
+        return dungeonId;
+
+    }
+
+
+
 
 
 

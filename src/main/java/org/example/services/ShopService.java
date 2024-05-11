@@ -20,6 +20,7 @@ public class ShopService {
 
     public void buyItem(int idPlayer, int idItem) {
         itemRepository.updateItemQuantityOnBuy(idItem);
+        itemRepository.updateItemIsBought(idItem);
         shopRepository.buyItem(idPlayer, idItem);
 
     }

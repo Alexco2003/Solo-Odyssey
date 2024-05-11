@@ -366,5 +366,39 @@ public class PlayerRepository implements GenericRepository<Player> {
         }
     }
 
+    // Related to getting rewards from quests/dungeons
+
+    public void updateLevelOnReward(int playerId, int level) {
+        String sqlUpdateLevel = "UPDATE Player SET level = level + 1 WHERE id_user = ?";
+        String sqlUpdateHealthDamage = "UPDATE Player SET health = health + ?, damage = damage + ? WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmtUpdateLevel = conn.prepareStatement(sqlUpdateLevel);
+            PreparedStatement pstmtUpdateHealthDamage = conn.prepareStatement(sqlUpdateHealthDamage);
+
+            while (level != 0) {
+
+                pstmtUpdateLevel.setInt(1, playerId);
+                pstmtUpdateLevel.executeUpdate();
+
+                int healthIncrease = 10;
+                int damageIncrease = 5;
+                pstmtUpdateHealthDamage.setInt(1, healthIncrease);
+                pstmtUpdateHealthDamage.setInt(2, damageIncrease);
+                pstmtUpdateHealthDamage.setInt(3, playerId);
+                pstmtUpdateHealthDamage.executeUpdate();
+
+                level--;
+            }
+
+            this.auditDatabase.write(sqlUpdateLevel, Player.class, "Done successfully!");
+            this.auditDatabase.write(sqlUpdateHealthDamage, Player.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }

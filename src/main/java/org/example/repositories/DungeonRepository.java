@@ -1,6 +1,7 @@
 package org.example.repositories;
 
 import org.example.models.Dungeon;
+import org.example.models.DungeonEnemy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,7 +53,7 @@ public class DungeonRepository implements GenericRepository<Dungeon> {
                 int rewardLevel = rs.getInt("rewardLevel");
                 double rewardMoney = rs.getDouble("rewardMoney");
                 boolean completed = rs.getBoolean("completed");
-
+                this.auditDatabase.write(sql, Dungeon.class, "Done successfully!");
                 Dungeon dungeon = new Dungeon(id_dungeon, id, name, description, level, rewardLevel, completed, null, rewardMoney);
                 dungeons.add(dungeon);
             }
@@ -80,10 +81,29 @@ public class DungeonRepository implements GenericRepository<Dungeon> {
                 enemies.add(id_enemy);
             }
 
+            this.auditDatabase.write(sql, DungeonEnemy.class, "Done successfully!");
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
         return enemies;
+    }
+
+    public void updateDungeonCompleted(int id) {
+        String sql = "UPDATE Dungeon SET completed = true WHERE id_dungeon = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+
+            this.auditDatabase.write(sql, Dungeon.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

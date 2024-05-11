@@ -111,5 +111,21 @@ public class UserService {
         playerRepository.updateLevelOnReward(playerId, level);
     }
 
+    //Related to title
+    public void updatePlayerTitle(int playerId) {
+        Player player = playerRepository.get(playerId);
+        if (player.getLevel() >= 5 && player.getLevel() < 20) {
+            playerRepository.updateTitleOnReward(playerId, "E-Rank Hunter");
+        } else if (player.getLevel() >= 20 && player.getLevel() < 40) {
+            playerRepository.updateTitleOnReward(playerId, "D-Rank Hunter");
+        } else if (player.getLevel() >= 40 && player.getLevel() < 60) {
+            playerRepository.updateTitleOnReward(playerId, "C-Rank Hunter");
+        } else if (player.getLevel() >= 60 && player.getLevel() < 80) {
+            playerRepository.updateTitleOnReward(playerId, "B-Rank Hunter");
+        } else if (player.getLevel() >= 80 && player.getLevel() < 100) {
+            playerRepository.updateTitleOnReward(playerId, "A-Rank Hunter");
+        } else if (player.getLevel() >= 100) {
+            playerRepository.updateTitleOnReward(playerId, "S-Rank Hunter");}
+    }
 
 }

@@ -400,5 +400,23 @@ public class PlayerRepository implements GenericRepository<Player> {
         }
     }
 
+    //Related to giving title
+    public void updateTitleOnReward(int playerId, String title) {
+        String sql = "UPDATE Player SET title = ? WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, title);
+            pstmt.setInt(2, playerId);
+
+            pstmt.executeUpdate();
+            this.auditDatabase.write(sql, Player.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }

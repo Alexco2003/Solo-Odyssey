@@ -1,5 +1,6 @@
 package org.example.view;
 
+import org.example.audit.AuditSession;
 import org.example.models.*;
 import org.example.config.seeders.DatabaseSeeder;
 import org.example.config.DatabaseSetup;
@@ -118,12 +119,7 @@ public class ConsoleApp {
                 case "3":
                     System.out.println();
                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "will be waiting..." + "\033[0m");
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-
-                        e.printStackTrace();
-                    }
+                    pause3();
                     exit = true;
                     break;
 
@@ -142,6 +138,23 @@ public class ConsoleApp {
     public void clearScreen() {
         for(int i = 0; i < 100; i++) {
             System.out.println();
+        }
+    }
+
+    // Pause
+    public void pause3() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void pause2() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -184,12 +197,7 @@ public class ConsoleApp {
         displayMotto();
 
 
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-
-            e.printStackTrace();
-        }
+       pause3();
 
         System.out.println();
     }
@@ -365,6 +373,7 @@ public class ConsoleApp {
                         userService.updatePlayerMoneyOnBuy(id, shop1.getItems().get(itemNumber - 1).getPrice());
                         userService.updateStatsOnBuy(id, shop1.getItems().get(itemNumber - 1).getDamage(), shop1.getItems().get(itemNumber - 1).getHealth());
                         System.out.println();
+                        AuditSession.getInstance().write("Player " + username + " bought item " + shop1.getItems().get(itemNumber - 1).getName() + ".");
                         break;
 
                     } catch (InputMismatchException e) {
@@ -399,6 +408,7 @@ public class ConsoleApp {
                         shopService.sellItem(id, idItem);
                         userService.updatePlayerMoneyOnSell(id, items.get(itemNumber - 1).getPrice()*0.75);
                         userService.updateStatsOnSell(id, items.get(itemNumber - 1).getDamage(), items.get(itemNumber - 1).getHealth());
+                        AuditSession.getInstance().write("Player " + username + " sold item " + items.get(itemNumber - 1).getName() + ".");
                         System.out.println();
                         break;
 
@@ -423,22 +433,15 @@ public class ConsoleApp {
                     {
                         System.out.println();
                         System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared all Dungeons! " + "\033[0;35m" + "The System " + "\033[0;33m"+ "is pleased with your progress." + "\033[0m");
+                        AuditSession.getInstance().write("Player " + username + " cleared all Dungeons.");
                         System.out.println();
-                        //                    try {
-//                        Thread.sleep(3000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                        pause3();
                         break;
                     }
 
                     System.out.println();
                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the Unlocked Dungeon for you..." + "\033[0m");
-                    //                    try {
-//                        Thread.sleep(3000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                    pause3();
 
                     Player player = userService.getPlayer(id);
                     boolean exit5 = false;
@@ -450,11 +453,13 @@ public class ConsoleApp {
                         enemyService.updateEnemyEncountered(enemy.getId_enemy());
                         System.out.println();
                         System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the " + enemy.getName() + " for you..." + "\033[0m");
-                        //                    try {
-//                        Thread.sleep(3000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                        if (enemy instanceof BossAssassin || enemy instanceof BossMage || enemy instanceof BossTank)
+                        {
+                            System.out.println("\033[0;33m" + "Standing before you is " + enemy.getName() + ", the formidable Boss of this Dungeon! " + "\033[0;35m" + "The System " + "\033[0;33m" + "is pleased with your progress and awaits the outcome of this confrontation." + "\033[0m");
+                        }
+
+                        pause3();
+
                         while (enemy.getHealth()>0)
                         {
                             System.out.println();
@@ -463,19 +468,31 @@ public class ConsoleApp {
 
                             if (enemy instanceof Assassin) {
 
-
                                 enemy.setHealth(enemy.getHealth() - player.getDamage());
                                 System.out.println("\033[0;33m" + "You attacked the " + enemy.getName() + " with " + player.getDamage() + " damage." + "\033[0m");
-                                //                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                                pause2();
 
                                 if (enemy.getHealth() <= 0)
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " defeated Boss " + enemy.getName() + ".");
+                                    if (enemy instanceof BossAssassin)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
+                                        AuditSession.getInstance().write("Player " + username + " cleared Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                        dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+                                        userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
+                                        for (Item item : ((BossAssassin) enemy).getItems())
+                                        {
+                                            shopService.buyItem(id, item.getId_item());
+                                            userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
+
+                                        }
+                                    }
                                     break;
                                 }
 
@@ -494,13 +511,9 @@ public class ConsoleApp {
                                 if (player.getHealth() <= 0)
                                 {
                                     System.out.println();
-                                    System.out.println("\033[0;33m" + "The System " + "\033[0;35m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
-                                    System.out.println();
-                                    //                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " was defeated by " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    pause3();
                                     exit5 = true;
                                     break;
                                 }
@@ -513,15 +526,29 @@ public class ConsoleApp {
 
                                 enemy.setHealth(enemy.getHealth() - player.getDamage());
                                 System.out.println("\033[0;33m" + "You attacked the " + enemy.getName() + " with " + player.getDamage() + " damage." + "\033[0m");
-                                //                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
+                   pause2();
 
                                 if (enemy.getHealth() <= 0)
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " defeated Boss " + enemy.getName() + ".");
+                                    if (enemy instanceof BossMage)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
+                                        AuditSession.getInstance().write("Player " + username + " cleared Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                        dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+                                        userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
+                                        for (Item item : ((BossMage) enemy).getItems())
+                                        {
+                                            shopService.buyItem(id, item.getId_item());
+                                            userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
+
+                                        }
+                                    }
                                     break;
                                 }
 
@@ -557,13 +584,9 @@ public class ConsoleApp {
                                 if (player.getHealth() <= 0)
                                 {
                                     System.out.println();
-                                    System.out.println("\033[0;33m" + "The System " + "\033[0;35m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
-                                    System.out.println();
-                                    //                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " was defeated by " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    pause3();
                                     exit5 = true;
                                     break;
                                 }
@@ -594,16 +617,30 @@ public class ConsoleApp {
                                 }
 
                                 System.out.println("\033[0;33m" + "You attacked the " + enemy.getName() + " with " + player.getDamage() + " damage." + "\033[0m");
-                                //                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+
+                                pause2();
 
                                 if (enemy.getHealth() <= 0)
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " defeated Boss " + enemy.getName() + ".");
+                                    if (enemy instanceof BossTank)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
+                                        AuditSession.getInstance().write("Player " + username + " cleared Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                        dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+                                        userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
+                                        for (Item item : ((BossTank) enemy).getItems())
+                                        {
+                                            shopService.buyItem(id, item.getId_item());
+                                            userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
+
+                                        }
+                                    }
                                     break;
                                 }
 
@@ -615,13 +652,9 @@ public class ConsoleApp {
                                 if (player.getHealth() <= 0)
                                 {
                                     System.out.println();
-                                    System.out.println("\033[0;33m" + "The System " + "\033[0;35m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
-                                    System.out.println();
-                                    //                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " was defeated by " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    pause3();
                                     exit5 = true;
                                     break;
                                 }
@@ -660,12 +693,7 @@ public class ConsoleApp {
                     System.out.println();
                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is exiting the profile of " + "\033[0;34m" +  "Player " + "\033[0;34m" + username + "\033[0;33m" + "..." + "\033[0m");
                     System.out.println();
-                    // Uncomment this in the final, now for testing it is commented
-//                    try {
-//                        Thread.sleep(3000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                    //pause3();
                     exit = true;
                     break;
 
@@ -970,12 +998,7 @@ public class ConsoleApp {
                     System.out.println();
                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is exiting the profile of " + "\033[0;35m" + "The Architect" +"\033[0;33m" + "..." + "\033[0m");
                     System.out.println();
-                    // Uncomment this in the final, now for testing it is commented
-//                    try {
-//                        Thread.sleep(3000);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
+                    //pause3();
                     exit = true;
                     break;
 
@@ -1030,16 +1053,15 @@ public class ConsoleApp {
 
     public int displayDungeons(ArrayList<Dungeon> dungeons)
     {
-        int dungeonId = -1;
+        int dungeonIndex = -1;
         System.out.println("\033[0;35m" + "<<-- Dungeons -->>" + "\033[0m");
-        System.out.println();
         for (int i = 0; i < dungeons.size(); i++) {
             System.out.println();
             int dungeonNumber = i + 1;
             if (i == 0) {
                 if (!dungeons.get(i).isCompleted()) {
                     System.out.println("\033[0;33m" + dungeonNumber + ". " + dungeons.get(i) + "\033[0;33m" + "(Unlocked)" + "\033[0m");
-                    dungeonId = i;
+                    dungeonIndex = i;
                 } else {
                     System.out.println("\033[0;32m" + dungeonNumber + ". " + dungeons.get(i) + "\033[0;32m" + "(Completed)" + "\033[0m");
                 }
@@ -1047,7 +1069,7 @@ public class ConsoleApp {
                 if (!dungeons.get(i).isCompleted()) {
                     if (dungeons.get(i - 1).isCompleted()) {
                         System.out.println("\033[0;33m" + dungeonNumber + ". " + dungeons.get(i) + "\033[0;33m" + "(Unlocked)" + "\033[0m");
-                        dungeonId = i;
+                        dungeonIndex = i;
                     } else {
                         System.out.println("\033[0;31m" + dungeonNumber + ". " + dungeons.get(i) + "\033[0;31m" + "(Locked)" + "\033[0m");
                     }
@@ -1057,7 +1079,7 @@ public class ConsoleApp {
             }
         }
 
-        return dungeonId;
+        return dungeonIndex;
 
     }
 

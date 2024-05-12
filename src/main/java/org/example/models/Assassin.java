@@ -20,7 +20,7 @@ public class Assassin extends Enemy{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
-        sb.append("Critical Chance = " + criticalChance + "\n");
+        sb.append("Critical Chance = " + criticalChance + "%\n");
         return sb.toString();
     }
 }

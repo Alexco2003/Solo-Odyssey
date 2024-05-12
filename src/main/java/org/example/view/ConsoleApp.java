@@ -722,12 +722,21 @@ public class ConsoleApp {
                     System.out.println("\033[0;35m" + "<<-- The System's Enemies -->>" + "\033[0m");
                     System.out.println();
 
+                    HashSet<Integer> uniqueEnemyIdsSet = new HashSet<>();
                     for (Dungeon dungeon : dungeons1) {
                         for (Enemy enemy : dungeon.getEnemies()) {
                             if (enemy.isEncountered()) {
-                                System.out.println("\033[0;35m" + enemy + "\033[0m");
+                                uniqueEnemyIdsSet.add(enemy.getId_enemy());
                             }
                         }
+                    }
+
+                    ArrayList<Integer> uniqueEnemyIds = new ArrayList<>(uniqueEnemyIdsSet);
+
+                    ArrayList<Enemy> uniqueEnemies = enemyService.getEnemiesByEnemiesId(uniqueEnemyIds);
+
+                    for (Enemy enemy : uniqueEnemies) {
+                        System.out.println("\033[0;35m" + enemy + "\033[0m");
                     }
 
                     System.out.println();
@@ -790,15 +799,15 @@ public class ConsoleApp {
                         dungeons2.get(i).setEnemies(enemies);
                     }
 
-                    HashSet<Integer> uniqueEnemyIds = new HashSet<>();
+                    HashSet<Integer> uniqueEnemyIds1 = new HashSet<>();
                     for (Dungeon dungeon : dungeons2) {
                         for (Enemy enemy : dungeon.getEnemies()) {
                             if (enemy.isEncountered()) {
-                                uniqueEnemyIds.add(enemy.getId_enemy());
+                                uniqueEnemyIds1.add(enemy.getId_enemy());
                             }
                         }
                     }
-                    int count = uniqueEnemyIds.size();
+                    int count = uniqueEnemyIds1.size();
 
 
                     int achievementsCompleted = 0;

@@ -29,4 +29,8 @@ public class ShopService {
         itemRepository.updateItemQuantityOnSell(idItem);
         shopRepository.sellItem(idPlayer, idItem);
     }
+
+    public int countItemsBought(int idPlayer) {
+        return itemRepository.countBoughtItems(idPlayer);
+    }
 }

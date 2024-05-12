@@ -20,7 +20,7 @@ public class Mage extends Enemy {
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder(super.toString());
-            sb.append("mana=" + mana + "\n");
+            sb.append("Mana = " + mana + "\n");
             return sb.toString();
         }
 }

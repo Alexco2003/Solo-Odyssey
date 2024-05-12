@@ -103,4 +103,28 @@ public class ItemRepository implements GenericRepository<Item> {
             System.out.println(e.getMessage());
         }
     }
+
+    public int countBoughtItems(int playerId) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM Item WHERE id_shop = ? AND isBought = true";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, playerId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+            this.auditDatabase.write(sql, Item.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return count;
+    }
 }

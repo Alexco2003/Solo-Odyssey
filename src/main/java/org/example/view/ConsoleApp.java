@@ -476,7 +476,14 @@ public class ConsoleApp {
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
-                                    AuditSession.getInstance().write("Player " + username + " defeated Boss " + enemy.getName() + ".");
+                                    if (enemy instanceof BossAssassin)
+                                    {
+                                        AuditSession.getInstance().write("Player " + username + " defeated the Boss " + enemy.getName() + ".");
+
+                                    }else {
+                                        AuditSession.getInstance().write("Player " + username + " defeated the " + enemy.getName() + ".");
+
+                                    }
                                     if (enemy instanceof BossAssassin)
                                     {
                                         System.out.println();
@@ -512,7 +519,12 @@ public class ConsoleApp {
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
-                                    AuditSession.getInstance().write("Player " + username + " was defeated by " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    if (enemy instanceof BossAssassin)
+                                    {
+                                        AuditSession.getInstance().write("Player " + username + " was defeated by the Boss " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    }else {
+                                        AuditSession.getInstance().write("Player " + username + " was defeated by the " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    }
                                     pause3();
                                     exit5 = true;
                                     break;
@@ -532,7 +544,14 @@ public class ConsoleApp {
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
-                                    AuditSession.getInstance().write("Player " + username + " defeated Boss " + enemy.getName() + ".");
+                                    if (enemy instanceof BossMage)
+                                    {
+                                        AuditSession.getInstance().write("Player " + username + " defeated the Boss " + enemy.getName() + ".");
+
+                                    }else {
+                                        AuditSession.getInstance().write("Player " + username + " defeated the " + enemy.getName() + ".");
+
+                                    }
                                     if (enemy instanceof BossMage)
                                     {
                                         System.out.println();
@@ -585,8 +604,12 @@ public class ConsoleApp {
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
-                                    AuditSession.getInstance().write("Player " + username + " was defeated by " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                    pause3();
+                                    if (enemy instanceof BossMage)
+                                    {
+                                        AuditSession.getInstance().write("Player " + username + " was defeated by the Boss " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    }else {
+                                        AuditSession.getInstance().write("Player " + username + " was defeated by the " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    }                                    pause3();
                                     exit5 = true;
                                     break;
                                 }
@@ -624,7 +647,14 @@ public class ConsoleApp {
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
-                                    AuditSession.getInstance().write("Player " + username + " defeated Boss " + enemy.getName() + ".");
+                                    if (enemy instanceof BossTank)
+                                    {
+                                        AuditSession.getInstance().write("Player " + username + " defeated the Boss " + enemy.getName() + ".");
+
+                                    }else {
+                                        AuditSession.getInstance().write("Player " + username + " defeated the " + enemy.getName() + ".");
+
+                                    }
                                     if (enemy instanceof BossTank)
                                     {
                                         System.out.println();
@@ -653,7 +683,12 @@ public class ConsoleApp {
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
-                                    AuditSession.getInstance().write("Player " + username + " was defeated by " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    if (enemy instanceof BossTank)
+                                    {
+                                        AuditSession.getInstance().write("Player " + username + " was defeated by the Boss " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    }else {
+                                        AuditSession.getInstance().write("Player " + username + " was defeated by the " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
+                                    }
                                     pause3();
                                     exit5 = true;
                                     break;
@@ -672,6 +707,134 @@ public class ConsoleApp {
                     System.out.println();
                     break;
 
+
+                case "12":
+                    System.out.println();
+                    ArrayList<Dungeon> dungeons1 = dungeonService.getDungeonByPlayerId(id);
+                    for (int i = 0; i < dungeons1.size(); i++) {
+                        ArrayList<Integer> enemiesId = dungeonService.getEnemiesByDungeonId(dungeons1.get(i).getId_dungeon());
+                        ArrayList<Enemy> enemies = enemyService.getEnemiesByEnemiesId(enemiesId);
+                        dungeons1.get(i).setEnemies(enemies);
+                    }
+                    System.out.println("\033[0;35m" + "<<-- The System's Codex -->>" + "\033[0m");
+                    System.out.println();
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<<-- The System's Enemies -->>" + "\033[0m");
+                    System.out.println();
+
+                    for (Dungeon dungeon : dungeons1) {
+                        for (Enemy enemy : dungeon.getEnemies()) {
+                            if (enemy.isEncountered()) {
+                                System.out.println("\033[0;35m" + enemy + "\033[0m");
+                            }
+                        }
+                    }
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<<-- The System's Lore -->>" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m"+ "I. "+"\033[0;35m" + "The System " + "\033[0;33m" + "is a vast and mysterious world, filled with danger and adventure. " + "\033[0;35m" + "The System " + "\033[0;33m" + "awaits the " +"\033[0;34m" + "Player" + "\033[0;33m" +"'s courage and determination to overcome the challenges that lie ahead." + "\033[0m");
+                    if (dungeonService.countDungeonsCompleted(id)>=1)
+                    {
+                        System.out.println("\033[0;33m"+ "II. "+"\033[0;35m" + "The System " + "\033[0;33m" + "was created by a mysterious entity known as "+ "\033[0;35m" + "The Architect" + "\033[0;33m" + ". Its purpose remains unknown." + "\033[0m");
+                    }
+                    if (dungeonService.countDungeonsCompleted(id)>=2)
+                    {
+                        System.out.println("\033[0;33m"+ "III. "+"\033[0;35m" + "The System " + "\033[0;33m" + "is not just a tool, it's a living entity that adapts and evolves." + "\033[0m");
+                    }
+                    if (dungeonService.countDungeonsCompleted(id)>=3)
+                    {
+                        System.out.println("\033[0;33m"+ "IV. "+"\033[0;35m" + "The System " + "\033[0;33m" + "is designed to test the " + "\033[0;34m" + "Player" + "\033[0;33m" +"'s abilities and push them to their limits." + "\033[0m");
+                    }
+                    if (dungeonService.countDungeonsCompleted(id)>=4)
+                    {
+                        System.out.println("\033[0;33m"+ "V. "+"\033[0;35m" + "The System " + "\033[0;33m" + "rewards those who overcome its challenges with power beyond imagination." + "\033[0m");
+                    }
+                    if (dungeonService.countDungeonsCompleted(id)>=5)
+                    {
+                        System.out.println("\033[0;33m"+ "VI. "+"\033[0;35m" + "The System " + "\033[0;33m" + "is rumored to have a mind of its own, choosing who will rise and who will fall." + "\033[0m");
+                    }
+                    if (dungeonService.countDungeonsCompleted(id)>=6)
+                    {
+                        System.out.println("\033[0;33m"+ "VII. "+"\033[0;35m" + "The System " + "\033[0;33m" + "is said to be a gateway to other realms, each more dangerous than the last." + "\033[0m");
+                    }
+                    if (dungeonService.countDungeonsCompleted(id)>=7)
+                    {
+                        System.out.println("\033[0;33m"+ "VIII. "+"\033[0;35m" + "The System " + "\033[0;33m" + "is believed to be a creation of " + "\033[0;35m" + "The Architect " + "\033[0;33m" + "to find the ultimate warrior." + "\033[0m");
+                    }
+                    if (dungeonService.countDungeonsCompleted(id)>=8)
+                    {
+                        System.out.println("\033[0;33m"+ "IX. "+"\033[0;35m" + "The System " + "\033[0;33m" + "is a test, a trial for those who dare to challenge " + "\033[0;35m" + "The Architect" + "\033[0;33m" + "'s design." + "\033[0m");
+                    }
+                    if (dungeonService.countDungeonsCompleted(id)>=9)
+                    {
+                        System.out.println("\033[0;33m"+ "X. "+"\033[0;35m" + "The System " + "\033[0;33m" + "is a path to ascension, a way for mortals to transcend their limits and reach the realm of gods." + "\033[0m");
+                    }
+                    if (dungeonService.countDungeonsCompleted(id)>=10)
+                    {
+                        System.out.println("\033[0;33m"+ "XI. "+"\033[0;35m" + "The System " + "\033[0;33m" + "is " + "\033[0;35m" + "The Architect" + "\033[0;33m" + "'s masterpiece, a world within a world, a game that's more than a game." + "\033[0m");
+                    }
+
+
+                    System.out.println();
+                    break;
+
+                case "13":
+                    System.out.println();
+                    System.out.println("\033[0;34m" + "<<-- The Player's Achievements -->>" + "\033[0m");
+                    System.out.println();
+                    ArrayList<Dungeon> dungeons2 = dungeonService.getDungeonByPlayerId(id);
+                    for (int i = 0; i < dungeons2.size(); i++) {
+                        ArrayList<Integer> enemiesId = dungeonService.getEnemiesByDungeonId(dungeons2.get(i).getId_dungeon());
+                        ArrayList<Enemy> enemies = enemyService.getEnemiesByEnemiesId(enemiesId);
+                        dungeons2.get(i).setEnemies(enemies);
+                    }
+
+                    HashSet<Integer> uniqueEnemyIds = new HashSet<>();
+                    for (Dungeon dungeon : dungeons2) {
+                        for (Enemy enemy : dungeon.getEnemies()) {
+                            if (enemy.isEncountered()) {
+                                uniqueEnemyIds.add(enemy.getId_enemy());
+                            }
+                        }
+                    }
+                    int count = uniqueEnemyIds.size();
+
+
+                    int achievementsCompleted = 0;
+
+                    int dungeonsCleared = dungeonService.countDungeonsCompleted(id);
+                    if (dungeonsCleared == 10) achievementsCompleted++;
+                    System.out.println((dungeonsCleared == 10 ? "\033[0;32m" : "\033[0;33m") + "I. Dungeon Master - Dungeons Cleared: " + dungeonsCleared + "/10 " + (dungeonsCleared == 10 ? "(Completed)" : "(In Progress)") + "\033[0m");
+
+                    int enemiesEncountered = count;
+                    if (enemiesEncountered == 25) achievementsCompleted++;
+                    System.out.println((enemiesEncountered == 25 ? "\033[0;32m" : "\033[0;33m") + "II. Monster Hunter - Enemies Encountered: " + enemiesEncountered + "/25 " + (enemiesEncountered == 25 ? "(Completed)" : "(In Progress)") + "\033[0m");
+
+                    int bossesDefeated = dungeonService.countDungeonsCompleted(id);
+                    if (bossesDefeated == 10) achievementsCompleted++;
+                    System.out.println((bossesDefeated == 10 ? "\033[0;32m" : "\033[0;33m") + "III. Boss Slayer - Bosses Defeated: " + bossesDefeated + "/10 " + (bossesDefeated == 10 ? "(Completed)" : "(In Progress)") + "\033[0m");
+
+                    int bossItemsAcquired = dungeonService.countDungeonsCompleted(id)*6;
+                    if (bossItemsAcquired == 60) achievementsCompleted++;
+                    System.out.println((bossItemsAcquired == 60 ? "\033[0;32m" : "\033[0;33m") + "IV. Treasure Hunter - Boss Items Acquired: " + bossItemsAcquired + "/60 " + (bossItemsAcquired == 60 ? "(Completed)" : "(In Progress)") + "\033[0m");
+
+                    int itemsBought = shopService.countItemsBought(id)-60;
+                    if (itemsBought == 37) achievementsCompleted++;
+                    System.out.println((itemsBought == 37 ? "\033[0;32m" : "\033[0;33m") + "V. Shopaholic - Items Bought: " + itemsBought + "/37 " + (itemsBought == 37 ? "(Completed)" : "(In Progress)") + "\033[0m");
+
+                    int totalItems = shopService.countItemsBought(id);
+                    if (totalItems == 97) achievementsCompleted++;
+                    System.out.println((totalItems == 97 ? "\033[0;32m" : "\033[0;33m") + "VI. Collector - Total Items Acquired: " + totalItems + "/97 " + (totalItems == 97 ? "(Completed)" : "(In Progress)") + "\033[0m");
+
+                    System.out.println();
+                    System.out.println((achievementsCompleted == 6 ? "\033[0;32m" : "\033[0;33m") + "God of War - All Achievements: " + achievementsCompleted + "/6 " + (achievementsCompleted == 6 ? "(Completed)" : "(In Progress)") + "\033[0m");
+
+                    // TODO : Add more achievements related to quests
+
+
+                    System.out.println();
+                    break;
 
                 case "14":
                     System.out.println();

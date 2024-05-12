@@ -23,7 +23,10 @@ public class BossAssassin extends Assassin{
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
-        sb.append("items=" + items + "\n");
+        sb.append("Inventory:" + "\n");
+        for (Item item : items) {
+            sb.append(item.toString3());
+        }
         return sb.toString();
     }
 

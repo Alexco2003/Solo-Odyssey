@@ -36,4 +36,14 @@ class DungeonRepositoryTest {
     void updateDungeonCompleted() {
         dungeonRepository.updateDungeonCompleted(30);
     }
+
+    @Test
+    void countDungeonsCompleted() {
+        assertEquals(10, dungeonRepository.countDungeonsCompleted(3));
+    }
+
+    @Test
+    void testCountDungeonsCompleted() {
+        assertEquals(10, dungeonRepository.countDungeonsCompleted(3));
+    }
 }

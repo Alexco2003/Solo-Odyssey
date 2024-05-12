@@ -106,4 +106,30 @@ public class DungeonRepository implements GenericRepository<Dungeon> {
             System.out.println(e.getMessage());
         }
     }
+
+    public int countDungeonsCompleted(int playerId) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) FROM Dungeon WHERE id_player = ? AND completed = true";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, playerId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+            this.auditDatabase.write(sql, Dungeon.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return count;
+    }
+
+
 }

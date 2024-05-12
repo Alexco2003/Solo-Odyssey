@@ -7,28 +7,64 @@ import java.io.Console;
 import java.util.HashMap;
 
 public class Test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        String[] lines = new String[]{
+                "\033[0;31m" + "_     ____    _      _     _   _____  _    ____  _      _    _____  ____  _____  _  _ ", // Red
+                "\033[0;32m" + "/ \\   /  _ \\  / \\__/|/ \\ /\\/ \\ /__ __\\/ \\  /  _ \\/ \\  /|/ \\  /__ __\\/  _ \\/__ __\\/ \\/ \\", // Green
+                "\033[0;33m" + "| |   | / \\|  | |\\/||| | ||| |   / \\  | |  | / \\|| |\\ ||| |    / \\  | / \\|  / \\  | || |", // Yellow
+                "\033[0;34m" + "| |_ /| |-||  | |  ||| \\_/|| |_ /| |  | |  | |-||| | \\||| |    | |  | |-||  | |  | |\\_/", // Blue
+                "\033[0;35m" + "\\____/\\_/ \\|  \\_/  \\|\\____/\\____/\\_/  \\_/  \\_/ \\|\\_/  \\|\\_/    \\_/  \\_/ \\|  \\_/  \\_/(_)", // Purple
+                "\033[0m" // Reset
+        };
 
-        BossAssassinRepository bossAssassinRepository = new BossAssassinRepository();
-        System.out.println(bossAssassinRepository.get(81));
+        int exit = 0;
+        while (exit<3) {
+            for (String line : lines) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println(line);
+                Thread.sleep(1000);
+            }
 
-        AssassinRepository assassinRepository = new AssassinRepository();
-        Assassin assassin = assassinRepository.get(81);
-        System.out.println(assassin);
+            exit++;
 
-        BossMageRepository bossMageRepository = new BossMageRepository();
-        System.out.println(bossMageRepository.get(97));
+        }
 
-        MageRepository mageRepository = new MageRepository();
-        Mage mage = mageRepository.get(97);
-        System.out.println(mage);
+        System.out.println("\033[0;31m" + "⠀⠀⢀⣤⣾⣿⣿⣿⣿⣿⣶⣤⡀⢀⣤⣶⣿⣿⣿⣿⣿⣷⣤⡀⠀⠀"); // Red
+        System.out.println("\033[0;31m" + "⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀"); // Red
+        System.out.println("\033[0;31m" + "⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄"); // Red
+        System.out.println("\033[0;31m" + "⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇"); // Red
+        System.out.println("\033[0;31m" + "⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀"); // Red
+        System.out.println("\033[0;31m" + "⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀"); // Red
+        System.out.println("\033[0;31m" + "⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀"); // Red
+        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀"); // Red
+        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀"); // Red
+        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀"); // Red
+        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣿⣿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"); // Red
+        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + "\033[0m"); // Red
+    }
+}
 
-        BossTankRepository bossTankRepository = new BossTankRepository();
-        System.out.println(bossTankRepository.get(140));
-
-        TankRepository tankRepository = new TankRepository();
-        Tank tank = tankRepository.get(140);
-        System.out.println(tank);
+//        BossAssassinRepository bossAssassinRepository = new BossAssassinRepository();
+//        System.out.println(bossAssassinRepository.get(81));
+//
+//        AssassinRepository assassinRepository = new AssassinRepository();
+//        Assassin assassin = assassinRepository.get(81);
+//        System.out.println(assassin);
+//
+//        BossMageRepository bossMageRepository = new BossMageRepository();
+//        System.out.println(bossMageRepository.get(97));
+//
+//        MageRepository mageRepository = new MageRepository();
+//        Mage mage = mageRepository.get(97);
+//        System.out.println(mage);
+//
+//        BossTankRepository bossTankRepository = new BossTankRepository();
+//        System.out.println(bossTankRepository.get(140));
+//
+//        TankRepository tankRepository = new TankRepository();
+//        Tank tank = tankRepository.get(140);
+//        System.out.println(tank);
 
 
 //
@@ -62,8 +98,8 @@ public class Test {
 //
 //
 //        System.out.println("Player added successfully!");
-    }
-}
+    //}//
+//}
 //// mask password with asterisk java console
 //public class Test {
 //

@@ -69,11 +69,11 @@ public abstract class Enemy {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("<<-- Enemy " + id_enemy + " -->>\n");
-        sb.append("name='" + name + "'\n");
-        sb.append("health=" + health + "\n");
-        sb.append("damage=" + damage + "\n");
-        sb.append("description='" + description + "'\n");
-        sb.append("encountered=" + encountered + "\n");
+        sb.append("Name = '" + name + "'\n");
+        sb.append("Description = '" + description + "'\n");
+        sb.append("Health = " + health + "\n");
+        sb.append("Damage = " + damage + "\n");
+
         return sb.toString();
     }
 }

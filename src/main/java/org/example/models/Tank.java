@@ -20,7 +20,7 @@ public class Tank extends Enemy {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
-        sb.append("armor=" + armor + "\n");
+        sb.append("Armor = " + armor + "\n");
         return sb.toString();
     }
 

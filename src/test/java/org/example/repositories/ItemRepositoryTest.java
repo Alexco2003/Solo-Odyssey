@@ -33,4 +33,9 @@ class ItemRepositoryTest {
         itemRepository.updateItemQuantityOnSell(291);
         this.get();
     }
+
+    @Test
+    void countBoughtItems() {
+        assertEquals(64, itemRepository.countBoughtItems(3));
+    }
 }

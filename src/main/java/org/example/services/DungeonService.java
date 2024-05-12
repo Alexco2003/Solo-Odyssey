@@ -25,5 +25,10 @@ public class DungeonService {
         dungeonRepository.updateDungeonCompleted(id);
     }
 
+    public int countDungeonsCompleted(int playerId)
+    {
+        return dungeonRepository.countDungeonsCompleted(playerId);
+    }
+
 
 }

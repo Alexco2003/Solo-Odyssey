@@ -47,6 +47,14 @@ public class DatabaseSetup {
                 "FOREIGN KEY(id_player) REFERENCES Player(id_user) ON DELETE CASCADE, " +
                 "PRIMARY KEY(id_quest))";
 
+        String createTableSql19 = "CREATE TABLE IF NOT EXISTS MultiplayerStats " +
+                "(id_multiplayer INT AUTO_INCREMENT, " +
+                "id_user INT, " +
+                "lostMatches INT CHECK (lostMatches >= 0), " +
+                "wonMatches INT CHECK (wonMatches >= 0), " +
+                "FOREIGN KEY(id_user) REFERENCES User(id_user) ON DELETE CASCADE, " +
+                "PRIMARY KEY(id_multiplayer))";
+
         String createTableSql4 = "CREATE TABLE IF NOT EXISTS Shop " +
                 "(id_shop INT AUTO_INCREMENT, " +
                 "id_player INT, " +
@@ -720,6 +728,7 @@ public class DatabaseSetup {
             stmt.execute(createTableSql1);
             stmt.execute(createTableSql2);
             stmt.execute(createTableSql3);
+            stmt.execute(createTableSql19);
             stmt.execute(createTableSql4);
             stmt.execute(createTableSql5);
             stmt.execute(createTableSql6);

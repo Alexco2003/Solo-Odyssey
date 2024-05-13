@@ -1,6 +1,7 @@
 package org.example.view;
 
 import org.example.audit.AuditSession;
+import org.example.exceptions.InvalidDataException;
 import org.example.models.*;
 import org.example.config.seeders.DatabaseSeeder;
 import org.example.config.DatabaseSetup;
@@ -707,6 +708,140 @@ public class ConsoleApp {
                     System.out.println();
                     break;
 
+                case "11":
+                    System.out.println();
+                    ArrayList<Player> players3 = userService.getAllPlayers();
+                    System.out.println("\033[0;35m" + "<<-- The System's PVP -->>" + "\033[0m");
+                    System.out.println();
+                    for (int i = 0; i < players3.size(); i++) {
+                        int playerNumber = i + 1;
+                        System.out.println("\033[0;34m" + playerNumber + ". " + players3.get(i).toString3() + "\033[0m");
+                    }
+
+                    try {
+                        System.out.println("\033[0;35m" + "Enter the number of the player you want to challenge: " + "\033[0m");
+                        int playerNumber1 = scanner.nextInt();
+                        scanner.nextLine();
+                        if (playerNumber1 < 1 || playerNumber1 > players3.size()) {
+                            throw new InvalidDataException("Invalid player number. Please enter a valid number.");
+                        }
+                        Player player1 = players3.get(playerNumber1 - 1);
+                        if (player1.getId_user() == id) {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to challenge another player..." + "\033[0m");
+                            System.out.println();
+                            break;
+                        }
+                        Player player2 = userService.getPlayer(id);
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the PVP Arena for you..." + "\033[0m");
+                        pause3();
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is summoning the " + "\033[0;34m" + "Player " + player1.getUsername() + "\033[0;33m" + " for you..." + "\033[0m");
+                        pause3();
+
+                        int random2 = (int) (Math.random() * 2);
+                        boolean winP1 = false;
+                        boolean winP2 = false;
+
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is choosing who will strike first..." + "\033[0m");
+                        pause3();
+
+                        if (random2 == 0) {
+                            System.out.println();
+                            System.out.println("\033[0;33m" + "The " + "\033[0;34m" + "Player " + player2.getUsername() + "\033[0;33m" + " will attack first!" + "\033[0m");
+                            while (player1.getHealth() > 0 && player2.getHealth() > 0) {
+                                System.out.println();
+                                System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " -> " + "\033[0;32m" + "Health: " + player1.getHealth() + " \033[0;31m" + "Damage: " + player1.getDamage() + "\033[0m");
+                                System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " -> " + "\033[0;32m" + "Health: " + player2.getHealth() + " \033[0;31m" + "Damage: " + player2.getDamage() + "\033[0m");
+                                player1.setHealth(player1.getHealth() - player2.getDamage());
+                                System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player1.getUsername() + "\033[0;33m" + " with " + player2.getDamage() + " damage." + "\033[0m");
+                                pause2();
+
+                                if (player1.getHealth() <= 0) {
+                                    System.out.println();
+                                    System.out.println("\033[0;34m" + "Player " + player2.getUsername() + "\033[0;33m" + " has defeated " + "\033[0;34m" +  "Player " +  player1.getUsername() + "\033[0;33m" + "!" + "\033[0m");
+                                    winP2 = true;
+                                    break;
+                                }
+
+                                player2.setHealth(player2.getHealth() - player1.getDamage());
+                                System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player2.getUsername() + "\033[0;33m" + " with " + player1.getDamage() + " damage." + "\033[0m");
+                                pause2();
+
+                                if (player2.getHealth() <= 0) {
+                                    System.out.println();
+                                    System.out.println("\033[0;34m" + "Player " + player1.getUsername() + "\033[0;33m" + " has defeated " + "\033[0;34m" +  "Player " +  player2.getUsername() + "\033[0;33m" + "!" + "\033[0m");
+                                    winP1 = true;
+                                    break;
+                                }
+                            }
+
+                        } else {
+                            System.out.println();
+                            System.out.println("\033[0;33m" + "The " + "\033[0;34m" + "Player " + player1.getUsername() + "\033[0;33m" + " will attack first!" + "\033[0m");
+                            while (player1.getHealth() > 0 && player2.getHealth() > 0) {
+                                System.out.println();
+                                System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " -> " + "\033[0;32m" + "Health: " + player1.getHealth() + " \033[0;31m" + "Damage: " + player1.getDamage() + "\033[0m");
+                                System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " -> " + "\033[0;32m" + "Health: " + player2.getHealth() + " \033[0;31m" + "Damage: " + player2.getDamage() + "\033[0m");
+                                player2.setHealth(player2.getHealth() - player1.getDamage());
+                                System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player2.getUsername() + "\033[0;33m" + " with " + player1.getDamage() + " damage." + "\033[0m");
+                                pause2();
+
+                                if (player2.getHealth() <= 0) {
+                                    System.out.println();
+                                    System.out.println("\033[0;34m" + "Player " + player1.getUsername() + "\033[0;33m" + " has defeated " + "\033[0;34m" +  "Player " +  player2.getUsername() + "\033[0;33m" + "!" + "\033[0m");
+                                    winP1 = true;
+                                    break;
+                                }
+
+                                player1.setHealth(player1.getHealth() - player2.getDamage());
+                                System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player1.getUsername() + "\033[0;33m" + " with " + player2.getDamage() + " damage." + "\033[0m");
+                                pause2();
+
+                                if (player1.getHealth() <= 0) {
+                                    System.out.println();
+                                    System.out.println("\033[0;34m" + "Player " + player2.getUsername() + "\033[0;33m" + " has defeated " + "\033[0;34m" +  "Player " +  player1.getUsername() + "\033[0;33m" + "!" + "\033[0m");
+                                    winP2 = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (winP1)
+                        {
+
+                            userService.updatePlayerWins(player1.getId_user());
+                            userService.updatePlayerLosses(player2.getId_user());
+                            AuditSession.getInstance().write("Player " + player1.getUsername() + " defeated Player " + player2.getUsername() + " in PVP.");
+                        }
+
+                        if (winP2)
+                        {
+                            userService.updatePlayerWins(player2.getId_user());
+                            userService.updatePlayerLosses(player1.getId_user());
+                            AuditSession.getInstance().write("Player " + player2.getUsername() + " defeated Player " + player1.getUsername() + " in PVP.");
+                        }
+
+                    } catch (InputMismatchException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        scanner.nextLine();
+                        System.out.println();
+                        break;
+                    } catch (InvalidDataException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter a valid number..." + "\033[0m");
+                        System.out.println();
+                        break;
+                    }
+
+                    System.out.println();
+                    break;
+
+
+
 
                 case "12":
                     System.out.println();
@@ -828,7 +963,7 @@ public class ConsoleApp {
                     if (bossItemsAcquired == 60) achievementsCompleted++;
                     System.out.println((bossItemsAcquired == 60 ? "\033[0;32m" : "\033[0;33m") + "IV. Treasure Hunter - Boss Items Acquired: " + bossItemsAcquired + "/60 " + (bossItemsAcquired == 60 ? "(Completed)" : "(In Progress)") + "\033[0m");
 
-                    int itemsBought = shopService.countItemsBought(id)-60;
+                    int itemsBought = shopService.countItemsBought(id)-bossItemsAcquired;
                     if (itemsBought == 37) achievementsCompleted++;
                     System.out.println((itemsBought == 37 ? "\033[0;32m" : "\033[0;33m") + "V. Shopaholic - Items Bought: " + itemsBought + "/37 " + (itemsBought == 37 ? "(Completed)" : "(In Progress)") + "\033[0m");
 

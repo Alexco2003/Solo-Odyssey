@@ -97,6 +97,16 @@ public class Player extends User{
         return sb.toString();
     }
 
+    public String toString3()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<<-- Player " + id_user + ", " + username + " : " + title + " -->>\n");
+        sb.append("Level = " + level + "\n");
+        sb.append("Damage = " + damage + "\n");
+        sb.append("Health = " + health + "\n");
+        return sb.toString();
+    }
+
 
 
 

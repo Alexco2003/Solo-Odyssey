@@ -2,6 +2,7 @@ package org.example.services;
 
 import org.example.models.Architect;
 import org.example.models.Item;
+import org.example.models.MultiplayerStats;
 import org.example.models.Player;
 import org.example.repositories.ArchitectRepository;
 import org.example.repositories.PlayerRepository;
@@ -126,6 +127,20 @@ public class UserService {
             playerRepository.updateTitleOnReward(playerId, "A-Rank Hunter");
         } else if (player.getLevel() >= 100) {
             playerRepository.updateTitleOnReward(playerId, "S-Rank Hunter");}
+    }
+
+    //Related to multiplayer
+
+    public void updatePlayerWins(int playerId) {
+        playerRepository.updateWins(playerId);
+    }
+
+    public void updatePlayerLosses(int playerId) {
+        playerRepository.updateLosses(playerId);
+    }
+
+    public MultiplayerStats getMultiplayerStats(int playerId) {
+       return playerRepository.getMultiplayerStats(playerId);
     }
 
 }

@@ -12,10 +12,14 @@ BEGIN
 
     --  Quests
 
+     --  Daily Quest (Repeatable)
+    INSERT INTO Quest (id_quest, id_player, name, description, rewardLevel, rewardMoney, completed)
+    VALUES
+        (NEW.id_user*21, NEW.id_user, 'The Preparation To Become Powerful', 'Train to become a formidable combatant.', 1, 50, false);
+
     --  Quests requiring specific actions or tasks
     INSERT INTO Quest (id_quest, id_player, name, description, rewardLevel, rewardMoney, completed)
     VALUES
-        (NEW.id_user*21, NEW.id_user, 'The Lost Key', 'Find the hidden key to unlock the treasure chest.', 2, 150.50, false),
         (NEW.id_user*21+1, NEW.id_user, 'The Enigmatic Riddle', 'Solve the riddle to uncover the hidden passage.', 4, 60.60, false),
         (NEW.id_user*21+2, NEW.id_user, 'The Great Escape', 'Navigate through the labyrinth and reach the exit.', 3, 200.25, false),
         (NEW.id_user*21+3, NEW.id_user, 'The Button Press Challenge', 'Press the button space 100 times within a minute.', 5, 175.50, false),
@@ -26,28 +30,34 @@ BEGIN
         (NEW.id_user*21+8, NEW.id_user, 'The Time Traveler', 'Travel through time and return with evidence of your journey.', 9, 90.00, false),
         (NEW.id_user*21+9, NEW.id_user, 'The Ancient Relic', 'Retrieve the ancient relic guarded by mythical creatures.', 6, 100.00, false);
 
-    --  Dungeon defeat quests
-    INSERT INTO Quest (id_quest, id_player, name, description, rewardLevel, rewardMoney, completed)
-    VALUES
-        (NEW.id_user*21+10, NEW.id_user, 'Defeated 1 Dungeon', 'Successfully defeat 1 dungeon.', 5, 200.00, false),
-        (NEW.id_user*21+11, NEW.id_user, 'Defeated 2 Dungeons', 'Successfully defeat 2 dungeons.', 10, 400.00, false),
-        (NEW.id_user*21+12, NEW.id_user, 'Defeated 3 Dungeons', 'Successfully defeat 3 dungeons.', 15, 600.00, false),
-        (NEW.id_user*21+13, NEW.id_user, 'Defeated 5 Dungeons', 'Successfully defeat 5 dungeons.', 20, 800.00, false),
-        (NEW.id_user*21+14, NEW.id_user, 'Defeated 10 Dungeons', 'Successfully defeat 10 dungeons.', 25, 1000.00, false);
+        --  Dungeon defeat quests
+        INSERT INTO Quest (id_quest, id_player, name, description, rewardLevel, rewardMoney, completed)
+        VALUES
+            (NEW.id_user*21+10, NEW.id_user, 'Dungeon Novice', 'Successfully defeat 1 dungeon.', 5, 200.00, false),
+            (NEW.id_user*21+11, NEW.id_user, 'Dungeon Explorer', 'Successfully defeat 2 dungeons.', 10, 400.00, false),
+            (NEW.id_user*21+12, NEW.id_user, 'Dungeon Conqueror', 'Successfully defeat 3 dungeons.', 15, 600.00, false),
+            (NEW.id_user*21+13, NEW.id_user, 'Dungeon Master', 'Successfully defeat 5 dungeons.', 20, 800.00, false),
+            (NEW.id_user*21+14, NEW.id_user, 'Dungeon Legend', 'Successfully defeat 10 dungeons.', 25, 1000.00, false);
 
     --  Secret endgame quest
     INSERT INTO Quest (id_quest, id_player, name, description, rewardLevel, rewardMoney, completed)
     VALUES
-        (NEW.id_user*21+15, NEW.id_user, 'The Final Confrontation', 'Details will be revealed soon...', 100, 10000.00, false);
+        (NEW.id_user*21+15, NEW.id_user, 'The Final Confrontation', 'Details will be revealed soon...', 1000, 10000.00, false);
 
     --  PVP quests
     INSERT INTO Quest (id_quest, id_player, name, description, rewardLevel, rewardMoney, completed)
     VALUES
-        (NEW.id_user*21+16, NEW.id_user, 'Defeated 1 Player', 'Successfully defeat 1 player in PVP.', 20, 250.00, false),
-        (NEW.id_user*21+17, NEW.id_user, 'Defeated 2 Players', 'Successfully defeat 2 players in PVP.', 25, 500.00, false),
-        (NEW.id_user*21+18, NEW.id_user, 'Defeated 3 Players', 'Successfully defeat 3 players in PVP.', 30, 750.00, false),
-        (NEW.id_user*21+19, NEW.id_user, 'Defeated 4 Players', 'Successfully defeat 4 players in PVP.', 40, 1000.00, false),
-        (NEW.id_user*21+20, NEW.id_user, 'Defeated 5 Players', 'Successfully defeat 5 players in PVP.', 50, 1250.00, false);
+        (NEW.id_user*21+16, NEW.id_user, 'PVP Initiate', 'Successfully win 1 PVP match.', 20, 250.00, false),
+        (NEW.id_user*21+17, NEW.id_user, 'PVP Contender', 'Successfully win 5 PVP matches.', 25, 500.00, false),
+        (NEW.id_user*21+18, NEW.id_user, 'PVP Gladiator', 'Successfully win 10 PVP matches.', 30, 750.00, false),
+        (NEW.id_user*21+19, NEW.id_user, 'PVP Champion', 'Successfully win 20 PVP matches.', 40, 1000.00, false),
+        (NEW.id_user*21+20, NEW.id_user, 'PVP Conqueror', 'Successfully win 50 PVP matches.', 50, 1250.00, false);
+
+
+    -- Multiplayer Stats
+    INSERT INTO MultiplayerStats (id_multiplayer, id_user, lostMatches, wonMatches)
+    VALUES
+        (NEW.id_user, NEW.id_user, 0, 0);
 
     -- Items
     INSERT INTO Item (id_item, id_shop, name, description, price, damage, health, quantity, isBought, isStolen)
@@ -562,60 +572,3 @@ SHOW TRIGGERS;
 -- Initital Data
 INSERT INTO User(id_user,username,password) VALUES(1,'The Architect','2003');
 INSERT INTO Architect(id_user,level) VALUES(1,1000);
-
-
-
-
-
-
-
-
-
--- Testing and stuff
-INSERT INTO User(username,password) VALUES('admin1','admin1');
-INSERT INTO User(id_user,username,password) VALUES(1,'admin','admin');
-INSERT INTO User(id_user,username,password) VALUES(1,'The Architect','admin');-- The Architect (for testing)
-INSERT INTO Architect(id_user,level) VALUES(1,1000);
-
-INSERT INTO User(id_user, username,password) VALUES(2,'user','user'); -- A Player (for testing)
-INSERT INTO Player(id_user,level,title,damage,health,money) VALUES(42,1,'Adventurer',50,10000,145.50);
-
-
-DELETE FROM Player WHERE id_user = 2;
-
-select * from User;
-select * from Player;
-select * from Architect;
-
-delete from User;
-delete from Architect;
-delete from Enemy;
-delete from player;
-
-select * from enemy;
-
-select * from PlayerInventory;
-
-select * from Dungeon;
-
-SELECT * FROM User;
-SELECT * FROM Architect;
-SELECT * FROM Player;
-SELECT * FROM Quest;
-SELECT * FROM Shop;
-SELECT * FROM Item;
-SELECT * FROM PlayerInventory;
-SELECT * FROM Dungeon;
-SELECT * FROM Enemy;
-SELECT * FROM DungeonEnemy;
-SELECT * FROM Tank;
-SELECT * FROM Assassin;
-SELECT * FROM Mage;
-SELECT * FROM BossTank;
-SELECT * FROM BossMage;
-SELECT * FROM BossAssassin;
-SELECT * FROM BossTankInventory;
-SELECT * FROM BossMageInventory;
-SELECT * FROM BossAssassinInventory;
-
-

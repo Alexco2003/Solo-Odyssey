@@ -26,6 +26,15 @@ CREATE TABLE Player (
     PRIMARY KEY(id_user)
 );
 
+CREATE TABLE MultiplayerStats (
+    id_multiplayer INT AUTO_INCREMENT,
+    id_user INT,
+    lostMatches INT CHECK (lostMatches >= 0),
+    wonMatches INT CHECK (wonMatches >= 0),
+    FOREIGN KEY(id_user) REFERENCES User(id_user) ON DELETE CASCADE,
+    PRIMARY KEY(id_multiplayer)
+);
+
 CREATE TABLE Quest (
     id_quest INT AUTO_INCREMENT,
     id_player INT,
@@ -168,6 +177,7 @@ CREATE TABLE BossAssassinInventory (
 DROP TABLE User;
 DROP TABLE Architect;
 DROP TABLE Player;
+DROP TABLE MultiplayerStats;
 DROP TABLE Quest;
 DROP TABLE Shop;
 DROP TABLE Item;
@@ -187,6 +197,7 @@ DROP TABLE BossAssassinInventory;
 
 DELETE FROM User;
 DELETE FROM Player;
+DELETE FROM MultiplayerStats;
 DELETE FROM Architect;
 DELETE FROM Quest;
 DELETE FROM Shop;
@@ -208,6 +219,7 @@ DELETE FROM BossAssassinInventory;
 SELECT * FROM User;
 SELECT * FROM Architect;
 SELECT * FROM Player;
+SELECT * FROM MultiplayerStats;
 SELECT * FROM Quest;
 SELECT * FROM Shop;
 SELECT * FROM Item;

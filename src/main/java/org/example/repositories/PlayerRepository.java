@@ -1,9 +1,6 @@
 package org.example.repositories;
 
-import org.example.models.Item;
-import org.example.models.Player;
-import org.example.models.PlayerInventory;
-import org.example.models.User;
+import org.example.models.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -416,6 +413,60 @@ public class PlayerRepository implements GenericRepository<Player> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    //Related to multiplayer stats
+    public void updateWins(int playerId) {
+        String sql = "UPDATE MultiplayerStats SET wonMatches = wonMatches + 1 WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, playerId);
+
+            pstmt.executeUpdate();
+            this.auditDatabase.write(sql, MultiplayerStats.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateLosses(int playerId) {
+        String sql = "UPDATE MultiplayerStats SET lostMatches = lostMatches + 1 WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, playerId);
+
+            pstmt.executeUpdate();
+            this.auditDatabase.write(sql, MultiplayerStats.class, "Done successfully!");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public MultiplayerStats getMultiplayerStats(int playerId) {
+        String sql = "SELECT * FROM MultiplayerStats WHERE id_user = ?";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, playerId);
+            ResultSet rs = pstmt.executeQuery();
+            this.auditDatabase.write(sql, MultiplayerStats.class, "Done successfully!");
+
+            if (rs.next()) {
+                return new MultiplayerStats(rs.getInt("id_multiplayer"), rs.getInt("id_user"), rs.getInt("wonMatches"), rs.getInt("lostMatches"));
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
 
 

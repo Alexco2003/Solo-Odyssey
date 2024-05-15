@@ -48,9 +48,24 @@ public class MultiplayerStats {
 
     @Override
     public String toString() {
-        return "Wins =" + wins + "\n" + "Losses =" + losses;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Total matches = ").append(getTotalMatches()).append("\n");
+        sb.append("Wins = ").append(wins).append("\n");
+        sb.append("Losses = ").append(losses).append("\n");
+        sb.append("Win rate = ").append(getWinRate()).append("%").append("\n");
+        return sb.toString();
 
     }
+
+    public int getTotalMatches() {
+        return wins + losses;
+    }
+
+    public double getWinRate() {
+        if (getTotalMatches() == 0) return 0;
+        return (double) wins / getTotalMatches() * 100;
+    }
+
 
 
 }

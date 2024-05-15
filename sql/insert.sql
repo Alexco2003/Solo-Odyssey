@@ -31,9 +31,9 @@ BEGIN
         (NEW.id_user*21+6, NEW.id_user, 'The Logic Puzzle', 'Intelligence and logic are intertwined.', 10, 110.40, false),
 
         --  Memory quests
-        (NEW.id_user*21+7, NEW.id_user, 'The Crystal Collection', 'Collect 10 crystals scattered across the land.', 8, 85.00, false),
-        (NEW.id_user*21+8, NEW.id_user, 'The Time Traveler', 'Travel through time and return with evidence of your journey.', 9, 90.00, false),
-        (NEW.id_user*21+9, NEW.id_user, 'The Ancient Relic', 'Retrieve the ancient relic guarded by mythical creatures.', 6, 100.00, false);
+        (NEW.id_user*21+7, NEW.id_user, 'The Rainbow', 'As a hunter, you need both good eyes and a sharp memory.', 8, 85.00, false),
+        (NEW.id_user*21+8, NEW.id_user, 'The Mathematician', 'In the heat of battle, you need quick wit and sharp calculation skills to outsmart your enemies.', 9, 90.00, false),
+        (NEW.id_user*21+9, NEW.id_user, 'The Time Traveler', 'Remember and reconstruct the events of the past, or go back.', 6, 100.00, false);
 
         --  Dungeon defeat quests
         INSERT INTO Quest (id_quest, id_player, name, description, rewardLevel, rewardMoney, completed)

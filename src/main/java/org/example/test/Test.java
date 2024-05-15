@@ -1,5 +1,23 @@
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 package org.example.test;
 import java.util.Scanner;
 import java.util.concurrent.*;
@@ -8,12 +26,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Test {
     public static void main(String[] args) {
 
-        String sentence1 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The System " + "\033[0;33m" + "was created by ... to make the ... stronger.'";
-        String sentence2 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;34m" + "The Player " + "\033[0;33m" + "will get s....... and s....... with the help of " + "\033[0;35m" + "The System" + "\033[0;33m" + ".'";
-        String sentence3 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The Architect " + "\033[0;33m" + "is the creator of " + "\033[0;35m" + "..." + "\033[0;33m" + " , and the master of the " + "\033[0;34m" + "... " + "\033[0;33m" + ".'";
-        System.out.println(sentence1);
-        System.out.println(sentence2);
-        System.out.println(sentence3);
+
+//        String sentence1 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The System " + "\033[0;33m" + "was created by ... to make the ... stronger.'";
+//        String sentence2 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;34m" + "The Player " + "\033[0;33m" + "will get s....... and s....... with the help of " + "\033[0;35m" + "The System" + "\033[0;33m" + ".'";
+//        String sentence3 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The Architect " + "\033[0;33m" + "is the creator of " + "\033[0;35m" + "..." + "\033[0;33m" + " , and the master of the " + "\033[0;34m" + "... " + "\033[0;33m" + ".'";
+//        System.out.println(sentence1);
+//        System.out.println(sentence2);
+//        System.out.println(sentence3);
     }
 //        AtomicBoolean isTimeout = new AtomicBoolean(false);
 //

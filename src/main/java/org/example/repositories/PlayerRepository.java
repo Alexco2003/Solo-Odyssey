@@ -368,11 +368,13 @@ public class PlayerRepository implements GenericRepository<Player> {
     public void updateLevelOnReward(int playerId, int level) {
         String sqlUpdateLevel = "UPDATE Player SET level = level + 1 WHERE id_user = ?";
         String sqlUpdateHealthDamage = "UPDATE Player SET health = health + ?, damage = damage + ? WHERE id_user = ?";
+        String sqlCheckLevel = "UPDATE Player SET level = 999 WHERE id_user = ? AND level > 999";
         Connection conn = this.databaseConnection.getConnection();
 
         try {
             PreparedStatement pstmtUpdateLevel = conn.prepareStatement(sqlUpdateLevel);
             PreparedStatement pstmtUpdateHealthDamage = conn.prepareStatement(sqlUpdateHealthDamage);
+            PreparedStatement pstmtCheckLevel = conn.prepareStatement(sqlCheckLevel);
 
             while (level != 0) {
 
@@ -389,8 +391,12 @@ public class PlayerRepository implements GenericRepository<Player> {
                 level--;
             }
 
+            pstmtCheckLevel.setInt(1, playerId);
+            pstmtCheckLevel.executeUpdate();
+
             this.auditDatabase.write(sqlUpdateLevel, Player.class, "Done successfully!");
             this.auditDatabase.write(sqlUpdateHealthDamage, Player.class, "Done successfully!");
+            this.auditDatabase.write(sqlCheckLevel, Player.class, "Done successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

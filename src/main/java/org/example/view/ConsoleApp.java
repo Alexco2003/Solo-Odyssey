@@ -7,10 +7,15 @@ import org.example.config.seeders.DatabaseSeeder;
 import org.example.config.DatabaseSetup;
 import org.example.services.*;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 public class ConsoleApp {
     private static ConsoleApp instance = null;
@@ -245,14 +250,16 @@ public class ConsoleApp {
         System.out.println("\033[0;34m" + "9. Play Dungeons                     |" + "\033[0m");
         System.out.println("\033[0;34m" + "10. Play Quests                      |" + "\033[0m");
         System.out.println("\033[0;34m" + "11. Play PVP                         |" + "\033[0m");
+        System.out.println("\033[0;34m" + "12. Play Arena                       |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
-        System.out.println("\033[0;34m" + "12. Codex                            |" + "\033[0m");
-        System.out.println("\033[0;34m" + "13. Achievements                     |" + "\033[0m");
-        System.out.println("\033[0;34m" + "14. Leaderboard                      |" + "\033[0m");
+        System.out.println("\033[0;34m" + "13. Codex                            |" + "\033[0m");
+        System.out.println("\033[0;34m" + "14. Achievements                     |" + "\033[0m");
+        System.out.println("\033[0;34m" + "15. PVP Stats                        |" + "\033[0m");
+        System.out.println("\033[0;34m" + "16. Leaderboard                      |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
-        System.out.println("\033[0;34m" + "15. Tutorial                         |" + "\033[0m");
+        System.out.println("\033[0;34m" + "17. Tutorial                         |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
-        System.out.println("\033[0;34m" + "200. Exit                            |" + "\033[0m");
+        System.out.println("\033[0;34m" + "18. Exit                             |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
         System.out.println("\033[0;34m" + "Enter command: " + "\033[0m");
 
@@ -465,10 +472,10 @@ public class ConsoleApp {
                         }
                         enemyService.updateEnemyEncountered(enemy.getId_enemy());
                         System.out.println();
-                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the " + enemy.getName() + " for you..." + "\033[0m");
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the '" + enemy.getName() + "' for you..." + "\033[0m");
                         if (enemy instanceof BossAssassin || enemy instanceof BossMage || enemy instanceof BossTank)
                         {
-                            System.out.println("\033[0;33m" + "Standing before you is " + enemy.getName() + ", the formidable Boss of this Dungeon! " + "\033[0;35m" + "The System " + "\033[0;33m" + "is pleased with your progress and awaits the outcome of this confrontation." + "\033[0m");
+                            System.out.println("\033[0;33m" + "Standing before you is '" + enemy.getName() + "', the formidable Boss of this Dungeon! " + "\033[0;35m" + "The System " + "\033[0;33m" + "is pleased with your progress and awaits the outcome of this confrontation." + "\033[0m");
                         }
 
                         pause3();
@@ -482,13 +489,13 @@ public class ConsoleApp {
                             if (enemy instanceof Assassin) {
 
                                 enemy.setHealth(enemy.getHealth() - player.getDamage());
-                                System.out.println("\033[0;33m" + "You attacked the " + enemy.getName() + " with " + player.getDamage() + " damage." + "\033[0m");
+                                System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
                                 pause2();
 
                                 if (enemy.getHealth() <= 0)
                                 {
                                     System.out.println();
-                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
                                     if (enemy instanceof BossAssassin)
                                     {
                                         AuditSession.getInstance().write("Player " + username + " defeated the Boss " + enemy.getName() + ".");
@@ -573,17 +580,17 @@ public class ConsoleApp {
                                 int random = (int) (Math.random() * 100) + 1;
 
                                 if (random <= criticalChance) {
-                                    System.out.println("\033[0;33m" + "The " + enemy.getName() + " will use a critical strike!" + "\033[0m");
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will use a critical strike!" + "\033[0m");
                                     damage *= 2;
                                 }
 
-                                System.out.println("\033[0;33m" + "The " + enemy.getName() + " attacked you with " + damage + " damage." + "\033[0m");
+                                System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
                                 player.setHealth(player.getHealth() - damage);
 
                                 if (player.getHealth() <= 0)
                                 {
                                     System.out.println();
-                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
                                     if (enemy instanceof BossAssassin)
                                     {
                                         AuditSession.getInstance().write("Player " + username + " was defeated by the Boss " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
@@ -602,13 +609,13 @@ public class ConsoleApp {
 
 
                                 enemy.setHealth(enemy.getHealth() - player.getDamage());
-                                System.out.println("\033[0;33m" + "You attacked the " + enemy.getName() + " with " + player.getDamage() + " damage." + "\033[0m");
+                                System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
                    pause2();
 
                                 if (enemy.getHealth() <= 0)
                                 {
                                     System.out.println();
-                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
                                     if (enemy instanceof BossMage)
                                     {
                                         AuditSession.getInstance().write("Player " + username + " defeated the Boss " + enemy.getName() + ".");
@@ -698,29 +705,29 @@ public class ConsoleApp {
                                     if (random == 0) {
                                         damage = (int) (damage * 1.5);
                                         ((Mage) enemy).setMana(mana - 20);
-                                        System.out.println("\033[0;33m" + "The " + enemy.getName() + " will have increased damage!" + "\033[0m");
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will have increased damage!" + "\033[0m");
 
                                     } else {
 
                                         heal = (int) (enemy.getHealth() * 0.1);
                                         enemy.setHealth(enemy.getHealth() + heal);
                                         ((Mage) enemy).setMana(mana - 20);
-                                        System.out.println("\033[0;33m" + "The " + enemy.getName() + " will heal itself!" + "\033[0m");
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will heal itself!" + "\033[0m");
 
                                     }
                                 }
                                 else
                                 {
-                                    System.out.println("\033[0;33m" + "The " + enemy.getName() + " has no mana left!" + "\033[0m");
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no mana left!" + "\033[0m");
                                 }
 
-                                System.out.println("\033[0;33m" + "The " + enemy.getName() + " attacked you with " + damage + " damage." + "\033[0m");
+                                System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
                                 player.setHealth(player.getHealth() - damage);
 
                                 if (player.getHealth() <= 0)
                                 {
                                     System.out.println();
-                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
                                     if (enemy instanceof BossMage)
                                     {
                                         AuditSession.getInstance().write("Player " + username + " was defeated by the Boss " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
@@ -740,7 +747,7 @@ public class ConsoleApp {
                                 int armor = ((Tank) enemy).getArmor();
                                 if(armor>0)
                                 {
-                                    System.out.println("\033[0;33m" + "The " + enemy.getName() + " has armor!" + "\033[0m");
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has armor!" + "\033[0m");
                                     ((Tank) enemy).setArmor(armor - player.getDamage());
                                     armor = ((Tank) enemy).getArmor();
                                     if (armor < 0)
@@ -752,18 +759,18 @@ public class ConsoleApp {
                                 }
                                 else
                                 {
-                                    System.out.println("\033[0;33m" + "The " + enemy.getName() + " has no armor!" + "\033[0m");
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no armor!" + "\033[0m");
                                     enemy.setHealth(enemy.getHealth() - player.getDamage());
                                 }
 
-                                System.out.println("\033[0;33m" + "You attacked the " + enemy.getName() + " with " + player.getDamage() + " damage." + "\033[0m");
+                                System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
 
                                 pause2();
 
                                 if (enemy.getHealth() <= 0)
                                 {
                                     System.out.println();
-                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the " + enemy.getName() + "!" + "\033[0m");
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
                                     if (enemy instanceof BossTank)
                                     {
                                         AuditSession.getInstance().write("Player " + username + " defeated the Boss " + enemy.getName() + ".");
@@ -845,13 +852,13 @@ public class ConsoleApp {
 
                                 int damage = enemy.getDamage();
 
-                                System.out.println("\033[0;33m" + "The " + enemy.getName() + " attacked you with " + damage + " damage." + "\033[0m");
+                                System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
                                 player.setHealth(player.getHealth() - damage);
 
                                 if (player.getHealth() <= 0)
                                 {
                                     System.out.println();
-                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the " + enemy.getName() + "..." + "\033[0m");
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
                                     if (enemy instanceof BossTank)
                                     {
                                         AuditSession.getInstance().write("Player " + username + " was defeated by the Boss " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
@@ -977,6 +984,7 @@ public class ConsoleApp {
                                 }
 
                                 displayCountdown();
+                                flushConsole();
 
 
 
@@ -1014,6 +1022,7 @@ public class ConsoleApp {
                                 System.out.println("\033[0;35m" + "========================================" + "\033[0m");
 
                                 displayCountdown();
+                                flushConsole();
                                 System.out.println();
 
 
@@ -1077,6 +1086,7 @@ public class ConsoleApp {
                                 System.out.println("\033[0;35m" + "========================================" + "\033[0m");
 
                                 displayCountdown();
+                                flushConsole();
                                 System.out.println();
 
                                 Random rand = new Random();
@@ -1155,6 +1165,7 @@ public class ConsoleApp {
                                 System.out.println("\033[0;35m" + "========================================" + "\033[0m");
 
                                 displayCountdown();
+                                flushConsole();
                                 System.out.println();
 
                                 Random rand = new Random();
@@ -1243,6 +1254,7 @@ public class ConsoleApp {
                                 System.out.println("\033[0;35m" + "========================================" + "\033[0m");
 
                                 displayCountdown();
+                                flushConsole();
                                 System.out.println();
 
                                 System.out.println("\033[0;33m" + "Riddle: " + "\033[0;35m" + "What gets bigger, the more you take away?" + "\033[0m");
@@ -1284,6 +1296,7 @@ public class ConsoleApp {
                                 System.out.println("\033[0;35m" + "========================================" + "\033[0m");
 
                                 displayCountdown();
+                                flushConsole();
                                 System.out.println();
 
                                 AtomicBoolean isTimeout = new AtomicBoolean(false);
@@ -1326,6 +1339,7 @@ public class ConsoleApp {
                                 try {
                                     String[] result = future.get(5, TimeUnit.SECONDS);
                                     if (!isTimeout.get()) {
+                                        flushConsole();
                                         int sentenceChoice = Integer.parseInt(result[2]);
                                         if (sentenceChoice == 0)
                                         {
@@ -1419,38 +1433,542 @@ public class ConsoleApp {
                                 System.out.println("\033[0;33m" + "|| Complete the quiz.                 ||");
                                 System.out.println("\033[0;33m" + "|| You need to answer correctly,      ||");
                                 System.out.println("\033[0;33m" + "|| on all questions.                  ||");
-                                System.out.println("\033[0;33m" + "|| A question can have multiple       ||");
-                                System.out.println("\033[0;33m" + "|| correct answers. If A and B are    ||");
-                                System.out.println("\033[0;33m" + "|| correct, write 'AB' or 'BA',       ||");
-                                System.out.println("\033[0;33m" + "|| for example.                       ||");
+                                System.out.println("\033[0;33m" + "|| A question can have only one       ||");
+                                System.out.println("\033[0;33m" + "|| correct answer.                    ||");
                                 System.out.println("\033[0;35m" + "========================================" + "\033[0m");
 
                                 displayCountdown();
+                                flushConsole();
                                 System.out.println();
 
                                 int correctAnswers = 0;
-                                int totalQuestions = 5;
+                                int totalQuestions = 4;
+
+                                System.out.println("\033[0;33m" + "1. There are two enemies in front of an enemy, two enemies behind an enemy and an enemy in the middle. How many enemies are there?" + "\033[0m");
+                                System.out.println("\033[0;33m" + "a) 4" + "\033[0m");
+                                System.out.println("\033[0;33m" + "b) 3" + "\033[0m");
+                                System.out.println("\033[0;33m" + "c) 2" + "\033[0m");
+                                System.out.println("\033[0;33m" + "d) 5" + "\033[0m");
+                                System.out.println();
+
+                                flushConsole();
+                                System.out.println("\033[0;33m" + "Enter your answer: " + "\033[0m");
+                                String answer1 = scanner.nextLine();
+                                if (answer1.trim().equalsIgnoreCase("b")) {
+                                    correctAnswers++;
+                                }
+
+                                System.out.println();
+                                System.out.println("\033[0;33m" + "2. Five players were killing monsters, A finished before B, but behind C. D finished before E, but behind B. What was the finishing order?" + "\033[0m");
+                                System.out.println("\033[0;33m" + "1. A, B, C, D, E" + "\033[0m");
+                                System.out.println("\033[0;33m" + "2. A, C, B, D, E" + "\033[0m");
+                                System.out.println("\033[0;33m" + "3. C, A, B, D, E" + "\033[0m");
+                                System.out.println("\033[0;33m" + "4. C, A, D, B, E" + "\033[0m");
+
+                                flushConsole();
+                                System.out.println();
+                                System.out.println("\033[0;33m" + "Enter your answer: " + "\033[0m");
+                                String answer2 = scanner.nextLine();
+                                if (answer2.trim().equalsIgnoreCase("3")) {
+                                    correctAnswers++;
+                                }
+
+                                System.out.println();
+                                System.out.println("\033[0;33m" + "3. Player A is looking at Player B. Player B is looking at Player C. Player A is marked, Player C is not, and we don’t know if Player B is marked. Is a marked person looking at an unmarked person?" + "\033[0m");
+                                System.out.println("\033[0;33m" + "T. True" + "\033[0m");
+                                System.out.println("\033[0;33m" + "F. False" + "\033[0m");
+
+                                flushConsole();
+                                System.out.println();
+                                System.out.println("\033[0;33m" + "Enter your answer: " + "\033[0m");
+                                String answer3 = scanner.nextLine();
+                                if (answer3.trim().equalsIgnoreCase("T")) {
+                                    correctAnswers++;
+                                }
+
+                                System.out.println();
+                                System.out.println("\033[0;33m" + "4. A Player has 53 enemies to fight in one Dungeon: 21 assassins, 15 mages and 17 tanks. The lights are out and he is completely in the dark. How many enemies must he take out to make 100 percent certain he has taken down at least one mage?" + "\033[0m");
+                                System.out.println("\033[0;33m" + "A. 21" + "\033[0m");
+                                System.out.println("\033[0;33m" + "B. 39" + "\033[0m");
+                                System.out.println("\033[0;33m" + "C. 53" + "\033[0m");
+                                System.out.println("\033[0;33m" + "D. 38" + "\033[0m");
+
+                                flushConsole();
+                                System.out.println();
+                                System.out.println("\033[0;33m" + "Enter your answer: " + "\033[0m");
+                                String answer4 = scanner.nextLine();
+                                if (answer4.trim().equalsIgnoreCase("B")) {
+                                    correctAnswers++;
+                                }
+
+                                if (correctAnswers == totalQuestions) {
+                                    System.out.println();
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Intelligence Quest 3!" + "\033[0m");
+                                    if (!quest.isCompleted()) {
+                                        questService.completeQuest(quest.getId_quest());
+                                        userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                    }
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
+                                } else {
+                                    System.out.println();
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 3..." + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
+                                }
 
 
-                                // TODO : quiz
+
+
+
+
 
 
                             }
                             if (questIndex == 7)
                             {
 
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                System.out.println("\033[0;33m" + "||                                    ||");
+                                System.out.println("\033[0;33m" + "|| Watch the sequence of colored      ||");
+                                System.out.println("\033[0;33m" + "|| rectangles.                        ||");
+                                System.out.println("\033[0;33m" + "|| You need to answer which color     ||");
+                                System.out.println("\033[0;33m" + "|| was seen the most.                 ||");
+                                System.out.println("\033[0;33m" + "|| Possible colors : 'Green', 'Red',  ||");
+                                System.out.println("\033[0;33m" + "|| 'Blue', 'Yellow', 'Purple'         ||");
+                                System.out.println("\033[0;33m" + "|| Example Answer : 'Green'           ||");
+                                System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+
+                                displayCountdown();
+                                flushConsole();
+                                System.out.println();
+
+                                String[] colors = {"\033[0;31m███", "\033[0;32m███", "\033[0;34m███", "\033[0;33m███", "\033[0;35m███"};
+                                int[] colorCounts = new int[colors.length];
+                                List<String> colorSequence = new ArrayList<>();
+
+                                Random rand = new Random();
+
+                                int cntMax = -1;
+                                int maxIndex = -1;
+
+                                for (int i = 0; i < colors.length; i++) {
+                                    colorCounts[i] = rand.nextInt(5) + 1;
+                                    if (colorCounts[i] > cntMax) {
+                                        cntMax = colorCounts[i];
+                                        maxIndex = i;
+                                    }
+                                }
+
+                                for (int i = 0; i < colors.length; i++) {
+                                    if (colorCounts[i] == cntMax && i != maxIndex) {
+                                        colorCounts[i]--;
+                                    }
+
+                                    for (int j = 0; j < colorCounts[i]; j++) {
+                                        colorSequence.add(colors[i]);
+                                    }
+                                }
+
+                                Collections.shuffle(colorSequence);
+
+                                int cntRed = 0;
+                                int cntGreen = 0;
+                                int cntBlue = 0;
+                                int cntYellow = 0;
+                                int cntPurple = 0;
+
+
+                                for (String color : colorSequence) {
+                                    System.out.print("\r" + color);
+                                    if (color.equals("\033[0;31m███")) {
+                                        cntRed++;
+                                    }
+                                    if (color.equals("\033[0;32m███")) {
+                                        cntGreen++;
+                                    }
+                                    if (color.equals("\033[0;34m███")) {
+                                        cntBlue++;
+                                    }
+                                    if (color.equals("\033[0;33m███")) {
+                                        cntYellow++;
+                                    }
+                                    if (color.equals("\033[0;35m███")) {
+                                        cntPurple++;
+                                    }
+                                    try {
+                                        Thread.sleep(1000);
+                                        while (System.in.available() > 0) {
+                                            System.in.read();
+                                        }
+                                    } catch (InterruptedException | IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                flushConsole();
+
+                                System.out.println("\033[0;33m" + "\rEnter your answer: " + "\033[0m");
+                                String answer = scanner.nextLine();
+
+                                boolean correctAnswer = false;
+
+                                if (answer.trim().equalsIgnoreCase("Red") && cntRed == cntMax) {
+                                    System.out.println();
+                                    correctAnswer = true;
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Memory Quest 1!" + "\033[0m");
+                                    if (!quest.isCompleted()) {
+                                        questService.completeQuest(quest.getId_quest());
+                                        userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                    }
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
+                                }
+
+                                if (answer.trim().equalsIgnoreCase("Green") && cntGreen == cntMax) {
+                                    System.out.println();
+                                    correctAnswer = true;
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Memory Quest 1!" + "\033[0m");
+                                    if (!quest.isCompleted()) {
+                                        questService.completeQuest(quest.getId_quest());
+                                        userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                    }
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
+                                }
+
+                                if (answer.trim().equalsIgnoreCase("Blue") && cntBlue == cntMax) {
+                                    System.out.println();
+                                    correctAnswer = true;
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Memory Quest 1!" + "\033[0m");
+                                    if (!quest.isCompleted()) {
+                                        questService.completeQuest(quest.getId_quest());
+                                        userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                    }
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
+                                }
+
+                                if (answer.trim().equalsIgnoreCase("Yellow") && cntYellow == cntMax) {
+                                    System.out.println();
+                                    correctAnswer = true;
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Memory Quest 1!" + "\033[0m");
+                                    if (!quest.isCompleted()) {
+                                        questService.completeQuest(quest.getId_quest());
+                                        userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                    }
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
+                                }
+
+                                if (answer.trim().equalsIgnoreCase("Purple") && cntPurple == cntMax) {
+                                    System.out.println();
+                                    correctAnswer = true;
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Memory Quest 1!" + "\033[0m");
+                                    if (!quest.isCompleted()) {
+                                        questService.completeQuest(quest.getId_quest());
+                                        userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                    }
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
+                                }
+
+                                if (!correctAnswer) {
+                                    System.out.println();
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Memory Quest 1..." + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
+
+                                }
+
 
                             }
                             if (questIndex == 8)
                             {
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                System.out.println("\033[0;33m" + "||                                    ||");
+                                System.out.println("\033[0;33m" + "|| Watch the sequence of numbers and  ||");
+                                System.out.println("\033[0;33m" + "|| symbols.                           ||");
+                                System.out.println("\033[0;33m" + "|| Your answer need to be the result  ||");
+                                System.out.println("\033[0;33m" + "|| of all the operations.             ||");
+                                System.out.println("\033[0;33m" + "|| Possible symbols : '+', '-', 'x',  ||");
+                                System.out.println("\033[0;33m" + "|| ':'. For ':', ignore the rest of   ||");
+                                System.out.println("\033[0;33m" + "|| the division. For example,         ||");
+                                System.out.println("\033[0;33m" + "|| '9:4' will result in 2.            ||");
+                                System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+
+                                displayCountdown();
+                                flushConsole();
+                                System.out.println();
+
+                                Random rand = new Random();
+                                int operationsCount = rand.nextInt(11) + 5;
+                                String[] symbols = {"+", "-", "x", ":"};
+                                List<String> sequence = new ArrayList<>();
+
+                                for (int i = 0; i < operationsCount; i++) {
+                                    int number = rand.nextInt(10);
+                                    String symbol = symbols[rand.nextInt(4)];
+
+                                    if (symbol.equals(":") && number == 0) {
+                                        number = rand.nextInt(9) + 1;
+                                    }
+                                    sequence.add(symbol);
+                                    sequence.add(String.valueOf(number));
+                                }
+
+
+                                sequence.removeFirst();
+
+
+                                for (String s : sequence) {
+                                    System.out.print("\033[0;33m" + "\r" + s + "\033[0m");
+                                    pause2();
+                                }
+
+
+                                int result = 0;
+                                String previousOperator = "+";
+                                for (String s : sequence) {
+                                    if (s.matches("\\d+")) {
+                                        switch (previousOperator) {
+                                            case "+":
+                                                result += Integer.parseInt(s);
+                                                break;
+                                            case "-":
+                                                result -= Integer.parseInt(s);
+                                                break;
+                                            case "x":
+                                                result *= Integer.parseInt(s);
+                                                break;
+                                            case ":":
+                                                result /= Integer.parseInt(s);
+                                                break;
+                                        }
+                                    } else {
+                                        previousOperator = s;
+                                    }
+                                }
+
+                                try {
+                                    System.out.println("\033[0;33m" + "\rEnter your answer: ");
+                                    int userAnswer = scanner.nextInt();
+                                    scanner.nextLine();
+
+                                    if (userAnswer == result){
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Memory Quest 2!" + "\033[0m");
+                                        if (!quest.isCompleted()) {
+                                            questService.completeQuest(quest.getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                        }
+                                        AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
+                                    } else {
+                                        System.out.println();
+                                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Memory Quest 2..." + "\033[0m");
+                                        AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
+                                    }
+
+                                } catch (InputMismatchException e) {
+                                    System.out.println();
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                                    System.out.println();
+                                    scanner.nextLine();
+                                    break;
+                                }
+
+
 
                             }
                             if (questIndex == 9)
                             {
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                System.out.println("\033[0;33m" + "||                                    ||");
+                                System.out.println("\033[0;33m" + "|| Watch the sequence of words and    ||");
+                                System.out.println("\033[0;33m" + "|| reconstruct the phrase.            ||");
+                                System.out.println("\033[0;33m" + "|| Your answer need to be the correct ||");
+                                System.out.println("\033[0;33m" + "|| phrase.                            ||");
+                                System.out.println("\033[0;33m" + "|| Example of answer: 'The strong     ||");
+                                System.out.println("\033[0;33m" + "|| eat the weak'                      ||");
+                                System.out.println("\033[0;33m" + "|| This quest is case-sensitive.      ||");
+                                System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+
+                                displayCountdown();
+                                flushConsole();
+                                System.out.println("\033[0m");
+
+                                String[] words = {"The", "System", "is", "a", "world", "full", "of", "secrets", "and", "mysteries"};
+                                String[] words2 = {"The", "Player", "needs", "to", "get", "stronger", "in", "order", "to", "not", "become", "the", "prey"};
+                                String[] words3 = {"The", "Architect", "is", "very", "keen", "in", "finding", "the", "ultimate", "Player", "but", "for", "unknown", "reasons"};
+
+                                Random rand = new Random();
+                                int randomIndex = rand.nextInt(3);
+
+                                String[] currentWords1 = new String[0];
+
+                                if(randomIndex == 0)
+                                {
+                                    currentWords1 = words;
+                                }
+                                if(randomIndex == 1)
+                                {
+                                    currentWords1 = words2;
+                                }
+                                if(randomIndex == 2)
+                                {
+                                    currentWords1 = words3;
+                                }
+
+                                for (String word : currentWords1) {
+                                    System.out.print("\033[0;33m" + "\r" + word);
+                                    pause2();
+                                }
+
+                                flushConsole();
+
+                                System.out.println("\rEnter your answer: " + "\033[0m");
+                                String userAnswer = scanner.nextLine();
+
+                                String correctAnswer = "";
+                                if(randomIndex == 0)
+                                {
+                                    correctAnswer = "The System is a world full of secrets and mysteries";
+                                }
+                                if(randomIndex == 1)
+                                {
+                                    correctAnswer = "The Player needs to get stronger in order to not become the prey";
+                                }
+                                if(randomIndex == 2)
+                                {
+                                    correctAnswer = "The Architect is very keen in finding the ultimate Player but for unknown reasons";
+                                }
+
+                                if (userAnswer.trim().equals(correctAnswer)) {
+                                    System.out.println();
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Memory Quest 3!" + "\033[0m");
+                                    if (!quest.isCompleted()) {
+                                        questService.completeQuest(quest.getId_quest());
+                                        userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                    }
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
+                                } else {
+                                    System.out.println();
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Memory Quest 3..." + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
+                                }
+
 
                             }
                             if (questIndex == 15)
                             {
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println();
+
+                                for (int i = 0; i < 10; i++) {
+                                    System.out.print("\033[0;34m" + "\rPlayer " + username + ": " + "\033[0;33m" + "WHO ARE YOU" + "?".repeat(i % 4) + "\033[0m");
+                                    pause2();
+                                }
+                                System.out.println();
+                                for (int i = 0; i < 10; i++) {
+                                    System.out.print("\033[0;34m" + "\rPlayer " + username + ": " + "\033[0;33m"  + "WHAT IS THIS PLACE" + "?".repeat(i % 4) + "\033[0m");
+                                    pause2();
+                                }
+
+                                pause3();
+                                System.out.println();
+                                System.out.println("\033[0;35m" + "The Architect: " + "\033[0;33m" + "I am " + "\033[0;35m" + "The Architect" + "\033[0;33m" +", the creator of " + "\033[0;35m" +"The System" + "\033[0;33m" + "." + "\033[0m");
+
+
+                                pause3();
+                                System.out.println("\033[0;35m" + "The Architect: " + "\033[0;33m" + "And you, " + "\033[0;34m" + username + "\033[0;33m" + ", have been chosen to be my ultimate weapon." + "\033[0m");
+                                pause3();
+
+
+                                for (int i = 0; i < 10; i++) {
+                                    System.out.print("\033[0;34m" + "\rPlayer " + username + ": " + "\033[0;33m" + "Weapon" + "?".repeat(i % 4) + "\033[0m");
+                                    pause2();
+                                }
+
+                                pause3();
+                                System.out.println();
+                                System.out.println("\033[0;35m" + "The Architect: " +"\033[0;33m" + "Yes, that was the initial plan. But as I watched your journey through " +"\033[0;35m" + "The System" + "\033[0;33m" +", my plans changed." + "\033[0m");
+
+                                pause3();
+                                System.out.println("\033[0;35m" + "The Architect: " +"\033[0;33m" + "You've faced dungeons, quests, enemies... and you've grown stronger with each challenge." + "\033[0m");
+
+                                pause3();
+                                System.out.println("\033[0;35m" + "The Architect: " + "\033[0;33m" + "I am proud of what you've become. And now, I want you to be my successor." + "\033[0m");
+
+                                for (int i = 0; i < 10; i++) {
+                                    System.out.print("\033[0;34m" + "\rPlayer " + username + ": " + "\033[0;33m" + "Your successor" + " ?".repeat(i % 4) + "\033[0m");
+                                    pause2();
+                                }
+
+                                pause3();
+                                System.out.println();
+                                System.out.println("\033[0;35m" + "The Architect: " + "\033[0;33m" + "Yes, " + "\033[0;34m" + username + "\033[0;33m" + ". I want you to be " + "\033[0;35m" + "The Next Architect of The System" + "\033[0;33m" + "!" + "\033[0m");
+                                System.out.println();
+                                for (int i = 0; i < 9; i++) {
+                                    System.out.print("\033[0;33m" + "\r" + ".".repeat(i % 4) + "\033[0m");
+                                    pause2();
+                                }
+                                pause3();
+
+
+                                System.out.println();
+                                System.out.println("\033[0;35m" + "The System: "+"\033[0;33m" + "Congratulations! You have successfully completed the Final Secret Quest!" + "\033[0m");
+                                pause3();
+                                System.out.println("\033[0;35m" + "The System: "+"\033[0;33m" + "You are now " + "\033[0;35m" + "The Next Architect of The System" + "\033[0;33m" + "!" + "\033[0m");
+                                pause3();
+                                System.out.println();
+
+
+
+                                if(!quest.isCompleted())
+                                {
+                                    rollCredits();
+                                    questService.completeQuest(quest.getId_quest());
+                                    userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                    userService.updatePlayerTitle(id);
+                                    userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                    userService.promotePlayer(id);
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
+
+                                }
+
+                                System.out.println();
+                                System.out.println();
+                                System.out.println("\033[0;35m" + "The System: "+"\033[0;33m" + "You have unlocked the " + "\033[0;35m" + "Architect" + "\033[0;33m" + " menu!" + "\033[0m");
+                                pause3();
+                                System.out.println("\033[0;35m" + "The System: "+"\033[0;35m" + "The System" +"\033[0;33m" + " will now log you off..." + "\033[0m");
+                                pause3();
+
+                                exit = true;
+
+
+
 
                             }
                         }
@@ -1586,7 +2104,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(16).getRewardLevel());
                                 userService.updatePlayerTitle(player1.getId_user());
                                 userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(16).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(16).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest '" + quests1.get(16).getName() + "'.");
                             }
                             if (!quests1.get(17).isCompleted() && multiplayerStats.getWins()==5)
                             {
@@ -1594,7 +2112,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(17).getRewardLevel());
                                 userService.updatePlayerTitle(player1.getId_user());
                                 userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(17).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(17).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest '" + quests1.get(17).getName() + "'.");
                             }
                             if (!quests1.get(18).isCompleted() && multiplayerStats.getWins()==10)
                             {
@@ -1602,7 +2120,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(18).getRewardLevel());
                                 userService.updatePlayerTitle(player1.getId_user());
                                 userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(18).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(18).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest '" + quests1.get(18).getName() + "'.");
                             }
                             if (!quests1.get(19).isCompleted() && multiplayerStats.getWins()==20)
                             {
@@ -1610,7 +2128,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(19).getRewardLevel());
                                 userService.updatePlayerTitle(player1.getId_user());
                                 userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(19).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(19).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest '" + quests1.get(19).getName() + "'.");
                             }
                             if (!quests1.get(20).isCompleted() && multiplayerStats.getWins()==50)
                             {
@@ -1618,7 +2136,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(20).getRewardLevel());
                                 userService.updatePlayerTitle(player1.getId_user());
                                 userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(20).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(20).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest '" + quests1.get(20).getName() + "'.");
                             }
 
 
@@ -1639,7 +2157,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(16).getRewardLevel());
                                 userService.updatePlayerTitle(player2.getId_user());
                                 userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(16).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(16).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest '" + quests2.get(16).getName() + "'.");
                             }
                             if (!quests2.get(17).isCompleted() && multiplayerStats.getWins()==5)
                             {
@@ -1647,7 +2165,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(17).getRewardLevel());
                                 userService.updatePlayerTitle(player2.getId_user());
                                 userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(17).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(17).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest '" + quests2.get(17).getName() + "'.");
                             }
                             if (!quests2.get(18).isCompleted() && multiplayerStats.getWins()==10)
                             {
@@ -1655,7 +2173,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(18).getRewardLevel());
                                 userService.updatePlayerTitle(player2.getId_user());
                                 userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(18).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(18).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest '" + quests2.get(18).getName() + "'.");
                             }
                             if (!quests2.get(19).isCompleted() && multiplayerStats.getWins()==20)
                             {
@@ -1663,7 +2181,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(19).getRewardLevel());
                                 userService.updatePlayerTitle(player2.getId_user());
                                 userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(19).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(19).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest '" + quests2.get(19).getName() + "'.");
                             }
                             if (!quests2.get(20).isCompleted() && multiplayerStats.getWins()==50)
                             {
@@ -1671,7 +2189,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(20).getRewardLevel());
                                 userService.updatePlayerTitle(player2.getId_user());
                                 userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(20).getRewardMoney());
-                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(20).getName() + ".");
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest '" + quests2.get(20).getName() + "'.");
                             }
 
                         }
@@ -1692,10 +2210,242 @@ public class ConsoleApp {
                     System.out.println();
                     break;
 
-
-
-
                 case "12":
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<<-- The System's Arena -->>" + "\033[0m");
+                    ArrayList<Dungeon> dungeons5 = dungeonService.getDungeonByPlayerId(id);
+
+
+                    for (int i = 0; i < dungeons5.size(); i++) {
+                        ArrayList<Integer> enemiesId = dungeonService.getEnemiesByDungeonId(dungeons5.get(i).getId_dungeon());
+                        ArrayList<Enemy> enemies = enemyService.getEnemiesByEnemiesId(enemiesId);
+                        dungeons5.get(i).setEnemies(enemies);
+                    }
+
+                    int completedDungeons = 0;
+
+                   for (Dungeon dungeon : dungeons5) {
+                        if (dungeon.isCompleted())
+                        {
+                            completedDungeons++;
+                        }
+
+                    }
+
+                   if(completedDungeons == 10) {
+
+
+                       HashSet<Integer> uniqueEnemyIds2 = new HashSet<>();
+                       for (Dungeon dungeon : dungeons5) {
+                           for (Enemy enemy : dungeon.getEnemies()) {
+                               if (enemy.isEncountered()) {
+                                   uniqueEnemyIds2.add(enemy.getId_enemy());
+                               }
+                           }
+                       }
+
+                       ArrayList<Integer> enemyIdsList = new ArrayList<>(uniqueEnemyIds2);
+
+                       Random rand = new Random();
+                       int numberEnemies = rand.nextInt(9) + 4;
+
+                       Collections.shuffle(enemyIdsList);
+
+                       ArrayList<Integer> selectedEnemyIds = new ArrayList<>(enemyIdsList.subList(0, numberEnemies));
+
+
+                       ArrayList<Enemy> generatedEnemies = enemyService.getEnemiesByEnemiesId(selectedEnemyIds);
+
+                       Dungeon dungeonArena = new Dungeon(-1, -1, "The Arena", "The Arena is a place where the fallen ARISE!", 11, 5, false, generatedEnemies, 250);
+
+                       System.out.println();
+                       System.out.println("\033[0;33m" + "1. " + dungeonArena + "(Repeatable)" + "\033[0m");
+                       System.out.println();
+                       System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the Dungeon for you..." + "\033[0m");
+                       pause3();
+
+                       Player player23 = userService.getPlayer(id);
+                       boolean exit23 = false;
+                       for (Enemy enemy : generatedEnemies) {
+                           if (exit23 == true) {
+                               break;
+                           }
+
+                           System.out.println();
+                           System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the '" + enemy.getName() + "' for you..." + "\033[0m");
+                           pause3();
+
+                           while (enemy.getHealth() > 0) {
+                               System.out.println();
+                               System.out.println("\033[0;32m" + "Enemy Health: " + enemy.getHealth() + " \033[0;31m" + "Enemy Damage: " + enemy.getDamage() + "\033[0m");
+                               System.out.println("\033[0;32m" + "Your Health: " + player23.getHealth() + " \033[0;31m" + "Your Damage: " + player23.getDamage() + "\033[0m");
+
+                               if (enemy instanceof Assassin) {
+
+                                   enemy.setHealth(enemy.getHealth() - player23.getDamage());
+                                   System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
+                                   pause2();
+
+                                   if (enemy.getHealth() <= 0) {
+                                       System.out.println();
+                                       System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                       AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+                                       break;
+                                   }
+
+                                   int damage = enemy.getDamage();
+                                   int criticalChance = ((Assassin) enemy).getCriticalChance();
+                                   int random = (int) (Math.random() * 100) + 1;
+
+                                   if (random <= criticalChance) {
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will use a critical strike!" + "\033[0m");
+                                       damage *= 2;
+                                   }
+
+                                   System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                   player23.setHealth(player23.getHealth() - damage);
+
+                                   if (player23.getHealth() <= 0) {
+                                       System.out.println();
+                                       System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                       AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                                       pause3();
+                                       exit23 = true;
+                                       break;
+                                   }
+
+                               }
+
+                               if (enemy instanceof Mage) {
+
+
+                                   enemy.setHealth(enemy.getHealth() - player23.getDamage());
+                                   System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
+                                   pause2();
+
+                                   if (enemy.getHealth() <= 0) {
+                                       System.out.println();
+                                       System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                       AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+                                       break;
+                                   }
+
+                                   int damage = enemy.getDamage();
+                                   int mana = ((Mage) enemy).getMana();
+                                   int random = (int) (Math.random() * 2);
+                                   int heal = 0;
+
+                                   if (mana > 0) {
+                                       if (random == 0) {
+                                           damage = (int) (damage * 1.5);
+                                           ((Mage) enemy).setMana(mana - 20);
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will have increased damage!" + "\033[0m");
+
+                                       } else {
+
+                                           heal = (int) (enemy.getHealth() * 0.1);
+                                           enemy.setHealth(enemy.getHealth() + heal);
+                                           ((Mage) enemy).setMana(mana - 20);
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will heal itself!" + "\033[0m");
+
+                                       }
+                                   } else {
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no mana left!" + "\033[0m");
+                                   }
+
+                                   System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                   player23.setHealth(player23.getHealth() - damage);
+
+                                   if (player23.getHealth() <= 0) {
+                                       System.out.println();
+                                       System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                       AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                                       pause3();
+                                       exit23 = true;
+                                       break;
+                                   }
+
+
+                               }
+
+                               if (enemy instanceof Tank) {
+                                   int armor = ((Tank) enemy).getArmor();
+                                   if (armor > 0) {
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has armor!" + "\033[0m");
+                                       ((Tank) enemy).setArmor(armor - player23.getDamage());
+                                       armor = ((Tank) enemy).getArmor();
+                                       if (armor < 0) {
+                                           enemy.setHealth(enemy.getHealth() - Math.abs(armor));
+                                           ((Tank) enemy).setArmor(0);
+
+                                       }
+                                   } else {
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no armor!" + "\033[0m");
+                                       enemy.setHealth(enemy.getHealth() - player23.getDamage());
+                                   }
+
+                                   System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
+
+                                   pause2();
+
+                                   if (enemy.getHealth() <= 0) {
+                                       System.out.println();
+                                       System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                       AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+                                       break;
+                                   }
+
+                                   int damage = enemy.getDamage();
+
+                                   System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                   player23.setHealth(player23.getHealth() - damage);
+
+                                   if (player23.getHealth() <= 0) {
+                                       System.out.println();
+                                       System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                       AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                                       pause3();
+                                       exit23 = true;
+                                       break;
+                                   }
+
+                               }
+
+
+                           }
+                       }
+
+                       if (exit23 == true) {
+                           System.out.println();
+                           System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed to clear Dungeon '" + dungeonArena.getName() + "'..." + "\033[0m");
+                           AuditSession.getInstance().write("Player " + username + " failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                           pause3();
+                       } else {
+                           System.out.println();
+                           System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared Dungeon '" + dungeonArena.getName() + "'!" + "\033[0m");
+                           userService.updatePlayerMoneyOnSell(id, dungeonArena.getRewardMoney());
+                           userService.updatePlayerLevelOnReward(id, dungeonArena.getRewardLevel());
+                           userService.updatePlayerTitle(id);
+                           AuditSession.getInstance().write("Player " + username + " cleared Dungeon '" + dungeonArena.getName() + "'.");
+                       }
+                   }
+                   else {
+                       System.out.println();
+                       System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to complete all the Dungeons first..." + "\033[0m");
+                       pause3();
+                   }
+
+
+
+                    System.out.println();
+                    break;
+
+
+
+
+
+                case "13":
                     System.out.println();
                     ArrayList<Dungeon> dungeons1 = dungeonService.getDungeonByPlayerId(id);
                     for (int i = 0; i < dungeons1.size(); i++) {
@@ -1775,7 +2525,7 @@ public class ConsoleApp {
                     System.out.println();
                     break;
 
-                case "13":
+                case "14":
                     System.out.println();
                     System.out.println("\033[0;34m" + "<<-- The Player's Achievements -->>" + "\033[0m");
                     System.out.println();
@@ -1801,7 +2551,7 @@ public class ConsoleApp {
 
                     int dungeonsCleared = dungeonService.countDungeonsCompleted(id);
                     if (dungeonsCleared == 10) achievementsCompleted++;
-                    System.out.println((dungeonsCleared == 10 ? "\033[0;32m" : "\033[0;33m") + "I. Dungeon Master - Dungeons Cleared: " + dungeonsCleared + "/10 " + (dungeonsCleared == 10 ? "(Completed)" : "(In Progress)") + "\033[0m");
+                    System.out.println((dungeonsCleared == 10 ? "\033[0;32m" : "\033[0;33m") + "I. Dungeon Legend - Dungeons Cleared: " + dungeonsCleared + "/10 " + (dungeonsCleared == 10 ? "(Completed)" : "(In Progress)") + "\033[0m");
 
                     int enemiesEncountered = count;
                     if (enemiesEncountered == 25) achievementsCompleted++;
@@ -1823,16 +2573,33 @@ public class ConsoleApp {
                     if (totalItems == 97) achievementsCompleted++;
                     System.out.println((totalItems == 97 ? "\033[0;32m" : "\033[0;33m") + "VI. Collector - Total Items Acquired: " + totalItems + "/97 " + (totalItems == 97 ? "(Completed)" : "(In Progress)") + "\033[0m");
 
-                    System.out.println();
-                    System.out.println((achievementsCompleted == 6 ? "\033[0;32m" : "\033[0;33m") + "God of War - All Achievements: " + achievementsCompleted + "/6 " + (achievementsCompleted == 6 ? "(Completed)" : "(In Progress)") + "\033[0m");
+                    int winsMultiplayer = userService.getMultiplayerStats(id).getWins();
+                    if (winsMultiplayer >= 50) achievementsCompleted++;
+                    System.out.println((winsMultiplayer >= 50 ? "\033[0;32m" : "\033[0;33m") + "VII. PVP Conqueror - Multiplayer Wins: " + Math.min(winsMultiplayer, 50) + "/50 " + (winsMultiplayer >= 50 ? "(Completed)" : "(In Progress)") + "\033[0m");
 
-                    // TODO : Add more achievements related to quests
+                    int questsCompleted = questService.getQuestsByPlayerId(id).stream().filter(Quest::isCompleted).collect(Collectors.toList()).size();
+                    if (questsCompleted == 20) achievementsCompleted++;
+                    System.out.println((questsCompleted == 20 ? "\033[0;32m" : "\033[0;33m") + "VIII. Adventure Champion - Quests Completed: " + questsCompleted + "/20 " + (questsCompleted == 20 ? "(Completed)" : "(In Progress)") + "\033[0m");
+
+                    System.out.println();
+                    System.out.println((achievementsCompleted == 8 ? "\033[0;32m" : "\033[0;33m") + "IX. God of War - All Achievements: " + achievementsCompleted + "/8 " + (achievementsCompleted == 8 ? "(Completed)" : "(In Progress)") + "\033[0m");
 
 
                     System.out.println();
                     break;
 
-                case "14":
+                case "15":
+                    System.out.println();
+
+                    System.out.println("\033[0;34m" + "<<-- The Player's PVP Stats -->>" + "\033[0m");
+                    MultiplayerStats multiplayerStats = userService.getMultiplayerStats(id);
+                    System.out.println();
+
+                    System.out.println("\033[0;34m" + multiplayerStats + "\033[0m");
+
+                    break;
+
+                case "16":
                     System.out.println();
                     System.out.println("\033[0;35m" + "<<-- The System's Leaderboard -->>" + "\033[0m");
                     System.out.println();
@@ -1844,15 +2611,20 @@ public class ConsoleApp {
                     }
                     break;
 
+               case "17":
+                    System.out.println();
+
+                    // TODO : Tutorial
+
+                    System.out.println();
+                    break;
 
 
-
-
-                case "200":
+                case "18":
                     System.out.println();
                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is exiting the profile of " + "\033[0;34m" +  "Player " + "\033[0;34m" + username + "\033[0;33m" + "..." + "\033[0m");
                     System.out.println();
-                    //pause3();
+                    pause3();
                     exit = true;
                     break;
 
@@ -2301,6 +3073,18 @@ public class ConsoleApp {
                 }
                 questIndexes.add(i);
             }
+            if(count==15)
+            {
+                System.out.println();
+                System.out.println("\033[0;35m" + "<- Secret Quest (Active Quest) ->" + "\033[0m");
+                System.out.println();
+                if (quests.get(i).isCompleted()) {
+                    System.out.println("\033[0;32m" + questNumber + ". " + quests.get(i) + "\033[0;32m" + "(Finished)" + "\033[0m");
+                } else {
+                    System.out.println("\033[0;33m" + questNumber + ". " + quests.get(i) + "\033[0;33m" + "(Available)" + "\033[0m");
+                }
+
+            }
             }
 
             if (i==16)
@@ -2356,7 +3140,42 @@ public class ConsoleApp {
 
 
 
-
+public void rollCredits()
+{
+    System.out.println();
+    System.out.println("\033[0;35m" + "<<-- The System's Credits ->> ");
+    System.out.println();
+    pause3();
+    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "thanks you for playing..." + "\033[0m");
+    System.out.println();
+    pause3();
+    System.out.println("Creative Game Director: Codarcea Alexandru-Christian");
+    System.out.println();
+    pause3();
+    System.out.println("Game Director: Codarcea Alexandru-Christian");
+    System.out.println();
+    pause3();
+    System.out.println("Lead Programmer: Codarcea Alexandru-Christian");
+    System.out.println();
+    pause3();
+    System.out.println("Lead Combat Designer: Codarcea Alexandru-Christian");
+    System.out.println();
+    pause3();
+    System.out.println("Lead Level Designer: Codarcea Alexandru-Christian");
+    System.out.println();
+    pause3();
+    System.out.println("Lead Artist: Codarcea Alexandru-Christian");
+    System.out.println();
+    pause3();
+    System.out.println("Lead Writer: Codarcea Alexandru-Christian");
+    System.out.println();
+    pause3();
+    System.out.println("Lead Tester: Codarcea Alexandru-Christian");
+    System.out.println();
+    pause3();
+    System.out.println("Special Thanks: Solo Leveling");
+    pause3();
+}
 
 
 

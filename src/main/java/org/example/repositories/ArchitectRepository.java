@@ -178,5 +178,22 @@ public class ArchitectRepository implements GenericRepository<Architect> {
         return false;
     }
 
+    public void promotePlayerToArchitect(int id) {
+        String sql = "INSERT INTO Architect (id_user, level) VALUES (?, ?)";
+        Connection conn = this.databaseConnection.getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            pstmt.setInt(2, 1000);
+            pstmt.executeUpdate();
+            this.auditDatabase.write(sql, Architect.class, "Done successfully!");
+            this.auditSession.write("Player " + id + " has been promoted to Architect!");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
 
 }

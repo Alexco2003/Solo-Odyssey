@@ -143,4 +143,9 @@ public class UserService {
        return playerRepository.getMultiplayerStats(playerId);
     }
 
+    //Finish game
+    public void promotePlayer(int id) {
+        architectRepository.promotePlayerToArchitect(id);
+    }
+
 }

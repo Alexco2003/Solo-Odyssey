@@ -33,7 +33,7 @@ public class DatabaseSeeder {
                 String sql1 = "INSERT INTO Architect (id_user, level) VALUES (?, ?)";
                 PreparedStatement preparedStatement1 = connection.prepareStatement(sql1);
                 preparedStatement1.setInt(1, 1);
-                preparedStatement1.setInt(2, 1000);
+                preparedStatement1.setInt(2, 10000);
                 preparedStatement1.executeUpdate();
                 this.auditDatabase.write(sql1, Architect.class, "Done successfully!");
             }

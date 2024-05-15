@@ -75,19 +75,15 @@ public class Quest {
         this.completed = completed;
     }
 
-
     @Override
     public String toString() {
-        return "Quest{" +
-                "id_quest=" + id_quest +
-                ", id_player=" + id_player +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", rewardLevel=" + rewardLevel +
-                ", rewardMoney=" + rewardMoney +
-                ", completed=" + completed +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(name + "\n");
+        sb.append("Description: " + description + "\n");
+        sb.append("Reward: " + rewardLevel + " level, " + rewardMoney + " gold\n");
+        return sb.toString();
     }
+
 
 
 

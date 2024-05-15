@@ -7,13 +7,15 @@ import org.example.config.seeders.DatabaseSeeder;
 import org.example.config.DatabaseSetup;
 import org.example.services.*;
 
-import java.sql.SQLOutput;
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ConsoleApp {
     private static ConsoleApp instance = null;
     private Scanner scanner = new Scanner(System.in);
-    
+
     private UserService userService;
     private ShopService shopService;
     private DungeonService dungeonService;
@@ -61,7 +63,7 @@ public class ConsoleApp {
                     System.out.println("\033[0;33m"+ "Enter password: " + "\033[0m");
                     String password = scanner.nextLine();
 
-                    if (userService.checkLogin(username, password) != -1) 
+                    if (userService.checkLogin(username, password) != -1)
                     {
                     if (userService.checkPlayerExists(userService.checkLogin(username,password)) && userService.checkArchitectExists(userService.checkLogin(username,password)))
                         {
@@ -142,6 +144,16 @@ public class ConsoleApp {
         }
     }
 
+    public void flushConsole() {
+        try {
+            while (System.in.available() > 0) {
+                System.in.read();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Pause
     public void pause3() {
         try {
@@ -180,7 +192,7 @@ public class ConsoleApp {
             }
         }
 
-        System.out.println("\rLoading complete! Press Enter to continue..." + "\033[0m");
+        System.out.println("\rLoading complete! Press 'Enter' to continue..." + "\033[0m");
         scanner.nextLine();
         System.out.println();
 
@@ -491,6 +503,58 @@ public class ConsoleApp {
                                         System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
                                         AuditSession.getInstance().write("Player " + username + " cleared Dungeon " + dungeons.get(dungeonId).getName() + ".");
                                         dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+
+                                        int count3 = 0;
+                                        dungeons.get(dungeonId).setCompleted(true);
+                                        ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+                                        for(Dungeon dungeon : dungeons)
+                                        {
+                                            if (dungeon.isCompleted())
+                                            {
+                                                count3++;
+                                            }
+                                        }
+                                        if (count3 == 1)
+                                        {
+                                            questService.completeQuest(quests.get(10).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(10).getName() + ".");
+                                        }
+                                        if (count3 == 2)
+                                        {
+                                            questService.completeQuest(quests.get(11).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(11).getName() + ".");
+                                        }
+                                        if (count3 == 3)
+                                        {
+                                            questService.completeQuest(quests.get(12).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(12).getName() + ".");
+                                        }
+                                        if (count3 == 5)
+                                        {
+                                            questService.completeQuest(quests.get(13).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(13).getName() + ".");
+                                        }
+                                        if (count3 == 10)
+                                        {
+                                            questService.completeQuest(quests.get(14).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(14).getName() + ".");
+                                        }
+
                                         userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
                                         userService.updatePlayerTitle(id);
                                         userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
@@ -559,6 +623,58 @@ public class ConsoleApp {
                                         System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
                                         AuditSession.getInstance().write("Player " + username + " cleared Dungeon " + dungeons.get(dungeonId).getName() + ".");
                                         dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+
+                                        int count3 = 0;
+                                        dungeons.get(dungeonId).setCompleted(true);
+                                        ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+                                        for(Dungeon dungeon : dungeons)
+                                        {
+                                            if (dungeon.isCompleted())
+                                            {
+                                                count3++;
+                                            }
+                                        }
+                                        if (count3 == 1)
+                                        {
+                                            questService.completeQuest(quests.get(10).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(10).getName() + ".");
+                                        }
+                                        if (count3 == 2)
+                                        {
+                                            questService.completeQuest(quests.get(11).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(11).getName() + ".");
+                                        }
+                                        if (count3 == 3)
+                                        {
+                                            questService.completeQuest(quests.get(12).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(12).getName() + ".");
+                                        }
+                                        if (count3 == 5)
+                                        {
+                                            questService.completeQuest(quests.get(13).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(13).getName() + ".");
+                                        }
+                                        if (count3 == 10)
+                                        {
+                                            questService.completeQuest(quests.get(14).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(14).getName() + ".");
+                                        }
+
                                         userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
                                         userService.updatePlayerTitle(id);
                                         userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
@@ -662,6 +778,58 @@ public class ConsoleApp {
                                         System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
                                         AuditSession.getInstance().write("Player " + username + " cleared Dungeon " + dungeons.get(dungeonId).getName() + ".");
                                         dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+
+                                        int count3 = 0;
+                                        dungeons.get(dungeonId).setCompleted(true);
+                                        ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+                                        for(Dungeon dungeon : dungeons)
+                                        {
+                                            if (dungeon.isCompleted())
+                                            {
+                                                count3++;
+                                            }
+                                        }
+                                        if (count3 == 1)
+                                        {
+                                            questService.completeQuest(quests.get(10).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(10).getName() + ".");
+                                        }
+                                        if (count3 == 2)
+                                        {
+                                            questService.completeQuest(quests.get(11).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(11).getName() + ".");
+                                        }
+                                        if (count3 == 3)
+                                        {
+                                            questService.completeQuest(quests.get(12).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(12).getName() + ".");
+                                        }
+                                        if (count3 == 5)
+                                        {
+                                            questService.completeQuest(quests.get(13).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(13).getName() + ".");
+                                        }
+                                        if (count3 == 10)
+                                        {
+                                            questService.completeQuest(quests.get(14).getId_quest());
+                                            userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
+                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(14).getName() + ".");
+                                        }
+
                                         userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
                                         userService.updatePlayerTitle(id);
                                         userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
@@ -707,6 +875,535 @@ public class ConsoleApp {
 
                     System.out.println();
                     break;
+
+                case "10":
+                    System.out.println();
+                    ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+
+                    ArrayList<Integer> availableQuests = displayQuests(quests);
+
+                    try {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "Enter the number of the quest you want to play: " + "\033[0m");
+                        int questNumber = scanner.nextInt();
+                        scanner.nextLine();
+
+
+                        if (!availableQuests.contains(questNumber-1)) {
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter a valid number..." + "\033[0m");
+                        } else {
+                            int questIndex = questNumber-1;
+                            Quest quest = quests.get(questIndex);
+                            System.out.println();
+                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the Quest " + "\033[0;35m" + quest.getName() + "\033[0;33m" +" for you..." + "\033[0m");
+                            pause3();
+                            System.out.println();
+                            if (questIndex == 0) {
+
+                                Random random = new Random();
+                                int randomNumber = random.nextInt(5);
+
+                                String exercise = "";
+                                String exerciseSingle = "";
+
+                                if (randomNumber == 0) {
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;35m" + "||            The System              ||");
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                    System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                    System.out.println("\033[0;33m" + "||                                    ||");
+                                    System.out.println("\033[0;33m" + "|| Perform 25 Push-ups.               ||");
+                                    System.out.println("\033[0;33m" + "|| To confirm each push-up, press     ||");
+                                    System.out.println("\033[0;33m" + "|| 'Space + Enter' 25 times.          ||");
+                                    System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+                                    exercise = "Push-ups";
+                                    exerciseSingle = "Push-up";
+                                } else if (randomNumber == 1) {
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;35m" + "||            The System              ||");
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                    System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                    System.out.println("\033[0;33m" + "||                                    ||");
+                                    System.out.println("\033[0;33m" + "|| Perform 25 Pull-ups.               ||");
+                                    System.out.println("\033[0;33m" + "|| To confirm each pull-up, press     ||");
+                                    System.out.println("\033[0;33m" + "|| 'Space + Enter' 25 times.          ||");
+                                    System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+                                    exercise = "Pull-ups";
+                                    exerciseSingle = "Pull-up";
+
+                                } else if (randomNumber == 2) {
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;35m" + "||            The System              ||");
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                    System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                    System.out.println("\033[0;33m" + "||                                    ||");
+                                    System.out.println("\033[0;33m" + "|| Perform 25 Sit-ups.                ||");
+                                    System.out.println("\033[0;33m" + "|| To confirm each sit-up, press      ||");
+                                    System.out.println("\033[0;33m" + "|| 'Space + Enter' 25 times.          ||");
+                                    System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+                                    exercise = "Sit-ups";
+                                    exerciseSingle = "Sit-up";
+
+                                } else if (randomNumber == 3) {
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;35m" + "||            The System              ||");
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                    System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                    System.out.println("\033[0;33m" + "||                                    ||");
+                                    System.out.println("\033[0;33m" + "|| Perform 25 Squats.                 ||");
+                                    System.out.println("\033[0;33m" + "|| To confirm each squat, press       ||");
+                                    System.out.println("\033[0;33m" + "|| 'Space + Enter' 25 times.          ||");
+                                    System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+                                    exercise = "Squats";
+                                    exerciseSingle = "Squat";
+                                } else if (randomNumber == 4) {
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;35m" + "||            The System              ||");
+                                    System.out.println("\033[0;35m" + "========================================");
+                                    System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                    System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                    System.out.println("\033[0;33m" + "||                                    ||");
+                                    System.out.println("\033[0;33m" + "|| Run 25 KM.                         ||");
+                                    System.out.println("\033[0;33m" + "|| To confirm each KM, press          ||");
+                                    System.out.println("\033[0;33m" + "|| 'Space + Enter' 25 times.          ||");
+                                    System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+                                    exercise = "KM";
+                                    exerciseSingle = "KM";
+                                }
+
+                                displayCountdown();
+
+
+
+                                System.out.println();
+                                int counter = 0;
+                                System.out.println("\033[0;33m" + "Press 'Space + Enter' to confirm each " + exerciseSingle + ".");
+                                System.out.println();
+                                while (counter < 25) {
+
+                                    String input1 = scanner.nextLine();
+                                    if (input1.equals(" ")) {
+                                        counter++;
+                                        System.out.println("Counter incremented. Confirmed " + exercise + ": " + counter);
+                                    } else {
+                                        System.out.println("Failed to confirm " + exerciseSingle + ". Please press 'Space + Enter'.");
+                                    }
+                                }
+                                System.out.println();
+                                System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Daily Quest!" + "\033[0m");
+                                userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                userService.updatePlayerTitle(id);
+                                userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                            }
+                            if (questIndex == 1)
+                            {
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                System.out.println("\033[0;33m" + "||                                    ||");
+                                System.out.println("\033[0;33m" + "|| Press 'Enter' when " + "\033[0;35m" + "The Architect" + "\033[0;33m" + "   ||");
+                                System.out.println("\033[0;33m" + "|| appears on screen.                 ||");
+                                System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+
+                                displayCountdown();
+                                System.out.println();
+
+
+                                        Random rand = new Random();
+        int winningPosition = rand.nextInt(10);
+
+        int currentPosition = 0;
+        boolean gameRunning = true;
+
+        while (gameRunning) {
+            if (System.in.available() > 0) {
+                if (currentPosition-1 == winningPosition) {
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Agility Quest 1!" + "\033[0m");
+                    if (!quest.isCompleted()) {
+                        questService.completeQuest(quest.getId_quest());
+                        userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                        userService.updatePlayerTitle(id);
+                        userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                    }
+                    AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                    scanner.nextLine();
+                } else {
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Agility Quest 1..." + "\033[0m");
+                    AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                    scanner.nextLine();
+                }
+                gameRunning = false;
+            } else {
+
+                if (currentPosition!=winningPosition) {
+                    System.out.print("\033[0;34m" + "\rPlayer" + "\033[0m");
+                     }
+
+                if (currentPosition == winningPosition) {
+                    System.out.print("\033[0;35m" + " \rThe Architect" + "\033[0m");
+                }
+
+                currentPosition = (currentPosition + 1) % 10;
+
+                Thread.sleep(500);
+            }
+        }
+
+
+
+                            }
+                            if (questIndex == 2)
+                            {
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                System.out.println("\033[0;33m" + "||                                    ||");
+                                System.out.println("\033[0;33m" + "|| Press 'Enter' when " + "\033[0;35m" + "The System" + "\033[0;33m" + "      ||");
+                                System.out.println("\033[0;33m" + "|| appears on screen.                 ||");
+                                System.out.println("\033[0;33m" + "|| You have 25 seconds,               ||");
+                                System.out.println("\033[0;33m" + "|| or the mission will fail.          ||");
+                                System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+
+                                displayCountdown();
+                                System.out.println();
+
+                                Random rand = new Random();
+                                int winningPosition = rand.nextInt(10);
+
+                                int currentPosition = 0;
+                                AtomicBoolean gameRunning = new AtomicBoolean(true);
+
+                                ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
+                                Runnable task = () -> {
+                                    System.out.println();
+                                    System.out.println();
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Agility Quest 2 due to time out..." + "\033[0m");
+                                    gameRunning.set(false);
+                                };
+
+                                executorService.schedule(task, 25, TimeUnit.SECONDS);
+
+                                while (gameRunning.get()) {
+                                    if (System.in.available() > 0) {
+                                        executorService.shutdownNow();
+                                        if (currentPosition-1 == winningPosition) {
+                                            System.out.println();
+                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Agility Quest 2!" + "\033[0m");
+                                            if (!quest.isCompleted()) {
+                                                questService.completeQuest(quest.getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                            }
+                                            AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                            scanner.nextLine();
+                                        } else {
+                                            System.out.println();
+                                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Agility Quest 2..." + "\033[0m");
+                                            AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                            scanner.nextLine();
+                                        }
+                                        gameRunning.set(false);
+                                    } else {
+
+                                        if (currentPosition!=winningPosition) {
+                                            int random2 = (int) (Math.random() * 2);
+                                            if (random2 == 0) {
+                                                System.out.print("\033[0;34m" + "\rPlayer" + "\033[0m");
+                                            } else {
+                                                System.out.print("\033[0;35m" + "\rThe Architect" + "\033[0m");
+                                            }
+
+                                        }
+
+                                        if (currentPosition == winningPosition) {
+                                            System.out.print("\033[0;35m" + " \rThe System" + "\033[0m");
+                                        }
+
+                                        currentPosition = (currentPosition + 1) % 10;
+
+                                        Thread.sleep(500);
+                                    }
+                                }
+
+
+
+                            }
+                            if (questIndex == 3)
+                            {
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                System.out.println("\033[0;33m" + "||                                    ||");
+                                System.out.println("\033[0;33m" + "|| Press 'Enter' when " + "\033[0m" + "Player" + "\033[0;33m" + "          ||");
+                                System.out.println("\033[0;33m" + "|| appears on screen.                 ||");
+                                System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+
+                                displayCountdown();
+                                System.out.println();
+
+                                Random rand = new Random();
+                                int winningPosition = rand.nextInt(10);
+
+                                int currentPosition = 0;
+                                boolean gameRunning = true;
+
+                                while (gameRunning) {
+                                    if (System.in.available() > 0) {
+                                        if (currentPosition-1 == winningPosition) {
+                                            System.out.println();
+                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Agility Quest 3!" + "\033[0m");
+                                            if (!quest.isCompleted()) {
+                                                questService.completeQuest(quest.getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                            }
+                                            AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                            scanner.nextLine();
+                                        } else {
+                                            System.out.println();
+                                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Agility Quest 3..." + "\033[0m");
+                                            AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                            scanner.nextLine();
+                                        }
+                                        gameRunning = false;
+                                    } else {
+
+                                        if (currentPosition!=winningPosition) {
+                                            int random = (int) (Math.random() * 7);
+                                            if (random == 0)
+                                            {
+                                                System.out.print("\033[0;31m" + "\rPlayer" + "\033[0m"); // Red
+                                            }
+                                            if (random == 1)
+                                            {
+                                                System.out.print("\033[0;32m" + "\rPlayer" + "\033[0m"); // Green
+                                            }
+                                            if (random == 2)
+                                            {
+                                                System.out.print("\033[0;35m" + "\rPlayer" + "\033[0m"); // Purple
+                                            }
+                                            if (random == 3)
+                                            {
+                                                System.out.print("\033[0;33m" + "\rPlayer" + "\033[0m"); // Yellow
+                                            }
+                                            if (random == 4)
+                                            {
+                                                System.out.print("\033[0;36m" + "\rPlayer" + "\033[0m"); // Cyan
+                                            }
+                                            if (random == 5)
+                                            {
+                                                System.out.print("\033[0;30m" + "\rPlayer" + "\033[0m"); // Black
+                                            }
+                                            if (random == 6)
+                                            {
+                                                System.out.print("\033[0;94m" + "\rPlayer" + "\033[0m"); // Light Blue
+                                            }
+
+
+                                        }
+
+                                        if (currentPosition == winningPosition) {
+                                            System.out.print("\033[0;34m" + " \rPlayer" + "\033[0m"); // Blue
+                                        }
+
+                                        currentPosition = (currentPosition + 1) % 10;
+
+                                        Thread.sleep(500);
+                                    }
+                                }
+
+
+                            }
+                            if (questIndex == 4)
+                            {
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                System.out.println("\033[0;33m" + "||                                    ||");
+                                System.out.println("\033[0;33m" + "|| Answer the following riddle.       ||");
+                                System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+
+                                displayCountdown();
+                                System.out.println();
+
+                                System.out.println("\033[0;33m" + "Riddle: " + "\033[0;35m" + "What gets bigger, the more you take away?" + "\033[0m");
+                                System.out.println();
+                                System.out.println("\033[0;33m" + "Enter your answer: " + "\033[0m");
+                                String answer = scanner.nextLine();
+                                if (answer.trim().equalsIgnoreCase("A Hole") || answer.trim().equalsIgnoreCase("Hole"))
+                                {
+                                    System.out.println();
+                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Intelligence Quest 1!" + "\033[0m");
+                                    if (!quest.isCompleted()) {
+                                        questService.completeQuest(quest.getId_quest());
+                                        userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                        userService.updatePlayerTitle(id);
+                                        userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                    }
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                }
+                                else
+                                {
+                                    System.out.println();
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 1..." + "\033[0m");
+                                    AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                }
+
+
+                            }
+                            if (questIndex == 5)
+                            {
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                System.out.println("\033[0;33m" + "||                                    ||");
+                                System.out.println("\033[0;33m" + "|| Complete the sentence.             ||");
+                                System.out.println("\033[0;33m" + "|| You have 5 seconds,                ||");
+                                System.out.println("\033[0;33m" + "|| or the mission will fail.          ||");
+                                System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+
+                                displayCountdown();
+                                System.out.println();
+
+                                AtomicBoolean isTimeout = new AtomicBoolean(false);
+
+                                ExecutorService executor = Executors.newSingleThreadExecutor();
+                                Future<String[]> future = executor.submit(new Callable<String[]>() {
+                                    public String[] call() {
+                                        Scanner scanner = new Scanner(System.in);
+                                        System.out.println("\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The System " + "\033[0;33m" + "was created by ... to make the ... stronger.'");
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Enter your answers: " + "\033[0m");
+                                        System.out.println("\033[0;33m" + "First answer: " + "\033[0m");
+                                        String input1 = scanner.nextLine();
+                                        if (isTimeout.get()) return new String[]{"", ""};
+                                        System.out.println("\033[0;33m" + "Second answer: " + "\033[0m");
+                                        String input2 = scanner.nextLine();
+                                        return new String[]{input1, input2};
+                                    }
+                                });
+
+                                try {
+                                    String[] result = future.get(5, TimeUnit.SECONDS);
+                                    if (!isTimeout.get()) {
+                                        if (result[0].trim().equalsIgnoreCase("The Architect") && result[1].trim().equalsIgnoreCase("Player")) {
+                                            System.out.println();
+                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Intelligence Quest 2!" + "\033[0m");
+                                            if (!quest.isCompleted()) {
+                                                questService.completeQuest(quest.getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                            }
+                                            AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                        } else {
+                                            System.out.println();
+                                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2..." + "\033[0m");
+                                            AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                        }
+                                    } else {
+                                        System.out.println();
+                                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2 due to time out..." + "\033[0m");
+                                        AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                    }
+                                } catch (TimeoutException e) {
+                                    isTimeout.set(true);
+                                    AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                    System.out.println();
+                                    System.out.println();
+                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2 due to time out..." + "\033[0m");
+                                    flushConsole();
+
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    executor.shutdownNow();
+                                }
+
+
+                            }
+                            if (questIndex == 6)
+                            {
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;35m" + "||            The System              ||");
+                                System.out.println("\033[0;35m" + "========================================");
+                                System.out.println("\033[0;33m" + "|| "+ "\033[0;35m" + "The System" + "\033[0;33m" + " requires you to do the  ||");
+                                System.out.println("\033[0;33m" + "|| following task:                    ||");
+                                System.out.println("\033[0;33m" + "||                                    ||");
+                                System.out.println("\033[0;33m" + "|| Complete the quiz.                 ||");
+                                System.out.println("\033[0;33m" + "|| You need to answer correctly,      ||");
+                                System.out.println("\033[0;33m" + "|| on all questions.                  ||");
+                                System.out.println("\033[0;33m" + "|| A question can have multiple       ||");
+                                System.out.println("\033[0;33m" + "|| correct answers. If A and B are    ||");
+                                System.out.println("\033[0;33m" + "|| correct, write 'AB' or 'BA',       ||");
+                                System.out.println("\033[0;33m" + "|| for example.                       ||");
+                                System.out.println("\033[0;35m" + "========================================" + "\033[0m");
+
+                                displayCountdown();
+                                System.out.println();
+
+                                int correctAnswers = 0;
+                                int totalQuestions = 5;
+
+
+                                // TODO : quiz
+
+
+                            }
+                            if (questIndex == 7)
+                            {
+
+
+                            }
+                            if (questIndex == 8)
+                            {
+
+                            }
+                            if (questIndex == 9)
+                            {
+
+                            }
+                            if (questIndex == 15)
+                            {
+
+                            }
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to enter valid data..." + "\033[0m");
+                        scanner.nextLine();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+                    System.out.println();
+                    break;
+
+
 
                 case "11":
                     System.out.println();
@@ -815,6 +1512,51 @@ public class ConsoleApp {
                             userService.updatePlayerWins(player1.getId_user());
                             userService.updatePlayerLosses(player2.getId_user());
                             AuditSession.getInstance().write("Player " + player1.getUsername() + " defeated Player " + player2.getUsername() + " in PVP.");
+
+                            ArrayList<Quest> quests1 = questService.getQuestsByPlayerId(player1.getId_user());
+                            MultiplayerStats multiplayerStats = userService.getMultiplayerStats(player1.getId_user());
+                            if (!quests1.get(16).isCompleted() && multiplayerStats.getWins()==1)
+                            {
+                                questService.completeQuest(quests1.get(16).getId_quest());
+                                userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(16).getRewardLevel());
+                                userService.updatePlayerTitle(player1.getId_user());
+                                userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(16).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(16).getName() + ".");
+                            }
+                            if (!quests1.get(17).isCompleted() && multiplayerStats.getWins()==5)
+                            {
+                                questService.completeQuest(quests1.get(17).getId_quest());
+                                userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(17).getRewardLevel());
+                                userService.updatePlayerTitle(player1.getId_user());
+                                userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(17).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(17).getName() + ".");
+                            }
+                            if (!quests1.get(18).isCompleted() && multiplayerStats.getWins()==10)
+                            {
+                                questService.completeQuest(quests1.get(18).getId_quest());
+                                userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(18).getRewardLevel());
+                                userService.updatePlayerTitle(player1.getId_user());
+                                userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(18).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(18).getName() + ".");
+                            }
+                            if (!quests1.get(19).isCompleted() && multiplayerStats.getWins()==20)
+                            {
+                                questService.completeQuest(quests1.get(19).getId_quest());
+                                userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(19).getRewardLevel());
+                                userService.updatePlayerTitle(player1.getId_user());
+                                userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(19).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(19).getName() + ".");
+                            }
+                            if (!quests1.get(20).isCompleted() && multiplayerStats.getWins()==50)
+                            {
+                                questService.completeQuest(quests1.get(20).getId_quest());
+                                userService.updatePlayerLevelOnReward(player1.getId_user(), quests1.get(20).getRewardLevel());
+                                userService.updatePlayerTitle(player1.getId_user());
+                                userService.updatePlayerMoneyOnSell(player1.getId_user(), quests1.get(20).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player1.getUsername() + " completed the Quest " + quests1.get(20).getName() + ".");
+                            }
+
+
                         }
 
                         if (winP2)
@@ -822,6 +1564,51 @@ public class ConsoleApp {
                             userService.updatePlayerWins(player2.getId_user());
                             userService.updatePlayerLosses(player1.getId_user());
                             AuditSession.getInstance().write("Player " + player2.getUsername() + " defeated Player " + player1.getUsername() + " in PVP.");
+
+                            ArrayList<Quest> quests2 = questService.getQuestsByPlayerId(player2.getId_user());
+                            MultiplayerStats multiplayerStats = userService.getMultiplayerStats(player2.getId_user());
+
+                            if (!quests2.get(16).isCompleted() && multiplayerStats.getWins()==1)
+                            {
+                                questService.completeQuest(quests2.get(16).getId_quest());
+                                userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(16).getRewardLevel());
+                                userService.updatePlayerTitle(player2.getId_user());
+                                userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(16).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(16).getName() + ".");
+                            }
+                            if (!quests2.get(17).isCompleted() && multiplayerStats.getWins()==5)
+                            {
+                                questService.completeQuest(quests2.get(17).getId_quest());
+                                userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(17).getRewardLevel());
+                                userService.updatePlayerTitle(player2.getId_user());
+                                userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(17).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(17).getName() + ".");
+                            }
+                            if (!quests2.get(18).isCompleted() && multiplayerStats.getWins()==10)
+                            {
+                                questService.completeQuest(quests2.get(18).getId_quest());
+                                userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(18).getRewardLevel());
+                                userService.updatePlayerTitle(player2.getId_user());
+                                userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(18).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(18).getName() + ".");
+                            }
+                            if (!quests2.get(19).isCompleted() && multiplayerStats.getWins()==20)
+                            {
+                                questService.completeQuest(quests2.get(19).getId_quest());
+                                userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(19).getRewardLevel());
+                                userService.updatePlayerTitle(player2.getId_user());
+                                userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(19).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(19).getName() + ".");
+                            }
+                            if (!quests2.get(20).isCompleted() && multiplayerStats.getWins()==50)
+                            {
+                                questService.completeQuest(quests2.get(20).getId_quest());
+                                userService.updatePlayerLevelOnReward(player2.getId_user(), quests2.get(20).getRewardLevel());
+                                userService.updatePlayerTitle(player2.getId_user());
+                                userService.updatePlayerMoneyOnSell(player2.getId_user(), quests2.get(20).getRewardMoney());
+                                AuditSession.getInstance().write("Player " + player2.getUsername() + " completed the Quest " + quests2.get(20).getName() + ".");
+                            }
+
                         }
 
                     } catch (InputMismatchException e) {
@@ -992,7 +1779,7 @@ public class ConsoleApp {
                     }
                     break;
 
-                    
+
 
 
 
@@ -1388,6 +2175,118 @@ public class ConsoleApp {
 
         return dungeonIndex;
 
+    }
+
+    public ArrayList<Integer> displayQuests(ArrayList<Quest> quests)
+    {
+        ArrayList<Integer> questIndexes = new ArrayList<>();
+        int count = 0;
+        for (int i = 0; i < quests.size()-5; i++) {
+            if (quests.get(i).isCompleted()) {
+                count++;
+            }
+        }
+        System.out.println("\033[0;35m" + "<<-- Quests -->>" + "\033[0m");
+        for (int i = 0; i < quests.size(); i++) {
+            System.out.println();
+            int questNumber = i + 1;
+            if (i==0)
+            {
+                System.out.println();
+                System.out.println("\033[0;35m" + "<- Daily Quest (Active Quest) ->" + "\033[0m");
+                System.out.println();
+            }
+
+            if (i==1)
+            {
+                System.out.println();
+                System.out.println("\033[0;35m" + "<- Agility Quests (Active Quests) ->" + "\033[0m");
+                System.out.println();
+            }
+
+            if(i==4)
+            {
+                System.out.println();
+                System.out.println("\033[0;35m" + "<- Intelligence Quests (Active Quests) ->" + "\033[0m");
+                System.out.println();
+            }
+
+            if(i==7)
+            {
+                System.out.println();
+                System.out.println("\033[0;35m" + "<- Memory Quests (Active Quests) ->" + "\033[0m");
+                System.out.println();
+            }
+
+            if (i==10)
+            {
+                System.out.println();
+                System.out.println("\033[0;35m" + "<- Dungeon Quests (Passive Quests) ->" + "\033[0m");
+                System.out.println();
+            }
+            if (i==15)
+            { if (count==14)
+            {System.out.println();
+                System.out.println("\033[0;35m" + "<- Secret Quest (Active Quest) ->" + "\033[0m");
+                System.out.println();
+                if (quests.get(i).isCompleted()) {
+                    System.out.println("\033[0;32m" + questNumber + ". " + quests.get(i) + "\033[0;32m" + "(Completed)" + "\033[0m");
+                } else {
+                    System.out.println("\033[0;33m" + questNumber + ". " + quests.get(i) + "\033[0;33m" + "(Available)" + "\033[0m");
+                }
+                questIndexes.add(i);
+            }
+            }
+
+            if (i==16)
+            {
+                System.out.println();
+                System.out.println("\033[0;35m" + "<- PVP Quests (Passive Quests) ->" + "\033[0m");
+                System.out.println();
+            }
+
+                if (i!=15) {
+                    if (i>=0 && i<=9)
+                    {
+                        questIndexes.add(i);
+                    }
+
+                    if (quests.get(i).isCompleted()) {
+                        System.out.println("\033[0;32m" + questNumber + ". " + quests.get(i) + "\033[0;32m" + "(Completed)" + "\033[0m");
+                    } else {
+                        if (i == 0) {
+                            System.out.println("\033[0;33m" + questNumber + ". " + quests.get(i) + "\033[0;33m" + "(Repeatable)" + "\033[0m");
+
+                        } else if (i >= 1 && i <= 9) {
+                            System.out.println("\033[0;33m" + questNumber + ". " + quests.get(i) + "\033[0;33m" + "(Available)" + "\033[0m");
+                        } else {
+                            System.out.println("\033[0;33m" + questNumber + ". " + quests.get(i) + "\033[0;33m" + "(In Progress)" + "\033[0m");
+
+                        }
+                    }
+                }
+
+        }
+
+        return questIndexes;
+
+    }
+
+    public void displayCountdown()
+    {
+        System.out.println();
+        String[] countdownNumbers = {"3", "2", "1", "Start!"};
+        String redCircle = "\u001B[31m\u2B24"; // Unicode for red circle
+        String greenCircle = "\u001B[32m\u2B24"; // Unicode for green circle
+
+        for (String number : countdownNumbers) {
+            if (!number.equals("Start!")) {
+                System.out.println(redCircle + " " + number);
+            } else {
+                System.out.println(greenCircle + " " + number);
+            }
+            pause2();
+        }
     }
 
 

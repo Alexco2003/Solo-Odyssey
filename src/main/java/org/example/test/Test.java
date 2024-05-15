@@ -1,49 +1,237 @@
+
+
 package org.example.test;
-
-import org.example.models.*;
-import org.example.repositories.*;
-
-import java.io.Console;
-import java.util.HashMap;
+import java.util.Scanner;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Test {
-    public static void main(String[] args) throws InterruptedException {
-        String[] lines = new String[]{
-                "\033[0;31m" + "_     ____    _      _     _   _____  _    ____  _      _    _____  ____  _____  _  _ ", // Red
-                "\033[0;32m" + "/ \\   /  _ \\  / \\__/|/ \\ /\\/ \\ /__ __\\/ \\  /  _ \\/ \\  /|/ \\  /__ __\\/  _ \\/__ __\\/ \\/ \\", // Green
-                "\033[0;33m" + "| |   | / \\|  | |\\/||| | ||| |   / \\  | |  | / \\|| |\\ ||| |    / \\  | / \\|  / \\  | || |", // Yellow
-                "\033[0;34m" + "| |_ /| |-||  | |  ||| \\_/|| |_ /| |  | |  | |-||| | \\||| |    | |  | |-||  | |  | |\\_/", // Blue
-                "\033[0;35m" + "\\____/\\_/ \\|  \\_/  \\|\\____/\\____/\\_/  \\_/  \\_/ \\|\\_/  \\|\\_/    \\_/  \\_/ \\|  \\_/  \\_/(_)", // Purple
-                "\033[0m" // Reset
-        };
+    public static void main(String[] args) {
+        AtomicBoolean isTimeout = new AtomicBoolean(false);
 
-        int exit = 0;
-        while (exit<3) {
-            for (String line : lines) {
-                System.out.print("\033[H\033[2J");
-                System.out.flush();
-                System.out.println(line);
-                Thread.sleep(1000);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<String[]> future = executor.submit(new Callable<String[]>() {
+            public String[] call() {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Enter your first answer:");
+                String input1 = scanner.nextLine();
+                System.out.println("Enter your second answer:");
+                String input2 = scanner.nextLine();
+                return new String[]{input1, input2};
             }
+        });
 
-            exit++;
-
+        try {
+            String[] result = future.get(5, TimeUnit.SECONDS); // Timeout after 5 seconds
+            System.out.println("First answer: " + result[0]);
+            System.out.println("Second answer: " + result[1]);
+        } catch (TimeoutException e) {
+            isTimeout.set(true);
+            System.out.println("Timeout occurred. You cannot input anymore.");
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            executor.shutdownNow();
         }
-
-        System.out.println("\033[0;31m" + "⠀⠀⢀⣤⣾⣿⣿⣿⣿⣿⣶⣤⡀⢀⣤⣶⣿⣿⣿⣿⣿⣷⣤⡀⠀⠀"); // Red
-        System.out.println("\033[0;31m" + "⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀"); // Red
-        System.out.println("\033[0;31m" + "⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄"); // Red
-        System.out.println("\033[0;31m" + "⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇"); // Red
-        System.out.println("\033[0;31m" + "⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀"); // Red
-        System.out.println("\033[0;31m" + "⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀"); // Red
-        System.out.println("\033[0;31m" + "⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀"); // Red
-        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀"); // Red
-        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀"); // Red
-        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀"); // Red
-        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣿⣿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"); // Red
-        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + "\033[0m"); // Red
     }
 }
+
+
+//package org.example.test;
+//
+//public class Test {
+//    public static void main(String[] args) {
+//
+//        {
+//            System.out.print("\033[0;31m" + "Player" + "\033[0m");
+//            System.out.println();
+//        }
+//
+//        {
+//            System.out.print("\033[0;32m" + "Player" + "\033[0m");
+//            System.out.println();
+//        }
+//
+//        {
+//            System.out.print("\033[0;35m" + "Player" + "\033[0m");
+//            System.out.println();
+//        }
+//
+//        {
+//            System.out.print("\033[0;33m" + "Player" + "\033[0m");
+//            System.out.println();
+//        }
+//
+//        {
+//            System.out.print("\033[0;36m" + "Player" + "\033[0m");
+//            System.out.println();
+//        }
+//
+//        {
+//            System.out.print("\033[0;30m" + "Player" + "\033[0m");
+//            System.out.println();
+//        }
+//
+//        {
+//            System.out.print("\033[0;94m" + "Player" + "\033[0m");
+//            System.out.println();
+//        }
+//        System.out.print("\033[0;34m" + "Player" + "\033[0m");
+//    }
+//}
+//
+//
+//
+
+
+
+
+
+
+
+
+
+
+
+//package org.example.test;
+//
+//import org.jline.terminal.Terminal;
+//import org.jline.terminal.TerminalBuilder;
+//
+//public class Test {
+//    public static void main(String[] args) {
+//        try {
+//            Terminal terminal = TerminalBuilder.terminal();
+//            int counter = 0;
+//            while (counter < 10) {
+//                int codePoint = terminal.reader().read();
+//                if (codePoint == ' ') {
+//                    counter++;
+//                    System.out.println("Counter incremented. Current value: " + counter);
+//                } else {
+//                    System.out.println("Invalid input. Please press space.");
+//                }
+//            }
+//            System.out.println("You've pressed space 10 times!");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//}
+
+//package org.example.test;
+//import java.io.IOException;
+//import java.util.Random;
+//
+//public class Test {
+//    public static void main(String[] args) throws InterruptedException, IOException {
+//        Random rand = new Random();
+//        int winningPosition = rand.nextInt(10);
+//
+//        int currentPosition = 0;
+//        boolean gameRunning = true;
+//
+//        while (gameRunning) {
+//            if (System.in.available() > 0) { // check if the user has pressed a key
+//                if (currentPosition-1 == winningPosition) {
+//                    System.out.println("\nYou win!");
+//                    System.out.println("The Architect was at position " + winningPosition + "!");
+//                } else {
+//                    System.out.println("\nYou lose!");
+//                }
+//                gameRunning = false;
+//            } else {
+//                // print the loading animation with the current position
+//                if (currentPosition!=winningPosition) {
+//                    System.out.print("\033[0;34m" + "\rPlayer" + "\033[0m"); // Player in blue
+//                     }
+//
+//                if (currentPosition == winningPosition) {
+//                    System.out.print("\033[0;35m" + " \rThe Architect" + "\033[0m"); // The Architect in purple
+//                }
+//                //System.out.print("\033[0;33m" + ".".repeat(currentPosition % 4) + "Loading" + ".".repeat(currentPosition % 4) + "\033[0m"); // Loading in yellow
+//
+//                // update the current position
+//                currentPosition = (currentPosition + 1) % 10;
+//
+//                // wait for a while before the next frame
+//                Thread.sleep(500);
+//            }
+//        }
+//    }
+//}
+//import java.io.IOException;
+//
+//public class Test  {
+//    public static void main(String[] args) throws InterruptedException, IOException {
+//        int winningPosition = 3; // predefined winning position
+//        int currentPosition = 0;
+//        boolean gameRunning = true;
+//
+//        while (gameRunning) {
+//            if (System.in.available() > 0) { // check if the user has pressed a key
+//                if (currentPosition == winningPosition) {
+//                    System.out.println("You win!");
+//                } else {
+//                    System.out.println("You lose!");
+//                }
+//                gameRunning = false;
+//            } else {
+//                // clear the console
+//                System.out.print("\033[H\033[2J");
+//                System.out.flush();
+//
+//                // print the line with the current position
+//                for (int i = 0; i < currentPosition; i++) {
+//                    System.out.print("-");
+//                }
+//                System.out.println("*");
+//
+//                // update the current position
+//                currentPosition = (currentPosition + 1) % 20;
+//
+//                // wait for a while before the next frame
+//                Thread.sleep(2000);
+//            }
+//        }
+//    }
+//}
+//        String[] lines = new String[]{
+//                "\033[0;31m" + "_     ____    _      _     _   _____  _    ____  _      _    _____  ____  _____  _  _ ", // Red
+//                "\033[0;32m" + "/ \\   /  _ \\  / \\__/|/ \\ /\\/ \\ /__ __\\/ \\  /  _ \\/ \\  /|/ \\  /__ __\\/  _ \\/__ __\\/ \\/ \\", // Green
+//                "\033[0;33m" + "| |   | / \\|  | |\\/||| | ||| |   / \\  | |  | / \\|| |\\ ||| |    / \\  | / \\|  / \\  | || |", // Yellow
+//                "\033[0;34m" + "| |_ /| |-||  | |  ||| \\_/|| |_ /| |  | |  | |-||| | \\||| |    | |  | |-||  | |  | |\\_/", // Blue
+//                "\033[0;35m" + "\\____/\\_/ \\|  \\_/  \\|\\____/\\____/\\_/  \\_/  \\_/ \\|\\_/  \\|\\_/    \\_/  \\_/ \\|  \\_/  \\_/(_)", // Purple
+//                "\033[0m" // Reset
+//        };
+//
+//        int exit = 0;
+//        while (exit<3) {
+//            for (String line : lines) {
+//                System.out.print("\033[H\033[2J");
+//                System.out.flush();
+//                System.out.println(line);
+//                Thread.sleep(1000);
+//            }
+//
+//            exit++;
+//
+//        }
+//
+//        System.out.println("\033[0;31m" + "⠀⠀⢀⣤⣾⣿⣿⣿⣿⣿⣶⣤⡀⢀⣤⣶⣿⣿⣿⣿⣿⣷⣤⡀⠀⠀"); // Red
+//        System.out.println("\033[0;31m" + "⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀"); // Red
+//        System.out.println("\033[0;31m" + "⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄"); // Red
+//        System.out.println("\033[0;31m" + "⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇"); // Red
+//        System.out.println("\033[0;31m" + "⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀"); // Red
+//        System.out.println("\033[0;31m" + "⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀"); // Red
+//        System.out.println("\033[0;31m" + "⠀⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀"); // Red
+//        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀"); // Red
+//        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀"); // Red
+//        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀"); // Red
+//        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣿⣿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"); // Red
+//        System.out.println("\033[0;31m" + "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀" + "\033[0m"); // Red
+//    }
+//}
 
 //        BossAssassinRepository bossAssassinRepository = new BossAssassinRepository();
 //        System.out.println(bossAssassinRepository.get(81));

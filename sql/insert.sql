@@ -20,12 +20,17 @@ BEGIN
     --  Quests requiring specific actions or tasks
     INSERT INTO Quest (id_quest, id_player, name, description, rewardLevel, rewardMoney, completed)
     VALUES
-        (NEW.id_user*21+1, NEW.id_user, 'The Enigmatic Riddle', 'Solve the riddle to uncover the hidden passage.', 4, 60.60, false),
-        (NEW.id_user*21+2, NEW.id_user, 'The Great Escape', 'Navigate through the labyrinth and reach the exit.', 3, 200.25, false),
-        (NEW.id_user*21+3, NEW.id_user, 'The Button Press Challenge', 'Press the button space 100 times within a minute.', 5, 175.50, false),
-        (NEW.id_user*21+4, NEW.id_user, 'The Timing Test', 'Press the button X when the clock strikes midnight.', 1, 80.00, false),
-        (NEW.id_user*21+5, NEW.id_user, 'The Logic Puzzle', 'Solve the match calculus question to reveal the hidden code.', 7, 60.00, false),
-        (NEW.id_user*21+6, NEW.id_user, 'The Maze Runner', 'Navigate the maze and find the hidden treasure.', 10, 110.40, false),
+        -- Agility quests
+        (NEW.id_user*21+1, NEW.id_user, 'In the Blink of an Eye', 'You blink. You miss.', 4, 60.60, false),
+        (NEW.id_user*21+2, NEW.id_user, 'Tic-Tac', 'Time is running out.', 3, 200.25, false),
+        (NEW.id_user*21+3, NEW.id_user, 'Color Rush', 'Colors can be deceiving to the mind.', 5, 175.50, false),
+
+        --  Intelligence quests
+        (NEW.id_user*21+4, NEW.id_user, 'The Riddle of Brok', 'A riddle made by a great blacksmith.', 1, 80.00, false),
+        (NEW.id_user*21+5, NEW.id_user, 'Quick Thinker', 'Make a decision under pressure.', 7, 60.00, false),
+        (NEW.id_user*21+6, NEW.id_user, 'The Logic Puzzle', 'Intelligence and logic are intertwined.', 10, 110.40, false),
+
+        --  Memory quests
         (NEW.id_user*21+7, NEW.id_user, 'The Crystal Collection', 'Collect 10 crystals scattered across the land.', 8, 85.00, false),
         (NEW.id_user*21+8, NEW.id_user, 'The Time Traveler', 'Travel through time and return with evidence of your journey.', 9, 90.00, false),
         (NEW.id_user*21+9, NEW.id_user, 'The Ancient Relic', 'Retrieve the ancient relic guarded by mythical creatures.', 6, 100.00, false);

@@ -7,33 +7,41 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Test {
     public static void main(String[] args) {
-        AtomicBoolean isTimeout = new AtomicBoolean(false);
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<String[]> future = executor.submit(new Callable<String[]>() {
-            public String[] call() {
-                Scanner scanner = new Scanner(System.in);
-                System.out.println("Enter your first answer:");
-                String input1 = scanner.nextLine();
-                System.out.println("Enter your second answer:");
-                String input2 = scanner.nextLine();
-                return new String[]{input1, input2};
-            }
-        });
-
-        try {
-            String[] result = future.get(5, TimeUnit.SECONDS); // Timeout after 5 seconds
-            System.out.println("First answer: " + result[0]);
-            System.out.println("Second answer: " + result[1]);
-        } catch (TimeoutException e) {
-            isTimeout.set(true);
-            System.out.println("Timeout occurred. You cannot input anymore.");
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        } finally {
-            executor.shutdownNow();
-        }
+        String sentence1 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The System " + "\033[0;33m" + "was created by ... to make the ... stronger.'";
+        String sentence2 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;34m" + "The Player " + "\033[0;33m" + "will get s....... and s....... with the help of " + "\033[0;35m" + "The System" + "\033[0;33m" + ".'";
+        String sentence3 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The Architect " + "\033[0;33m" + "is the creator of " + "\033[0;35m" + "..." + "\033[0;33m" + " , and the master of the " + "\033[0;34m" + "... " + "\033[0;33m" + ".'";
+        System.out.println(sentence1);
+        System.out.println(sentence2);
+        System.out.println(sentence3);
     }
+//        AtomicBoolean isTimeout = new AtomicBoolean(false);
+//
+//        ExecutorService executor = Executors.newSingleThreadExecutor();
+//        Future<String[]> future = executor.submit(new Callable<String[]>() {
+//            public String[] call() {
+//                Scanner scanner = new Scanner(System.in);
+//                System.out.println("Enter your first answer:");
+//                String input1 = scanner.nextLine();
+//                System.out.println("Enter your second answer:");
+//                String input2 = scanner.nextLine();
+//                return new String[]{input1, input2};
+//            }
+//        });
+//
+//        try {
+//            String[] result = future.get(5, TimeUnit.SECONDS); // Timeout after 5 seconds
+//            System.out.println("First answer: " + result[0]);
+//            System.out.println("Second answer: " + result[1]);
+//        } catch (TimeoutException e) {
+//            isTimeout.set(true);
+//            System.out.println("Timeout occurred. You cannot input anymore.");
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//        } finally {
+//            executor.shutdownNow();
+//        }
+//    }
 }
 
 

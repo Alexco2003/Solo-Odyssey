@@ -1292,41 +1292,106 @@ public class ConsoleApp {
                                 Future<String[]> future = executor.submit(new Callable<String[]>() {
                                     public String[] call() {
                                         Scanner scanner = new Scanner(System.in);
-                                        System.out.println("\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The System " + "\033[0;33m" + "was created by ... to make the ... stronger.'");
+
+                                        int sentenceChoice = new Random().nextInt(3);
+
+                                        String sentence1 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The System " + "\033[0;33m" + "was created by ... to make the ... stronger.'";
+                                        String sentence2 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;34m" + "The Player " + "\033[0;33m" + "will get s....... and s....... with the help of " + "\033[0;35m" + "The System" + "\033[0;33m" + ".'";
+                                        String sentence3 = "\033[0;33m" + "Complete the sentence: '" + "\033[0;35m" + "The Architect " + "\033[0;33m" + "is the creator of " + "\033[0;35m" + "..." + "\033[0;33m" + " , and the master of the " + "\033[0;34m" + "... " + "\033[0;33m" + ".'";
+
+                                        if(sentenceChoice == 0)
+                                        {
+                                            System.out.println(sentence1);
+                                        }
+                                        if(sentenceChoice == 1)
+                                        {
+                                            System.out.println(sentence2);
+                                        }
+                                        if(sentenceChoice == 2)
+                                        {
+                                            System.out.println(sentence3);
+                                        }
+
                                         System.out.println();
                                         System.out.println("\033[0;33m" + "Enter your answers: " + "\033[0m");
                                         System.out.println("\033[0;33m" + "First answer: " + "\033[0m");
                                         String input1 = scanner.nextLine();
-                                        if (isTimeout.get()) return new String[]{"", ""};
+                                        if (isTimeout.get()) return new String[]{"", "", Integer.toString(sentenceChoice)};
                                         System.out.println("\033[0;33m" + "Second answer: " + "\033[0m");
                                         String input2 = scanner.nextLine();
-                                        return new String[]{input1, input2};
+                                        return new String[]{input1, input2, Integer.toString(sentenceChoice)};
                                     }
                                 });
 
                                 try {
                                     String[] result = future.get(5, TimeUnit.SECONDS);
                                     if (!isTimeout.get()) {
-                                        if (result[0].trim().equalsIgnoreCase("The Architect") && result[1].trim().equalsIgnoreCase("Player")) {
-                                            System.out.println();
-                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Intelligence Quest 2!" + "\033[0m");
-                                            if (!quest.isCompleted()) {
-                                                questService.completeQuest(quest.getId_quest());
-                                                userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
-                                                userService.updatePlayerTitle(id);
-                                                userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                        int sentenceChoice = Integer.parseInt(result[2]);
+                                        if (sentenceChoice == 0)
+                                        {
+                                            if (result[0].trim().equalsIgnoreCase("The Architect") && result[1].trim().equalsIgnoreCase("Player")) {
+                                                System.out.println();
+                                                System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Intelligence Quest 2!" + "\033[0m");
+                                                if (!quest.isCompleted()) {
+                                                    questService.completeQuest(quest.getId_quest());
+                                                    userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                                    userService.updatePlayerTitle(id);
+                                                    userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                                }
+                                                AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                            } else {
+                                                System.out.println();
+                                                System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2..." + "\033[0m");
+                                                AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
                                             }
-                                            AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
-                                        } else {
-                                            System.out.println();
-                                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2..." + "\033[0m");
-                                            AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+
                                         }
+                                        if (sentenceChoice == 1)
+                                        {
+                                            if (result[0].trim().equalsIgnoreCase("stronger") && result[1].trim().equalsIgnoreCase("stronger")) {
+                                                System.out.println();
+                                                System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Intelligence Quest 2!" + "\033[0m");
+                                                if (!quest.isCompleted()) {
+                                                    questService.completeQuest(quest.getId_quest());
+                                                    userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                                    userService.updatePlayerTitle(id);
+                                                    userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                                }
+                                                AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                            } else {
+                                                System.out.println();
+                                                System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2..." + "\033[0m");
+                                                AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                            }
+
+                                        }
+                                        if (sentenceChoice == 2)
+                                        {
+                                            if (result[0].trim().equalsIgnoreCase("The System") && result[1].trim().equalsIgnoreCase("Player")) {
+                                                System.out.println();
+                                                System.out.println("\033[0;33m" + "Congratulations! You have successfully completed the Intelligence Quest 2!" + "\033[0m");
+                                                if (!quest.isCompleted()) {
+                                                    questService.completeQuest(quest.getId_quest());
+                                                    userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
+                                                    userService.updatePlayerTitle(id);
+                                                    userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
+                                                }
+                                                AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                            } else {
+                                                System.out.println();
+                                                System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2..." + "\033[0m");
+                                                AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                            }
+
+                                        }
+
                                     } else {
                                         System.out.println();
                                         System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2 due to time out..." + "\033[0m");
                                         AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
                                     }
+
+
                                 } catch (TimeoutException e) {
                                     isTimeout.set(true);
                                     AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");

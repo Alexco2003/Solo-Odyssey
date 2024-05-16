@@ -275,7 +275,7 @@ public class DatabaseSetup {
                 "        -- Boss items\n" +
                 "\n" +
                 "        -- Assassin\n" +
-                "        (NEW.id_user*97+37, NEW.id_user, 'Vorpal Shadowblade''s Helmet', 'A helm worn by the Vorpal Shadowblade.', 1200.00, 25, 25, 0, false, true),\n" +
+                "        (NEW.id_user*97+37, NEW.id_user, 'Vorpal Shadowblade''s Helmet', 'A helm worn by the Vorpal Shadowblade.', 1200.00, 25, 25, 1, false, true),\n" +
                 "        (NEW.id_user*97+38, NEW.id_user, 'Vorpal Shadowblade''s Armor', 'Protective armor worn by the Vorpal Shadowblade.', 1300.00, 50, 20, 1, false, true),\n" +
                 "        (NEW.id_user*97+39, NEW.id_user, 'Vorpal Shadowblade''s Glove', 'A glove used by the Vorpal Shadowblade.', 1150.00, 30, 0, 1, false, true),\n" +
                 "        (NEW.id_user*97+40, NEW.id_user, 'Vorpal Shadowblade''s Shoe', 'A shoe worn by the Vorpal Shadowblade.', 1150.00, 15, 0, 1, false, true),\n" +

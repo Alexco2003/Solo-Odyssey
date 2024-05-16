@@ -51,12 +51,15 @@ public class ConsoleApp {
         DatabaseSeeder databaseSeeder = new DatabaseSeeder();
         databaseSeeder.seed();
         displayTitleStart();
+        flushConsole();
         displayTitleMotto();
+        flushConsole();
 
 
         while (!exit) {
 
             displayTitleLogin();
+            flushConsole();
             String input = scanner.nextLine();
 
             switch (input) {
@@ -270,6 +273,7 @@ public class ConsoleApp {
         boolean exit = false;
         while (!exit) {
             displayPlayerMenu(username, id);
+            flushConsole();
             String input = scanner.nextLine();
 
             switch (input) {
@@ -1454,7 +1458,7 @@ public class ConsoleApp {
                                 flushConsole();
                                 System.out.println("\033[0;33m" + "Enter your answer: " + "\033[0m");
                                 String answer1 = scanner.nextLine();
-                                if (answer1.trim().equalsIgnoreCase("b")) {
+                                if (answer1.trim().equalsIgnoreCase("b") || answer1.trim().equalsIgnoreCase("b)")) {
                                     correctAnswers++;
                                 }
 
@@ -1469,7 +1473,7 @@ public class ConsoleApp {
                                 System.out.println();
                                 System.out.println("\033[0;33m" + "Enter your answer: " + "\033[0m");
                                 String answer2 = scanner.nextLine();
-                                if (answer2.trim().equalsIgnoreCase("3")) {
+                                if (answer2.trim().equalsIgnoreCase("3") || answer2.trim().equalsIgnoreCase("3.")) {
                                     correctAnswers++;
                                 }
 
@@ -1482,22 +1486,22 @@ public class ConsoleApp {
                                 System.out.println();
                                 System.out.println("\033[0;33m" + "Enter your answer: " + "\033[0m");
                                 String answer3 = scanner.nextLine();
-                                if (answer3.trim().equalsIgnoreCase("T")) {
+                                if (answer3.trim().equalsIgnoreCase("T") || answer3.trim().equalsIgnoreCase("T.") || answer3.trim().equalsIgnoreCase("True") || answer3.trim().equalsIgnoreCase("True.")){
                                     correctAnswers++;
                                 }
 
                                 System.out.println();
                                 System.out.println("\033[0;33m" + "4. A Player has 53 enemies to fight in one Dungeon: 21 assassins, 15 mages and 17 tanks. The lights are out and he is completely in the dark. How many enemies must he take out to make 100 percent certain he has taken down at least one mage?" + "\033[0m");
                                 System.out.println("\033[0;33m" + "A. 21" + "\033[0m");
-                                System.out.println("\033[0;33m" + "B. 39" + "\033[0m");
+                                System.out.println("\033[0;33m" + "B. 38" + "\033[0m");
                                 System.out.println("\033[0;33m" + "C. 53" + "\033[0m");
-                                System.out.println("\033[0;33m" + "D. 38" + "\033[0m");
+                                System.out.println("\033[0;33m" + "D. 39" + "\033[0m");
 
                                 flushConsole();
                                 System.out.println();
                                 System.out.println("\033[0;33m" + "Enter your answer: " + "\033[0m");
                                 String answer4 = scanner.nextLine();
-                                if (answer4.trim().equalsIgnoreCase("B")) {
+                                if (answer4.trim().equalsIgnoreCase("D") || answer4.trim().equalsIgnoreCase("D.")) {
                                     correctAnswers++;
                                 }
 
@@ -1990,7 +1994,6 @@ public class ConsoleApp {
 
                 case "11":
 
-                    // TODO : PVP adjustment for random miss chance per attack
                     System.out.println();
                     ArrayList<Player> players3 = userService.getAllPlayers();
                     System.out.println("\033[0;35m" + "<<-- The System's PVP -->>" + "\033[0m");
@@ -2027,8 +2030,54 @@ public class ConsoleApp {
                         boolean winP2 = false;
 
                         System.out.println();
+                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is assigning the missing attack chance for each player..." + "\033[0m");
+                        pause3();
+
+                        int missingChanceP1 = 35;
+                        int missingChanceP2 = 35;
+
+                        ArrayList<Quest> questsP1 = questService.getQuestsByPlayerId(player1.getId_user());
+                        ArrayList<Quest> questsP2 = questService.getQuestsByPlayerId(player2.getId_user());
+
+                        int completedQuestsP1 = 0;
+                        int completedQuestsP2 = 0;
+
+                        int startP1 = Math.max(0, questsP1.size() - 5);
+                        int startP2 = Math.max(0, questsP2.size() - 5);
+
+                        for (int i = startP1; i < questsP1.size(); i++) {
+                            if (questsP1.get(i).isCompleted()) {
+                                completedQuestsP1++;
+                            }
+                        }
+
+                        for (int i = startP2; i < questsP2.size(); i++) {
+                            if (questsP2.get(i).isCompleted()) {
+                                completedQuestsP2++;
+                            }
+                        }
+
+                        while(completedQuestsP1 != 0)
+                        {
+                            missingChanceP1 -= 5;
+                            completedQuestsP1--;
+                        }
+
+                        while(completedQuestsP2 != 0)
+                        {
+                            missingChanceP2 -= 5;
+                            completedQuestsP2--;
+                        }
+
+                        System.out.println();
+                        System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " -> " + "\033[0;33m" + "Missing Attack Chance: " + missingChanceP1 + "%" + "\033[0m");
+                        System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " -> " + "\033[0;33m" + "Missing Attack Chance: " + missingChanceP2 + "%" + "\033[0m");
+                        pause3();
+
+                        System.out.println();
                         System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is choosing who will strike first..." + "\033[0m");
                         pause3();
+
 
                         if (random2 == 0) {
                             System.out.println();
@@ -2037,9 +2086,19 @@ public class ConsoleApp {
                                 System.out.println();
                                 System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " -> " + "\033[0;32m" + "Health: " + player1.getHealth() + " \033[0;31m" + "Damage: " + player1.getDamage() + "\033[0m");
                                 System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " -> " + "\033[0;32m" + "Health: " + player2.getHealth() + " \033[0;31m" + "Damage: " + player2.getDamage() + "\033[0m");
-                                player1.setHealth(player1.getHealth() - player2.getDamage());
-                                System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player1.getUsername() + "\033[0;33m" + " with " + player2.getDamage() + " damage." + "\033[0m");
-                                pause2();
+
+                                int random3 = (int) (Math.random() * 100);
+                                if (random3 < missingChanceP2) {
+                                    System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " missed the attack!" + "\033[0m");
+                                    pause2();
+                                }
+                                else
+                                {
+                                    player1.setHealth(player1.getHealth() - player2.getDamage());
+                                    System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player1.getUsername() + "\033[0;33m" + " with " + player2.getDamage() + " damage." + "\033[0m");
+                                    pause2();
+                                }
+
 
                                 if (player1.getHealth() <= 0) {
                                     System.out.println();
@@ -2048,9 +2107,17 @@ public class ConsoleApp {
                                     break;
                                 }
 
-                                player2.setHealth(player2.getHealth() - player1.getDamage());
-                                System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player2.getUsername() + "\033[0;33m" + " with " + player1.getDamage() + " damage." + "\033[0m");
-                                pause2();
+                                random3 = (int) (Math.random() * 100);
+                                if (random3 < missingChanceP1) {
+                                    System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " missed the attack!" + "\033[0m");
+                                    pause2();
+                                }
+                                else
+                                {
+                                    player2.setHealth(player2.getHealth() - player1.getDamage());
+                                    System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player2.getUsername() + "\033[0;33m" + " with " + player1.getDamage() + " damage." + "\033[0m");
+                                    pause2();
+                                }
 
                                 if (player2.getHealth() <= 0) {
                                     System.out.println();
@@ -2067,9 +2134,18 @@ public class ConsoleApp {
                                 System.out.println();
                                 System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " -> " + "\033[0;32m" + "Health: " + player1.getHealth() + " \033[0;31m" + "Damage: " + player1.getDamage() + "\033[0m");
                                 System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " -> " + "\033[0;32m" + "Health: " + player2.getHealth() + " \033[0;31m" + "Damage: " + player2.getDamage() + "\033[0m");
-                                player2.setHealth(player2.getHealth() - player1.getDamage());
-                                System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player2.getUsername() + "\033[0;33m" + " with " + player1.getDamage() + " damage." + "\033[0m");
-                                pause2();
+
+                                int random3 = (int) (Math.random() * 100);
+                                if (random3 < missingChanceP1) {
+                                    System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " missed the attack!" + "\033[0m");
+                                    pause2();
+                                }
+                                else {
+                                    player2.setHealth(player2.getHealth() - player1.getDamage());
+                                    System.out.println("\033[0;34m" + player1.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player2.getUsername() + "\033[0;33m" + " with " + player1.getDamage() + " damage." + "\033[0m");
+                                    pause2();
+                                }
+
 
                                 if (player2.getHealth() <= 0) {
                                     System.out.println();
@@ -2078,9 +2154,17 @@ public class ConsoleApp {
                                     break;
                                 }
 
-                                player1.setHealth(player1.getHealth() - player2.getDamage());
-                                System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player1.getUsername() + "\033[0;33m" + " with " + player2.getDamage() + " damage." + "\033[0m");
-                                pause2();
+                                random3 = (int) (Math.random() * 100);
+                                if (random3 < missingChanceP2) {
+                                    System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " missed the attack!" + "\033[0m");
+                                    pause2();
+                                }
+                                else {
+                                    player1.setHealth(player1.getHealth() - player2.getDamage());
+                                    System.out.println("\033[0;34m" + player2.getUsername() + "\033[0;33m" + " attacked " + "\033[0;34m" + player1.getUsername() + "\033[0;33m" + " with " + player2.getDamage() + " damage." + "\033[0m");
+                                    pause2();
+                                }
+
 
                                 if (player1.getHealth() <= 0) {
                                     System.out.println();
@@ -2670,6 +2754,8 @@ System.out.println("\033[0;33m" + "-> Passive Quests can't be played, but once t
                     System.out.println("\033[0;33m" + "-> Play PVP." + "\033[0m");
                     System.out.println("\033[0;33m" + "-> PVP will reward you with stats regarding your wins and losses. " + "\033[0m");
 System.out.println("\033[0;33m" + "-> The first attack will be decided every round, it is not predefined." + "\033[0m");
+                   System.out.println("\033[0;33m" + "-> In PVP, both players have a missing attack chance. If the attack is missing, the player will deal 0 damage." + "\033[0m");
+                     System.out.println("\033[0;33m" + "-> The default missing attack chance is 35%, but it can be decreased by completing PVP Quests (-5% per quest)." + "\033[0m");
                    System.out.println();
                     System.out.println("\033[0;35m" + "Command 12:" + "\033[0m");
                     System.out.println("\033[0;33m" + "-> Play Arena." + "\033[0m");
@@ -2714,9 +2800,6 @@ System.out.println("\033[0;33m" + "-> The first attack will be decided every rou
                    System.out.println();
                    System.out.println("\033[0;33m" + "Press 'Enter' to continue..." + "\033[0m");
                    scanner.nextLine();
-
-
-
 
                     System.out.println();
                     break;
@@ -2767,6 +2850,7 @@ System.out.println("\033[0;33m" + "-> The first attack will be decided every rou
         boolean exit = false;
         while (!exit) {
             displayArchitectMenu();
+            flushConsole();
             String input = scanner.nextLine();
 
             switch (input) {
@@ -3059,6 +3143,7 @@ System.out.println("\033[0;33m" + "-> The first attack will be decided every rou
         boolean exit = false;
         while (!exit) {
             displayPlayerOrArchitectMenu();
+            flushConsole();
             String input = scanner.nextLine();
 
             switch (input) {

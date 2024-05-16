@@ -1989,6 +1989,8 @@ public class ConsoleApp {
 
 
                 case "11":
+
+                    // TODO : PVP adjustment for random miss chance per attack
                     System.out.println();
                     ArrayList<Player> players3 = userService.getAllPlayers();
                     System.out.println("\033[0;35m" + "<<-- The System's PVP -->>" + "\033[0m");

@@ -4,6 +4,9 @@ import com.opencsv.CSVWriter;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.io.File;
 
 public class AuditDatabase {
     private static AuditDatabase instance = null;
@@ -14,7 +17,7 @@ public class AuditDatabase {
     private AuditDatabase() {
         try {
 
-            writer = new CSVWriter(new FileWriter(path));
+            writer = new CSVWriter(new FileWriter(path,true));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -29,9 +32,24 @@ public class AuditDatabase {
 
     public <T> void write(String sqlStatement, T entity, String result) {
         try {
-            String[] entries = {"Statement " + count++, sqlStatement, String.valueOf(entity), result};
-            writer.writeNext(entries);
-            writer.flush();
+            File file = new File(path);
+            if (file.length() != 0 && count == 1) {
+                writer.writeNext(new String[]{});
+                writer.writeNext(new String[]{});
+                writer.flush();
+
+            }
+
+            if (count == 1) {
+                writer.writeNext(new String[]{"No.", "SQL Statement", "Entity", "Time"});
+                writer.writeNext(new String[]{});
+                writer.flush();
+            }
+
+                String[] entries = {"Statement " + count++, sqlStatement, String.valueOf(entity), LocalDateTime.now().toString()};
+                writer.writeNext(entries);
+                writer.flush();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

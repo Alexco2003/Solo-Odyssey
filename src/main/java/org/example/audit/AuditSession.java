@@ -29,6 +29,11 @@ public class AuditSession {
 
     public void write(String Action) {
         try {
+            if(count == 1) {
+                writer.writeNext(new String[]{"No.", "Action"});
+                writer.writeNext(new String[]{});
+                writer.flush();
+            }
             String[] entries = {"Action " + count++, Action};
             writer.writeNext(entries);
             writer.flush();

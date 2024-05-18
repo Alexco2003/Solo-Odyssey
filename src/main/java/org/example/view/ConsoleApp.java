@@ -10,6 +10,7 @@ import org.example.services.*;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLOutput;
 import java.util.*;
@@ -50,9 +51,9 @@ public class ConsoleApp {
         databaseSetup.setup();
         DatabaseSeeder databaseSeeder = new DatabaseSeeder();
         databaseSeeder.seed();
-        displayTitleStart();
+        //displayTitleStart();
         flushConsole();
-        displayTitleMotto();
+        //displayTitleMotto();
         flushConsole();
 
 
@@ -397,7 +398,7 @@ public class ConsoleApp {
                         userService.updatePlayerMoneyOnBuy(id, shop1.getItems().get(itemNumber - 1).getPrice());
                         userService.updateStatsOnBuy(id, shop1.getItems().get(itemNumber - 1).getDamage(), shop1.getItems().get(itemNumber - 1).getHealth());
                         System.out.println();
-                        AuditSession.getInstance().write("Player " + username + " bought item " + shop1.getItems().get(itemNumber - 1).getName() + ".");
+                        AuditSession.getInstance().write("Player " + username + " bought item '" + shop1.getItems().get(itemNumber - 1).getName() + "'.");
                         break;
 
                     } catch (InputMismatchException e) {
@@ -432,7 +433,7 @@ public class ConsoleApp {
                         shopService.sellItem(id, idItem);
                         userService.updatePlayerMoneyOnSell(id, items.get(itemNumber - 1).getPrice()*0.75);
                         userService.updateStatsOnSell(id, items.get(itemNumber - 1).getDamage(), items.get(itemNumber - 1).getHealth());
-                        AuditSession.getInstance().write("Player " + username + " sold item " + items.get(itemNumber - 1).getName() + ".");
+                        AuditSession.getInstance().write("Player " + username + " sold item '" + items.get(itemNumber - 1).getName() + "'.");
                         System.out.println();
                         break;
 
@@ -474,6 +475,7 @@ public class ConsoleApp {
                         {
                             break;
                         }
+
                         enemyService.updateEnemyEncountered(enemy.getId_enemy());
                         System.out.println();
                         System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the '" + enemy.getName() + "' for you..." + "\033[0m");
@@ -484,404 +486,825 @@ public class ConsoleApp {
 
                         pause3();
 
-                        while (enemy.getHealth()>0)
+                        int whoWillStrikeFirst = (int) (Math.random() * 2) + 1;
+                        if(whoWillStrikeFirst == 1)
                         {
                             System.out.println();
-                            System.out.println("\033[0;32m" + "Enemy Health: " + enemy.getHealth() + " \033[0;31m" + "Enemy Damage: " + enemy.getDamage() + "\033[0m");
-                            System.out.println("\033[0;32m" + "Your Health: " + player.getHealth() + " \033[0;31m" + "Your Damage: " + player.getDamage() + "\033[0m");
-
-                            if (enemy instanceof Assassin) {
-
-                                enemy.setHealth(enemy.getHealth() - player.getDamage());
-                                System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
-                                pause2();
-
-                                if (enemy.getHealth() <= 0)
-                                {
-                                    System.out.println();
-                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
-                                    if (enemy instanceof BossAssassin)
-                                    {
-                                        AuditSession.getInstance().write("Player " + username + " defeated the Boss " + enemy.getName() + ".");
-
-                                    }else {
-                                        AuditSession.getInstance().write("Player " + username + " defeated the " + enemy.getName() + ".");
-
-                                    }
-                                    if (enemy instanceof BossAssassin)
-                                    {
-                                        System.out.println();
-                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
-                                        AuditSession.getInstance().write("Player " + username + " cleared Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                        dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
-
-                                        int count3 = 0;
-                                        dungeons.get(dungeonId).setCompleted(true);
-                                        ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
-                                        for(Dungeon dungeon : dungeons)
-                                        {
-                                            if (dungeon.isCompleted())
-                                            {
-                                                count3++;
-                                            }
-                                        }
-                                        if (count3 == 1)
-                                        {
-                                            questService.completeQuest(quests.get(10).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(10).getName() + ".");
-                                        }
-                                        if (count3 == 2)
-                                        {
-                                            questService.completeQuest(quests.get(11).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(11).getName() + ".");
-                                        }
-                                        if (count3 == 3)
-                                        {
-                                            questService.completeQuest(quests.get(12).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(12).getName() + ".");
-                                        }
-                                        if (count3 == 5)
-                                        {
-                                            questService.completeQuest(quests.get(13).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(13).getName() + ".");
-                                        }
-                                        if (count3 == 10)
-                                        {
-                                            questService.completeQuest(quests.get(14).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(14).getName() + ".");
-                                        }
-
-                                        userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
-                                        userService.updatePlayerTitle(id);
-                                        userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
-                                        for (Item item : ((BossAssassin) enemy).getItems())
-                                        {
-                                            shopService.buyItem(id, item.getId_item());
-                                            userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
-
-                                        }
-                                    }
-                                    break;
-                                }
-
-                                int damage = enemy.getDamage();
-                                int criticalChance = ((Assassin) enemy).getCriticalChance();
-                                int random = (int) (Math.random() * 100) + 1;
-
-                                if (random <= criticalChance) {
-                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will use a critical strike!" + "\033[0m");
-                                    damage *= 2;
-                                }
-
-                                System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
-                                player.setHealth(player.getHealth() - damage);
-
-                                if (player.getHealth() <= 0)
-                                {
-                                    System.out.println();
-                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
-                                    if (enemy instanceof BossAssassin)
-                                    {
-                                        AuditSession.getInstance().write("Player " + username + " was defeated by the Boss " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                    }else {
-                                        AuditSession.getInstance().write("Player " + username + " was defeated by the " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                    }
-                                    pause3();
-                                    exit5 = true;
-                                    break;
-                                }
-
-                            }
-
-                            if (enemy instanceof Mage)
-                            {
-
-
-                                enemy.setHealth(enemy.getHealth() - player.getDamage());
-                                System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
-                   pause2();
-
-                                if (enemy.getHealth() <= 0)
-                                {
-                                    System.out.println();
-                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
-                                    if (enemy instanceof BossMage)
-                                    {
-                                        AuditSession.getInstance().write("Player " + username + " defeated the Boss " + enemy.getName() + ".");
-
-                                    }else {
-                                        AuditSession.getInstance().write("Player " + username + " defeated the " + enemy.getName() + ".");
-
-                                    }
-                                    if (enemy instanceof BossMage)
-                                    {
-                                        System.out.println();
-                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
-                                        AuditSession.getInstance().write("Player " + username + " cleared Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                        dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
-
-                                        int count3 = 0;
-                                        dungeons.get(dungeonId).setCompleted(true);
-                                        ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
-                                        for(Dungeon dungeon : dungeons)
-                                        {
-                                            if (dungeon.isCompleted())
-                                            {
-                                                count3++;
-                                            }
-                                        }
-                                        if (count3 == 1)
-                                        {
-                                            questService.completeQuest(quests.get(10).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(10).getName() + ".");
-                                        }
-                                        if (count3 == 2)
-                                        {
-                                            questService.completeQuest(quests.get(11).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(11).getName() + ".");
-                                        }
-                                        if (count3 == 3)
-                                        {
-                                            questService.completeQuest(quests.get(12).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(12).getName() + ".");
-                                        }
-                                        if (count3 == 5)
-                                        {
-                                            questService.completeQuest(quests.get(13).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(13).getName() + ".");
-                                        }
-                                        if (count3 == 10)
-                                        {
-                                            questService.completeQuest(quests.get(14).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(14).getName() + ".");
-                                        }
-
-                                        userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
-                                        userService.updatePlayerTitle(id);
-                                        userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
-                                        for (Item item : ((BossMage) enemy).getItems())
-                                        {
-                                            shopService.buyItem(id, item.getId_item());
-                                            userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
-
-                                        }
-                                    }
-                                    break;
-                                }
-
-                                int damage = enemy.getDamage();
-                                int mana = ((Mage) enemy).getMana();
-                                int random = (int) (Math.random() * 2);
-                                int heal = 0;
-
-                                if (mana>0)
-                                {
-                                    if (random == 0) {
-                                        damage = (int) (damage * 1.5);
-                                        ((Mage) enemy).setMana(mana - 20);
-                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will have increased damage!" + "\033[0m");
-
-                                    } else {
-
-                                        heal = (int) (enemy.getHealth() * 0.1);
-                                        enemy.setHealth(enemy.getHealth() + heal);
-                                        ((Mage) enemy).setMana(mana - 20);
-                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will heal itself!" + "\033[0m");
-
-                                    }
-                                }
-                                else
-                                {
-                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no mana left!" + "\033[0m");
-                                }
-
-                                System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
-                                player.setHealth(player.getHealth() - damage);
-
-                                if (player.getHealth() <= 0)
-                                {
-                                    System.out.println();
-                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
-                                    if (enemy instanceof BossMage)
-                                    {
-                                        AuditSession.getInstance().write("Player " + username + " was defeated by the Boss " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                    }else {
-                                        AuditSession.getInstance().write("Player " + username + " was defeated by the " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                    }                                    pause3();
-                                    exit5 = true;
-                                    break;
-                                }
-
-
-
-                            }
-
-                            if (enemy instanceof Tank)
-                            {
-                                int armor = ((Tank) enemy).getArmor();
-                                if(armor>0)
-                                {
-                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has armor!" + "\033[0m");
-                                    ((Tank) enemy).setArmor(armor - player.getDamage());
-                                    armor = ((Tank) enemy).getArmor();
-                                    if (armor < 0)
-                                    {
-                                        enemy.setHealth(enemy.getHealth() - Math.abs(armor));
-                                        ((Tank) enemy).setArmor(0);
-
-                                    }
-                                }
-                                else
-                                {
-                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no armor!" + "\033[0m");
-                                    enemy.setHealth(enemy.getHealth() - player.getDamage());
-                                }
-
-                                System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
-
-                                pause2();
-
-                                if (enemy.getHealth() <= 0)
-                                {
-                                    System.out.println();
-                                    System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
-                                    if (enemy instanceof BossTank)
-                                    {
-                                        AuditSession.getInstance().write("Player " + username + " defeated the Boss " + enemy.getName() + ".");
-
-                                    }else {
-                                        AuditSession.getInstance().write("Player " + username + " defeated the " + enemy.getName() + ".");
-
-                                    }
-                                    if (enemy instanceof BossTank)
-                                    {
-                                        System.out.println();
-                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
-                                        AuditSession.getInstance().write("Player " + username + " cleared Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                        dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
-
-                                        int count3 = 0;
-                                        dungeons.get(dungeonId).setCompleted(true);
-                                        ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
-                                        for(Dungeon dungeon : dungeons)
-                                        {
-                                            if (dungeon.isCompleted())
-                                            {
-                                                count3++;
-                                            }
-                                        }
-                                        if (count3 == 1)
-                                        {
-                                            questService.completeQuest(quests.get(10).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(10).getName() + ".");
-                                        }
-                                        if (count3 == 2)
-                                        {
-                                            questService.completeQuest(quests.get(11).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(11).getName() + ".");
-                                        }
-                                        if (count3 == 3)
-                                        {
-                                            questService.completeQuest(quests.get(12).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(12).getName() + ".");
-                                        }
-                                        if (count3 == 5)
-                                        {
-                                            questService.completeQuest(quests.get(13).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(13).getName() + ".");
-                                        }
-                                        if (count3 == 10)
-                                        {
-                                            questService.completeQuest(quests.get(14).getId_quest());
-                                            userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
-                                            userService.updatePlayerTitle(id);
-                                            userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
-                                            AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(14).getName() + ".");
-                                        }
-
-                                        userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
-                                        userService.updatePlayerTitle(id);
-                                        userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
-                                        for (Item item : ((BossTank) enemy).getItems())
-                                        {
-                                            shopService.buyItem(id, item.getId_item());
-                                            userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
-
-                                        }
-                                    }
-                                    break;
-                                }
-
-                                int damage = enemy.getDamage();
-
-                                System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
-                                player.setHealth(player.getHealth() - damage);
-
-                                if (player.getHealth() <= 0)
-                                {
-                                    System.out.println();
-                                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
-                                    if (enemy instanceof BossTank)
-                                    {
-                                        AuditSession.getInstance().write("Player " + username + " was defeated by the Boss " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                    }else {
-                                        AuditSession.getInstance().write("Player " + username + " was defeated by the " + enemy.getName() + "and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + ".");
-                                    }
-                                    pause3();
-                                    exit5 = true;
-                                    break;
-                                }
-
-                            }
-
-
-
-
+                            System.out.println("\033[0;33m" + "You will strike first!" + "\033[0m");
+                            pause3();
                         }
-                    }
+                        else
+                        {
+                            System.out.println();
+                            System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will strike first!" + "\033[0m");
+                            pause3();
+                        }
 
+                        if(whoWillStrikeFirst==1)
+                        {
+                            while (enemy.getHealth()>0)
+                            {
+                                System.out.println();
+                                System.out.println("\033[0;32m" + "Enemy Health: " + enemy.getHealth() + " \033[0;31m" + "Enemy Damage: " + enemy.getDamage() + "\033[0m");
+                                System.out.println("\033[0;32m" + "Your Health: " + player.getHealth() + " \033[0;31m" + "Your Damage: " + player.getDamage() + "\033[0m");
+
+                                if (enemy instanceof Assassin) {
+
+                                    enemy.setHealth(enemy.getHealth() - player.getDamage());
+                                    System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
+                                    pause2();
+
+                                    if (enemy.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                        if (enemy instanceof BossAssassin)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the Boss '" + enemy.getName() + "'.");
+
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+
+                                        }
+                                        if (enemy instanceof BossAssassin)
+                                        {
+                                            System.out.println();
+                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
+                                            AuditSession.getInstance().write("Player " + username + " cleared Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                            dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+
+                                            int count3 = 0;
+                                            dungeons.get(dungeonId).setCompleted(true);
+                                            ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+                                            for(Dungeon dungeon : dungeons)
+                                            {
+                                                if (dungeon.isCompleted())
+                                                {
+                                                    count3++;
+                                                }
+                                            }
+                                            if (count3 == 1)
+                                            {
+                                                questService.completeQuest(quests.get(10).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(10).getName() + "'.");
+                                            }
+                                            if (count3 == 2)
+                                            {
+                                                questService.completeQuest(quests.get(11).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(11).getName() + "'.");
+                                            }
+                                            if (count3 == 3)
+                                            {
+                                                questService.completeQuest(quests.get(12).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(12).getName() + "'.");
+                                            }
+                                            if (count3 == 5)
+                                            {
+                                                questService.completeQuest(quests.get(13).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(13).getName() + "'.");
+                                            }
+                                            if (count3 == 10)
+                                            {
+                                                questService.completeQuest(quests.get(14).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(14).getName() + "'.");
+                                            }
+
+                                            userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
+                                            for (Item item : ((BossAssassin) enemy).getItems())
+                                            {
+                                                shopService.buyItem(id, item.getId_item());
+                                                userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
+
+                                            }
+                                        }
+                                        break;
+                                    }
+
+                                    int damage = enemy.getDamage();
+                                    int criticalChance = ((Assassin) enemy).getCriticalChance();
+                                    int random = (int) (Math.random() * 100) + 1;
+
+                                    if (random <= criticalChance) {
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will use a critical strike!" + "\033[0m");
+                                        damage *= 2;
+                                    }
+
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                    player.setHealth(player.getHealth() - damage);
+
+                                    if (player.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                        if (enemy instanceof BossAssassin)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the Boss '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }
+                                        pause3();
+                                        exit5 = true;
+                                        break;
+                                    }
+
+                                }
+
+                                if (enemy instanceof Mage)
+                                {
+
+
+                                    enemy.setHealth(enemy.getHealth() - player.getDamage());
+                                    System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
+                                    pause2();
+
+                                    if (enemy.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                        if (enemy instanceof BossMage)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the Boss '" + enemy.getName() + "'.");
+
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+
+                                        }
+                                        if (enemy instanceof BossMage)
+                                        {
+                                            System.out.println();
+                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
+                                            AuditSession.getInstance().write("Player " + username + " cleared Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                            dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+
+                                            int count3 = 0;
+                                            dungeons.get(dungeonId).setCompleted(true);
+                                            ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+                                            for(Dungeon dungeon : dungeons)
+                                            {
+                                                if (dungeon.isCompleted())
+                                                {
+                                                    count3++;
+                                                }
+                                            }
+                                            if (count3 == 1)
+                                            {
+                                                questService.completeQuest(quests.get(10).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(10).getName() + "'.");
+                                            }
+                                            if (count3 == 2)
+                                            {
+                                                questService.completeQuest(quests.get(11).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(11).getName() + "'.");
+                                            }
+                                            if (count3 == 3)
+                                            {
+                                                questService.completeQuest(quests.get(12).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(12).getName() + "'.");
+                                            }
+                                            if (count3 == 5)
+                                            {
+                                                questService.completeQuest(quests.get(13).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(13).getName() + "'.");
+                                            }
+                                            if (count3 == 10)
+                                            {
+                                                questService.completeQuest(quests.get(14).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(14).getName() + "'.");
+                                            }
+
+                                            userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
+                                            for (Item item : ((BossMage) enemy).getItems())
+                                            {
+                                                shopService.buyItem(id, item.getId_item());
+                                                userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
+
+                                            }
+                                        }
+                                        break;
+                                    }
+
+                                    int damage = enemy.getDamage();
+                                    int mana = ((Mage) enemy).getMana();
+                                    int random = (int) (Math.random() * 2);
+                                    int heal = 0;
+
+                                    if (mana>0)
+                                    {
+                                        if (random == 0) {
+                                            damage = (int) (damage * 1.5);
+                                            ((Mage) enemy).setMana(mana - 20);
+                                            System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will have increased damage!" + "\033[0m");
+
+                                        } else {
+
+                                            heal = (int) (enemy.getHealth() * 0.1);
+                                            enemy.setHealth(enemy.getHealth() + heal);
+                                            ((Mage) enemy).setMana(mana - 20);
+                                            System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will heal itself!" + "\033[0m");
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no mana left!" + "\033[0m");
+                                    }
+
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                    player.setHealth(player.getHealth() - damage);
+
+                                    if (player.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                        if (enemy instanceof BossMage)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the Boss '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }                                    pause3();
+                                        exit5 = true;
+                                        break;
+                                    }
+
+
+
+                                }
+
+                                if (enemy instanceof Tank)
+                                {
+                                    int armor = ((Tank) enemy).getArmor();
+                                    if(armor>0)
+                                    {
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has armor!" + "\033[0m");
+                                        ((Tank) enemy).setArmor(armor - player.getDamage());
+                                        armor = ((Tank) enemy).getArmor();
+                                        if (armor < 0)
+                                        {
+                                            enemy.setHealth(enemy.getHealth() - Math.abs(armor));
+                                            ((Tank) enemy).setArmor(0);
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no armor!" + "\033[0m");
+                                        enemy.setHealth(enemy.getHealth() - player.getDamage());
+                                    }
+
+                                    System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
+
+                                    pause2();
+
+                                    if (enemy.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                        if (enemy instanceof BossTank)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the Boss '" + enemy.getName() + "'.");
+
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+
+                                        }
+                                        if (enemy instanceof BossTank)
+                                        {
+                                            System.out.println();
+                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
+                                            AuditSession.getInstance().write("Player " + username + " cleared Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                            dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+
+                                            int count3 = 0;
+                                            dungeons.get(dungeonId).setCompleted(true);
+                                            ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+                                            for(Dungeon dungeon : dungeons)
+                                            {
+                                                if (dungeon.isCompleted())
+                                                {
+                                                    count3++;
+                                                }
+                                            }
+                                            if (count3 == 1)
+                                            {
+                                                questService.completeQuest(quests.get(10).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(10).getName() + "'.");
+                                            }
+                                            if (count3 == 2)
+                                            {
+                                                questService.completeQuest(quests.get(11).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(11).getName() + "'.");
+                                            }
+                                            if (count3 == 3)
+                                            {
+                                                questService.completeQuest(quests.get(12).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(12).getName() + "'.");
+                                            }
+                                            if (count3 == 5)
+                                            {
+                                                questService.completeQuest(quests.get(13).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(13).getName() + "'.");
+                                            }
+                                            if (count3 == 10)
+                                            {
+                                                questService.completeQuest(quests.get(14).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(14).getName() + "'.");
+                                            }
+
+                                            userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
+                                            for (Item item : ((BossTank) enemy).getItems())
+                                            {
+                                                shopService.buyItem(id, item.getId_item());
+                                                userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
+
+                                            }
+                                        }
+                                        break;
+                                    }
+
+                                    int damage = enemy.getDamage();
+
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                    player.setHealth(player.getHealth() - damage);
+
+                                    if (player.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                        if (enemy instanceof BossTank)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the Boss '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }
+                                        pause3();
+                                        exit5 = true;
+                                        break;
+                                    }
+
+                                }
+
+
+
+
+                            }
+
+
+
+                        } else
+                        {
+                            while (enemy.getHealth()>0)
+                            {
+                                System.out.println();
+                                System.out.println("\033[0;32m" + "Enemy Health: " + enemy.getHealth() + " \033[0;31m" + "Enemy Damage: " + enemy.getDamage() + "\033[0m");
+                                System.out.println("\033[0;32m" + "Your Health: " + player.getHealth() + " \033[0;31m" + "Your Damage: " + player.getDamage() + "\033[0m");
+
+                                if (enemy instanceof Assassin) {
+
+                                    int damage = enemy.getDamage();
+                                    int criticalChance = ((Assassin) enemy).getCriticalChance();
+                                    int random = (int) (Math.random() * 100) + 1;
+
+                                    if (random <= criticalChance) {
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will use a critical strike!" + "\033[0m");
+                                        damage *= 2;
+                                    }
+
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                    pause2();
+                                    player.setHealth(player.getHealth() - damage);
+
+                                    if (player.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                        if (enemy instanceof BossAssassin)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the Boss '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }
+                                        pause3();
+                                        exit5 = true;
+                                        break;
+                                    }
+
+                                    enemy.setHealth(enemy.getHealth() - player.getDamage());
+                                    System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
+
+                                    if (enemy.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                        if (enemy instanceof BossAssassin)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the Boss '" + enemy.getName() + "'.");
+
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+
+                                        }
+                                        if (enemy instanceof BossAssassin)
+                                        {
+                                            System.out.println();
+                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
+                                            AuditSession.getInstance().write("Player " + username + " cleared Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                            dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+
+                                            int count3 = 0;
+                                            dungeons.get(dungeonId).setCompleted(true);
+                                            ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+                                            for(Dungeon dungeon : dungeons)
+                                            {
+                                                if (dungeon.isCompleted())
+                                                {
+                                                    count3++;
+                                                }
+                                            }
+                                            if (count3 == 1)
+                                            {
+                                                questService.completeQuest(quests.get(10).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(10).getName() + "'.");
+                                            }
+                                            if (count3 == 2)
+                                            {
+                                                questService.completeQuest(quests.get(11).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(11).getName() + "'.");
+                                            }
+                                            if (count3 == 3)
+                                            {
+                                                questService.completeQuest(quests.get(12).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(12).getName() + "'.");
+                                            }
+                                            if (count3 == 5)
+                                            {
+                                                questService.completeQuest(quests.get(13).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(13).getName() + "'.");
+                                            }
+                                            if (count3 == 10)
+                                            {
+                                                questService.completeQuest(quests.get(14).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(14).getName() + "'.");
+                                            }
+
+                                            userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
+                                            for (Item item : ((BossAssassin) enemy).getItems())
+                                            {
+                                                shopService.buyItem(id, item.getId_item());
+                                                userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
+
+                                            }
+                                        }
+                                        break;
+                                    }
+
+                                }
+
+                                if (enemy instanceof Mage)
+                                {
+                                    int damage = enemy.getDamage();
+                                    int mana = ((Mage) enemy).getMana();
+                                    int random = (int) (Math.random() * 2);
+                                    int heal = 0;
+
+                                    if (mana>0)
+                                    {
+                                        if (random == 0) {
+                                            damage = (int) (damage * 1.5);
+                                            ((Mage) enemy).setMana(mana - 20);
+                                            System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will have increased damage!" + "\033[0m");
+
+                                        } else {
+
+                                            heal = (int) (enemy.getHealth() * 0.1);
+                                            enemy.setHealth(enemy.getHealth() + heal);
+                                            ((Mage) enemy).setMana(mana - 20);
+                                            System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will heal itself!" + "\033[0m");
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no mana left!" + "\033[0m");
+                                    }
+
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                    pause2();
+                                    player.setHealth(player.getHealth() - damage);
+
+                                    if (player.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                        if (enemy instanceof BossMage)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the Boss '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }                                    pause3();
+                                        exit5 = true;
+                                        break;
+                                    }
+
+                                    enemy.setHealth(enemy.getHealth() - player.getDamage());
+                                    System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
+
+                                    if (enemy.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                        if (enemy instanceof BossMage)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the Boss '" + enemy.getName() + "'.");
+
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+
+                                        }
+                                        if (enemy instanceof BossMage)
+                                        {
+                                            System.out.println();
+                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
+                                            AuditSession.getInstance().write("Player " + username + " cleared Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                            dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+
+                                            int count3 = 0;
+                                            dungeons.get(dungeonId).setCompleted(true);
+                                            ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+                                            for(Dungeon dungeon : dungeons)
+                                            {
+                                                if (dungeon.isCompleted())
+                                                {
+                                                    count3++;
+                                                }
+                                            }
+                                            if (count3 == 1)
+                                            {
+                                                questService.completeQuest(quests.get(10).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(10).getName() + "'.");
+                                            }
+                                            if (count3 == 2)
+                                            {
+                                                questService.completeQuest(quests.get(11).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(11).getName() + "'.");
+                                            }
+                                            if (count3 == 3)
+                                            {
+                                                questService.completeQuest(quests.get(12).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(12).getName() + "'.");
+                                            }
+                                            if (count3 == 5)
+                                            {
+                                                questService.completeQuest(quests.get(13).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(13).getName() + "'.");
+                                            }
+                                            if (count3 == 10)
+                                            {
+                                                questService.completeQuest(quests.get(14).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(14).getName() + "'.");
+                                            }
+
+                                            userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
+                                            for (Item item : ((BossMage) enemy).getItems())
+                                            {
+                                                shopService.buyItem(id, item.getId_item());
+                                                userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
+
+                                            }
+                                        }
+                                        break;
+                                    }
+
+
+
+
+
+                                }
+
+                                if (enemy instanceof Tank)
+                                {
+                                    int damage = enemy.getDamage();
+
+                                    System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                    pause2();
+                                    player.setHealth(player.getHealth() - damage);
+
+                                    if (player.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                        if (enemy instanceof BossTank)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the Boss '" + enemy.getName() + "' and failed to clear Dungeon " + dungeons.get(dungeonId).getName() + "'.");
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                        }
+                                        pause3();
+                                        exit5 = true;
+                                        break;
+                                    }
+
+                                    int armor = ((Tank) enemy).getArmor();
+                                    if(armor>0)
+                                    {
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has armor!" + "\033[0m");
+                                        ((Tank) enemy).setArmor(armor - player.getDamage());
+                                        armor = ((Tank) enemy).getArmor();
+                                        if (armor < 0)
+                                        {
+                                            enemy.setHealth(enemy.getHealth() - Math.abs(armor));
+                                            ((Tank) enemy).setArmor(0);
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no armor!" + "\033[0m");
+                                        enemy.setHealth(enemy.getHealth() - player.getDamage());
+                                    }
+
+                                    System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player.getDamage() + " damage." + "\033[0m");
+
+
+                                    if (enemy.getHealth() <= 0)
+                                    {
+                                        System.out.println();
+                                        System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                        if (enemy instanceof BossTank)
+                                        {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the Boss '" + enemy.getName() + "'.");
+
+                                        }else {
+                                            AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+
+                                        }
+                                        if (enemy instanceof BossTank)
+                                        {
+                                            System.out.println();
+                                            System.out.println("\033[0;33m" + "Congratulations! You have successfully cleared the Dungeon!" + "\033[0m");
+                                            AuditSession.getInstance().write("Player " + username + " cleared Dungeon '" + dungeons.get(dungeonId).getName() + "'.");
+                                            dungeonService.completeDungeon(dungeons.get(dungeonId).getId_dungeon());
+
+                                            int count3 = 0;
+                                            dungeons.get(dungeonId).setCompleted(true);
+                                            ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
+                                            for(Dungeon dungeon : dungeons)
+                                            {
+                                                if (dungeon.isCompleted())
+                                                {
+                                                    count3++;
+                                                }
+                                            }
+                                            if (count3 == 1)
+                                            {
+                                                questService.completeQuest(quests.get(10).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(10).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(10).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(10).getName() + "'.");
+                                            }
+                                            if (count3 == 2)
+                                            {
+                                                questService.completeQuest(quests.get(11).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(11).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(11).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(11).getName() + "'.");
+                                            }
+                                            if (count3 == 3)
+                                            {
+                                                questService.completeQuest(quests.get(12).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(12).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(12).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(12).getName() + "'.");
+                                            }
+                                            if (count3 == 5)
+                                            {
+                                                questService.completeQuest(quests.get(13).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(13).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(13).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest " + quests.get(13).getName() + ".");
+                                            }
+                                            if (count3 == 10)
+                                            {
+                                                questService.completeQuest(quests.get(14).getId_quest());
+                                                userService.updatePlayerLevelOnReward(id, quests.get(14).getRewardLevel());
+                                                userService.updatePlayerTitle(id);
+                                                userService.updatePlayerMoneyOnSell(id, quests.get(14).getRewardMoney());
+                                                AuditSession.getInstance().write("Player " + username + " completed Quest '" + quests.get(14).getName() + "'.");
+                                            }
+
+                                            userService.updatePlayerLevelOnReward(id, dungeons.get(dungeonId).getRewardLevel());
+                                            userService.updatePlayerTitle(id);
+                                            userService.updatePlayerMoneyOnSell(id, dungeons.get(dungeonId).getRewardMoney());
+                                            for (Item item : ((BossTank) enemy).getItems())
+                                            {
+                                                shopService.buyItem(id, item.getId_item());
+                                                userService.updateStatsOnBuy(id, item.getDamage(), item.getHealth());
+
+                                            }
+                                        }
+                                        break;
+                                    }
+
+
+
+                                }
+
+
+
+
+                            }
+                        }
+
+
+                    }
 
 
                     System.out.println();
@@ -1011,7 +1434,7 @@ public class ConsoleApp {
                                 userService.updatePlayerLevelOnReward(id, quest.getRewardLevel());
                                 userService.updatePlayerTitle(id);
                                 userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
-                                AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
                             }
                             if (questIndex == 1)
                             {
@@ -1047,12 +1470,12 @@ public class ConsoleApp {
                         userService.updatePlayerTitle(id);
                         userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
                     }
-                    AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
                     scanner.nextLine();
                 } else {
                     System.out.println();
                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Agility Quest 1..." + "\033[0m");
-                    AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                    AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
                     scanner.nextLine();
                 }
                 gameRunning = false;
@@ -1122,12 +1545,12 @@ public class ConsoleApp {
                                                 userService.updatePlayerTitle(id);
                                                 userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
                                             }
-                                            AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                            AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
                                             scanner.nextLine();
                                         } else {
                                             System.out.println();
                                             System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Agility Quest 2..." + "\033[0m");
-                                            AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                            AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
                                             scanner.nextLine();
                                         }
                                         gameRunning.set(false);
@@ -1189,12 +1612,12 @@ public class ConsoleApp {
                                                 userService.updatePlayerTitle(id);
                                                 userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
                                             }
-                                            AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                            AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
                                             scanner.nextLine();
                                         } else {
                                             System.out.println();
                                             System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Agility Quest 3..." + "\033[0m");
-                                            AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                            AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
                                             scanner.nextLine();
                                         }
                                         gameRunning = false;
@@ -1275,13 +1698,13 @@ public class ConsoleApp {
                                         userService.updatePlayerTitle(id);
                                         userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
                                     }
-                                    AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                    AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
                                 }
                                 else
                                 {
                                     System.out.println();
                                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 1..." + "\033[0m");
-                                    AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                    AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
                                 }
 
 
@@ -1356,11 +1779,11 @@ public class ConsoleApp {
                                                     userService.updatePlayerTitle(id);
                                                     userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
                                                 }
-                                                AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                                AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
                                             } else {
                                                 System.out.println();
                                                 System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2..." + "\033[0m");
-                                                AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                                AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
                                             }
 
                                         }
@@ -1375,11 +1798,11 @@ public class ConsoleApp {
                                                     userService.updatePlayerTitle(id);
                                                     userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
                                                 }
-                                                AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                                AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
                                             } else {
                                                 System.out.println();
                                                 System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2..." + "\033[0m");
-                                                AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                                AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
                                             }
 
                                         }
@@ -1394,11 +1817,11 @@ public class ConsoleApp {
                                                     userService.updatePlayerTitle(id);
                                                     userService.updatePlayerMoneyOnSell(id, quest.getRewardMoney());
                                                 }
-                                                AuditSession.getInstance().write("Player " + username + " completed the Quest " + quest.getName() + ".");
+                                                AuditSession.getInstance().write("Player " + username + " completed the Quest '" + quest.getName() + "'.");
                                             } else {
                                                 System.out.println();
                                                 System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2..." + "\033[0m");
-                                                AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                                AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
                                             }
 
                                         }
@@ -1406,13 +1829,13 @@ public class ConsoleApp {
                                     } else {
                                         System.out.println();
                                         System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2 due to time out..." + "\033[0m");
-                                        AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                        AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
                                     }
 
 
                                 } catch (TimeoutException e) {
                                     isTimeout.set(true);
-                                    AuditSession.getInstance().write("Player " + username + " failed the Quest " + quest.getName() + ".");
+                                    AuditSession.getInstance().write("Player " + username + " failed the Quest '" + quest.getName() + "'.");
                                     System.out.println();
                                     System.out.println();
                                     System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have failed the Intelligence Quest 2 due to time out..." + "\033[0m");
@@ -2362,144 +2785,310 @@ public class ConsoleApp {
                            System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is preparing the '" + enemy.getName() + "' for you..." + "\033[0m");
                            pause3();
 
-                           while (enemy.getHealth() > 0) {
+                           int whoWillStrikeFirst = (int) (Math.random() * 2) + 1;
+                           if(whoWillStrikeFirst == 1)
+                           {
                                System.out.println();
-                               System.out.println("\033[0;32m" + "Enemy Health: " + enemy.getHealth() + " \033[0;31m" + "Enemy Damage: " + enemy.getDamage() + "\033[0m");
-                               System.out.println("\033[0;32m" + "Your Health: " + player23.getHealth() + " \033[0;31m" + "Your Damage: " + player23.getDamage() + "\033[0m");
-
-                               if (enemy instanceof Assassin) {
-
-                                   enemy.setHealth(enemy.getHealth() - player23.getDamage());
-                                   System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
-                                   pause2();
-
-                                   if (enemy.getHealth() <= 0) {
-                                       System.out.println();
-                                       System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
-                                       AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
-                                       break;
-                                   }
-
-                                   int damage = enemy.getDamage();
-                                   int criticalChance = ((Assassin) enemy).getCriticalChance();
-                                   int random = (int) (Math.random() * 100) + 1;
-
-                                   if (random <= criticalChance) {
-                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will use a critical strike!" + "\033[0m");
-                                       damage *= 2;
-                                   }
-
-                                   System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
-                                   player23.setHealth(player23.getHealth() - damage);
-
-                                   if (player23.getHealth() <= 0) {
-                                       System.out.println();
-                                       System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
-                                       AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
-                                       pause3();
-                                       exit23 = true;
-                                       break;
-                                   }
-
-                               }
-
-                               if (enemy instanceof Mage) {
-
-
-                                   enemy.setHealth(enemy.getHealth() - player23.getDamage());
-                                   System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
-                                   pause2();
-
-                                   if (enemy.getHealth() <= 0) {
-                                       System.out.println();
-                                       System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
-                                       AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
-                                       break;
-                                   }
-
-                                   int damage = enemy.getDamage();
-                                   int mana = ((Mage) enemy).getMana();
-                                   int random = (int) (Math.random() * 2);
-                                   int heal = 0;
-
-                                   if (mana > 0) {
-                                       if (random == 0) {
-                                           damage = (int) (damage * 1.5);
-                                           ((Mage) enemy).setMana(mana - 20);
-                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will have increased damage!" + "\033[0m");
-
-                                       } else {
-
-                                           heal = (int) (enemy.getHealth() * 0.1);
-                                           enemy.setHealth(enemy.getHealth() + heal);
-                                           ((Mage) enemy).setMana(mana - 20);
-                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will heal itself!" + "\033[0m");
-
-                                       }
-                                   } else {
-                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no mana left!" + "\033[0m");
-                                   }
-
-                                   System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
-                                   player23.setHealth(player23.getHealth() - damage);
-
-                                   if (player23.getHealth() <= 0) {
-                                       System.out.println();
-                                       System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
-                                       AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
-                                       pause3();
-                                       exit23 = true;
-                                       break;
-                                   }
-
-
-                               }
-
-                               if (enemy instanceof Tank) {
-                                   int armor = ((Tank) enemy).getArmor();
-                                   if (armor > 0) {
-                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has armor!" + "\033[0m");
-                                       ((Tank) enemy).setArmor(armor - player23.getDamage());
-                                       armor = ((Tank) enemy).getArmor();
-                                       if (armor < 0) {
-                                           enemy.setHealth(enemy.getHealth() - Math.abs(armor));
-                                           ((Tank) enemy).setArmor(0);
-
-                                       }
-                                   } else {
-                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no armor!" + "\033[0m");
-                                       enemy.setHealth(enemy.getHealth() - player23.getDamage());
-                                   }
-
-                                   System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
-
-                                   pause2();
-
-                                   if (enemy.getHealth() <= 0) {
-                                       System.out.println();
-                                       System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
-                                       AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
-                                       break;
-                                   }
-
-                                   int damage = enemy.getDamage();
-
-                                   System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
-                                   player23.setHealth(player23.getHealth() - damage);
-
-                                   if (player23.getHealth() <= 0) {
-                                       System.out.println();
-                                       System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
-                                       AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
-                                       pause3();
-                                       exit23 = true;
-                                       break;
-                                   }
-
-                               }
-
-
+                               System.out.println("\033[0;33m" + "You will strike first!" + "\033[0m");
+                               pause3();
                            }
+                           else
+                           {
+                               System.out.println();
+                               System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will strike first!" + "\033[0m");
+                               pause3();
+                           }
+
+                           if(whoWillStrikeFirst==1)
+                           {
+                               while (enemy.getHealth() > 0) {
+                                   System.out.println();
+                                   System.out.println("\033[0;32m" + "Enemy Health: " + enemy.getHealth() + " \033[0;31m" + "Enemy Damage: " + enemy.getDamage() + "\033[0m");
+                                   System.out.println("\033[0;32m" + "Your Health: " + player23.getHealth() + " \033[0;31m" + "Your Damage: " + player23.getDamage() + "\033[0m");
+
+                                   if (enemy instanceof Assassin) {
+
+                                       enemy.setHealth(enemy.getHealth() - player23.getDamage());
+                                       System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
+                                       pause2();
+
+                                       if (enemy.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+                                           break;
+                                       }
+
+                                       int damage = enemy.getDamage();
+                                       int criticalChance = ((Assassin) enemy).getCriticalChance();
+                                       int random = (int) (Math.random() * 100) + 1;
+
+                                       if (random <= criticalChance) {
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will use a critical strike!" + "\033[0m");
+                                           damage *= 2;
+                                       }
+
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                       player23.setHealth(player23.getHealth() - damage);
+
+                                       if (player23.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                                           pause3();
+                                           exit23 = true;
+                                           break;
+                                       }
+
+                                   }
+
+                                   if (enemy instanceof Mage) {
+
+
+                                       enemy.setHealth(enemy.getHealth() - player23.getDamage());
+                                       System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
+                                       pause2();
+
+                                       if (enemy.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+                                           break;
+                                       }
+
+                                       int damage = enemy.getDamage();
+                                       int mana = ((Mage) enemy).getMana();
+                                       int random = (int) (Math.random() * 2);
+                                       int heal = 0;
+
+                                       if (mana > 0) {
+                                           if (random == 0) {
+                                               damage = (int) (damage * 1.5);
+                                               ((Mage) enemy).setMana(mana - 20);
+                                               System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will have increased damage!" + "\033[0m");
+
+                                           } else {
+
+                                               heal = (int) (enemy.getHealth() * 0.1);
+                                               enemy.setHealth(enemy.getHealth() + heal);
+                                               ((Mage) enemy).setMana(mana - 20);
+                                               System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will heal itself!" + "\033[0m");
+
+                                           }
+                                       } else {
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no mana left!" + "\033[0m");
+                                       }
+
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                       player23.setHealth(player23.getHealth() - damage);
+
+                                       if (player23.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                                           pause3();
+                                           exit23 = true;
+                                           break;
+                                       }
+
+
+                                   }
+
+                                   if (enemy instanceof Tank) {
+                                       int armor = ((Tank) enemy).getArmor();
+                                       if (armor > 0) {
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has armor!" + "\033[0m");
+                                           ((Tank) enemy).setArmor(armor - player23.getDamage());
+                                           armor = ((Tank) enemy).getArmor();
+                                           if (armor < 0) {
+                                               enemy.setHealth(enemy.getHealth() - Math.abs(armor));
+                                               ((Tank) enemy).setArmor(0);
+
+                                           }
+                                       } else {
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no armor!" + "\033[0m");
+                                           enemy.setHealth(enemy.getHealth() - player23.getDamage());
+                                       }
+
+                                       System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
+
+                                       pause2();
+
+                                       if (enemy.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+                                           break;
+                                       }
+
+                                       int damage = enemy.getDamage();
+
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                       player23.setHealth(player23.getHealth() - damage);
+
+                                       if (player23.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                                           pause3();
+                                           exit23 = true;
+                                           break;
+                                       }
+
+                                   }
+
+
+                               }
+                           }
+                           else
+                           {
+                               while (enemy.getHealth() > 0) {
+                                   System.out.println();
+                                   System.out.println("\033[0;32m" + "Enemy Health: " + enemy.getHealth() + " \033[0;31m" + "Enemy Damage: " + enemy.getDamage() + "\033[0m");
+                                   System.out.println("\033[0;32m" + "Your Health: " + player23.getHealth() + " \033[0;31m" + "Your Damage: " + player23.getDamage() + "\033[0m");
+
+                                   if (enemy instanceof Assassin) {
+
+                                       int damage = enemy.getDamage();
+                                       int criticalChance = ((Assassin) enemy).getCriticalChance();
+                                       int random = (int) (Math.random() * 100) + 1;
+
+                                       if (random <= criticalChance) {
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will use a critical strike!" + "\033[0m");
+                                           damage *= 2;
+                                       }
+
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                       pause2();
+                                       player23.setHealth(player23.getHealth() - damage);
+
+                                       if (player23.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                                           pause3();
+                                           exit23 = true;
+                                           break;
+                                       }
+
+                                       enemy.setHealth(enemy.getHealth() - player23.getDamage());
+                                       System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
+
+                                       if (enemy.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+                                           break;
+                                       }
+
+
+
+                                   }
+
+                                   if (enemy instanceof Mage) {
+
+                                       int damage = enemy.getDamage();
+                                       int mana = ((Mage) enemy).getMana();
+                                       int random = (int) (Math.random() * 2);
+                                       int heal = 0;
+
+                                       if (mana > 0) {
+                                           if (random == 0) {
+                                               damage = (int) (damage * 1.5);
+                                               ((Mage) enemy).setMana(mana - 20);
+                                               System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will have increased damage!" + "\033[0m");
+
+                                           } else {
+
+                                               heal = (int) (enemy.getHealth() * 0.1);
+                                               enemy.setHealth(enemy.getHealth() + heal);
+                                               ((Mage) enemy).setMana(mana - 20);
+                                               System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' will heal itself!" + "\033[0m");
+
+                                           }
+                                       } else {
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no mana left!" + "\033[0m");
+                                       }
+
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                       pause2();
+                                       player23.setHealth(player23.getHealth() - damage);
+
+                                       if (player23.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                                           pause3();
+                                           exit23 = true;
+                                           break;
+                                       }
+
+                                       enemy.setHealth(enemy.getHealth() - player23.getDamage());
+                                       System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
+
+
+                                       if (enemy.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+                                           break;
+                                       }
+
+
+
+
+                                   }
+
+                                   if (enemy instanceof Tank) {
+
+                                       int damage = enemy.getDamage();
+
+                                       System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' attacked you with " + damage + " damage." + "\033[0m");
+                                       pause2();
+                                       player23.setHealth(player23.getHealth() - damage);
+
+                                       if (player23.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "is sorry to inform you that you have been defeated by the '" + enemy.getName() + "'..." + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " was defeated by the '" + enemy.getName() + "' and failed to clear Dungeon '" + dungeonArena.getName() + "'.");
+                                           pause3();
+                                           exit23 = true;
+                                           break;
+                                       }
+
+                                       int armor = ((Tank) enemy).getArmor();
+                                       if (armor > 0) {
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has armor!" + "\033[0m");
+                                           ((Tank) enemy).setArmor(armor - player23.getDamage());
+                                           armor = ((Tank) enemy).getArmor();
+                                           if (armor < 0) {
+                                               enemy.setHealth(enemy.getHealth() - Math.abs(armor));
+                                               ((Tank) enemy).setArmor(0);
+
+                                           }
+                                       } else {
+                                           System.out.println("\033[0;33m" + "The '" + enemy.getName() + "' has no armor!" + "\033[0m");
+                                           enemy.setHealth(enemy.getHealth() - player23.getDamage());
+                                       }
+
+                                       System.out.println("\033[0;33m" + "You attacked the '" + enemy.getName() + "' with " + player23.getDamage() + " damage." + "\033[0m");
+
+                                       if (enemy.getHealth() <= 0) {
+                                           System.out.println();
+                                           System.out.println("\033[0;33m" + "Congratulations! You have successfully defeated the '" + enemy.getName() + "'!" + "\033[0m");
+                                           AuditSession.getInstance().write("Player " + username + " defeated the '" + enemy.getName() + "'.");
+                                           break;
+                                       }
+
+
+
+                                   }
+
+
+                               }
+                           }
+
+
                        }
 
                        if (exit23 == true) {

@@ -51,9 +51,9 @@ public class ConsoleApp {
         databaseSetup.setup();
         DatabaseSeeder databaseSeeder = new DatabaseSeeder();
         databaseSeeder.seed();
-        //displayTitleStart();
+        displayTitleStart();
         flushConsole();
-        //displayTitleMotto();
+        displayTitleMotto();
         flushConsole();
 
 
@@ -241,27 +241,27 @@ public class ConsoleApp {
         System.out.println("\033[0;35m" + "The System " + "\033[0;34m" + "is designed to make the Player " + username + " stronger." + "\033[0m");
         System.out.println();
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
-        System.out.println("\033[0;34m" + "1. View your Profile                 |" + "\033[0m");
-        System.out.println("\033[0;34m" + "2. View your Inventory               |" + "\033[0m");
+        System.out.println("\033[0;34m" + "1. Tutorial                          |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
-        System.out.println("\033[0;34m" + "3. View your Shop                    |" + "\033[0m");
-        System.out.println("\033[0;34m" + "4. View your Shop (Sorted by Price)  |" + "\033[0m");
-        System.out.println("\033[0;34m" + "5. View your Shop (Sorted by Damage) |" + "\033[0m");
-        System.out.println("\033[0;34m" + "6. View your Shop (Sorted by Health) |" + "\033[0m");
-        System.out.println("\033[0;34m" + "7. Buy an Item                       |" + "\033[0m");
-        System.out.println("\033[0;34m" + "8. Sell an Item                      |" + "\033[0m");
+        System.out.println("\033[0;34m" + "2. View your Profile                 |" + "\033[0m");
+        System.out.println("\033[0;34m" + "3. View your Inventory               |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
-        System.out.println("\033[0;34m" + "9. Play Dungeons                     |" + "\033[0m");
-        System.out.println("\033[0;34m" + "10. Play Quests                      |" + "\033[0m");
-        System.out.println("\033[0;34m" + "11. Play PVP                         |" + "\033[0m");
-        System.out.println("\033[0;34m" + "12. Play Arena                       |" + "\033[0m");
+        System.out.println("\033[0;34m" + "4. View your Shop                    |" + "\033[0m");
+        System.out.println("\033[0;34m" + "5. View your Shop (Sorted by Price)  |" + "\033[0m");
+        System.out.println("\033[0;34m" + "6. View your Shop (Sorted by Damage) |" + "\033[0m");
+        System.out.println("\033[0;34m" + "7. View your Shop (Sorted by Health) |" + "\033[0m");
+        System.out.println("\033[0;34m" + "8. Buy an Item                       |" + "\033[0m");
+        System.out.println("\033[0;34m" + "9. Sell an Item                      |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
-        System.out.println("\033[0;34m" + "13. Codex                            |" + "\033[0m");
-        System.out.println("\033[0;34m" + "14. Achievements                     |" + "\033[0m");
-        System.out.println("\033[0;34m" + "15. PVP Stats                        |" + "\033[0m");
-        System.out.println("\033[0;34m" + "16. Leaderboard                      |" + "\033[0m");
+        System.out.println("\033[0;34m" + "10. Play Dungeons                    |" + "\033[0m");
+        System.out.println("\033[0;34m" + "11. Play Quests                      |" + "\033[0m");
+        System.out.println("\033[0;34m" + "12. Play PVP                         |" + "\033[0m");
+        System.out.println("\033[0;34m" + "13. Play Arena                       |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
-        System.out.println("\033[0;34m" + "17. Tutorial                         |" + "\033[0m");
+        System.out.println("\033[0;34m" + "14. Codex                            |" + "\033[0m");
+        System.out.println("\033[0;34m" + "15. Achievements                     |" + "\033[0m");
+        System.out.println("\033[0;34m" + "16. PVP Stats                        |" + "\033[0m");
+        System.out.println("\033[0;34m" + "17. Leaderboard                      |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
         System.out.println("\033[0;34m" + "18. Exit                             |" + "\033[0m");
         System.out.println("\033[0;34m" + "-------------------------------------|" + "\033[0m");
@@ -281,10 +281,161 @@ public class ConsoleApp {
 
                 case "1":
                     System.out.println();
-                    System.out.println("\033[0;34m" + userService.getPlayer(id) + "\033[0m");
+
+                    System.out.println("\033[0;33m" + "Welcome, " + "\033[0;34m"+ username + "\033[0;33m" + ", to The Tutorial!" + "\033[0m");
+                    System.out.println();
+                    pause2();
+                    System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "will guide you through its features..." + "\033[0m");
+                    System.out.println();
+                    System.out.println();
+                    pause2();
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<- Level/Stats/Money ->" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "-> A Player has a Level, Damage, Health, and Money." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Money is the currency used to buy Items from the Shop." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The Player's Level is increased by playing Dungeons, Quests, PVP, and Arena." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Each level up will increase your Damage and Health by 5 and 10, respectively." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The Max Level is 999, but even after this point, you will still get the stats bonus from a level up." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> 'The Leaderboard' will display all the Players sorted by their level." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The 'Title' of the Player will change based on the level." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The System's ranking is from E to S (E,D,C,B,A,S)." + "\033[0m");
+                    System.out.println();
+
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "Press 'Enter' to jump to the next section..." + "\033[0m");
+                    scanner.nextLine();
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<- Items ->" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "-> Items can be bought from the Shop or found in Dungeons." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Items increase your Damage and Health with their stats." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Items can be sold at the Shop for 75% of their initial price." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> After defeating a Boss, you will receive his 'Stolen' Items." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> 'Stolen' Items are unique and can be sold at the Shop for a higher price than any other item." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Once sold, a 'Stolen' Item is lost (it can't be bought back)." + "\033[0m");
+                    System.out.println();
+
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "Press 'Enter' to jump to the next section..." + "\033[0m");
+                    scanner.nextLine();
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<- Enemies ->" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "-> Enemies can be found in Dungeons and the Arena." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Each enemy has Damage and Health." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Enemies can be Assassins, Mages, or Tanks." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Each enemy has unique abilities and stats." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Assassins have a chance to deal critical damage. A critical strike will deal double damage." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Mages have mana. Mages have a chance to deal increased damage (*1.5) or heal themselves (of 10% of their current health). Each ability will consume 20 mana." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Tanks have armor. Tanks will reduce the incoming damage by the amount of armor they have. If the incoming damage is higher than the armor, the armor will be reduced to 0 and the remaining damage will be dealt to the Tank's health." + "\033[0m");
+                    System.out.println();
+
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "Press 'Enter' to jump to the next section..." + "\033[0m");
+                    scanner.nextLine();
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<- Dungeons ->" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "-> Dungeons can be played only once." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> All Dungeons will be played in order." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Upon completing a Dungeon, the next one will unlock." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Complete all the Dungeons to unlock the Arena." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Dungeons will reward you with money, experience, and items." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Each Dungeon has normal enemies and a single Boss." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The first strike will be decided by The System for each encounter." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Completing all Dungeons will unlock The Arena." + "\033[0m");
+                    System.out.println();
+
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "Press 'Enter' to jump to the next section..." + "\033[0m");
+                    scanner.nextLine();
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<- Quests ->" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "-> Quests will reward you with money and experience." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Quests can be played multiple times." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The Daily Quest can be played for multiple times and the rewards will be given every time." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The System resets 'The Daily Quest' every time the Player enters the 'Quests' section, because a new day has started." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Active Quests can be played for multiple times, but rewards will be given only once, upon first completion." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Passive Quests can't be played, but once the conditions are met, the rewards will be given." + "\033[0m");
+                    System.out.println();
+
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "Press 'Enter' to jump to the next section..." + "\033[0m");
+                    scanner.nextLine();
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<- PVP ->" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "-> PVP will reward you with stats regarding your wins and losses." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Completing PVP Passive Quests will reward you with money and experience." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The first attack will be decided every round, it is not predefined." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> In PVP, both players have a missing attack chance. If the attack is missing, the player will deal 0 damage." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The default missing attack chance is 35%, but it can be decreased by completing PVP Passive Quests (-5% per quest)." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> You can see your PVP Stats in the 'PVP Stats' section." + "\033[0m");
+                    System.out.println();
+
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "Press 'Enter' to jump to the next section..." + "\033[0m");
+                    scanner.nextLine();
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<- Arena ->" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "-> The Arena is a repeatable Dungeon, with a random generated combination of previous enemies." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The Arena can contain multiple Bosses." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The Arena will reward you with money and experience." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The Arena will not reward you with items." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The Arena will unlock after completing all Dungeons." + "\033[0m");
+                    System.out.println();
+
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "Press 'Enter' to jump to the next section..." + "\033[0m");
+                    scanner.nextLine();
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<- Codex ->" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "-> The Codex contains information about The System's enemies and lore." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The Codex will unlock new information as you progress through the game." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> An enemy is 'encountered' when it is seen in a Dungeon (does not matter if it is defeated or not)." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Once an enemy is encountered, its information will be stored in the Codex." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Each Dungeon that is completed will unlock a new lore entry in the Codex." + "\033[0m");
+                    System.out.println();
+
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "Press 'Enter' to jump to the next section..." + "\033[0m");
+                    scanner.nextLine();
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "<- Achievements ->" + "\033[0m");
+                    System.out.println();
+                    System.out.println("\033[0;33m" + "-> Achievements are unlocked by completing specific tasks." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Achievements are a way to track your progress through the game." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> Achievements will not reward you with money, experience, or items." + "\033[0m");
+                    System.out.println("\033[0;33m" + "-> The 'Platinum' is a special achievement that is unlocked by completing all other achievements." + "\033[0m");
+                    System.out.println();
+
+
+                    System.out.println();
+                    System.out.println("\033[0;35m" + "The System" + "\033[0;33m" + " has shared its knowledge with you and hopes you are now prepared for the journey ahead. Press 'Enter' to continue..." + "\033[0m");
+                    scanner.nextLine();
+
+                    System.out.println();
                     break;
 
                 case "2":
+                    System.out.println();
+                    System.out.println("\033[0;34m" + userService.getPlayer(id) + "\033[0m");
+                    break;
+
+                case "3":
                     System.out.println();
                     System.out.println("\033[0;34m" + "<<-- Inventory -->>" + "\033[0m");
                     System.out.println();
@@ -302,7 +453,7 @@ public class ConsoleApp {
 
                     break;
 
-                case "3":
+                case "4":
                     System.out.println();
                     Shop shop = shopService.getShop(id);
                     System.out.println("\033[0;35m" + "<<-- " + shop.getName() + " -->> " + "\033[0m");
@@ -315,7 +466,7 @@ public class ConsoleApp {
 
                     break;
 
-                case "4":
+                case "5":
                     System.out.println();
                     Shop shop2 = shopService.getShop(id);
                     System.out.println("\033[0;35m" + "<<-- " + shop2.getName() + " -->> " + "\033[0m");
@@ -328,7 +479,7 @@ public class ConsoleApp {
                     }
                     break;
 
-                case "5":
+                case "6":
                     System.out.println();
                     Shop shop3 = shopService.getShop(id);
                     System.out.println("\033[0;35m" + "<<-- " + shop3.getName() + " -->> " + "\033[0m");
@@ -341,7 +492,7 @@ public class ConsoleApp {
                     }
                     break;
 
-                case "6":
+                case "7":
                     System.out.println();
                     Shop shop4 = shopService.getShop(id);
                     System.out.println("\033[0;35m" + "<<-- " + shop4.getName() + " -->> " + "\033[0m");
@@ -355,7 +506,7 @@ public class ConsoleApp {
                     break;
 
 
-                case "7":
+                case "8":
                     try {
                         System.out.println();
                         Shop shop7 = shopService.getShop(id);
@@ -409,7 +560,7 @@ public class ConsoleApp {
                         break;
                     }
 
-                case "8":
+                case "9":
                     try {
                         System.out.println();
                         Player player = userService.getPlayer(id);
@@ -445,7 +596,7 @@ public class ConsoleApp {
                         break;
                     }
 
-                case "9":
+                case "10":
                     System.out.println();
                     ArrayList<Dungeon> dungeons = dungeonService.getDungeonByPlayerId(id);
                     for (int i = 0; i < dungeons.size(); i++) {
@@ -1310,7 +1461,7 @@ public class ConsoleApp {
                     System.out.println();
                     break;
 
-                case "10":
+                case "11":
                     System.out.println();
                     ArrayList<Quest> quests = questService.getQuestsByPlayerId(id);
 
@@ -2415,7 +2566,7 @@ public class ConsoleApp {
 
 
 
-                case "11":
+                case "12":
 
                     System.out.println();
                     ArrayList<Player> players3 = userService.getAllPlayers();
@@ -2719,7 +2870,7 @@ public class ConsoleApp {
                     System.out.println();
                     break;
 
-                case "12":
+                case "13":
 
                     System.out.println();
                     System.out.println("\033[0;35m" + "<<-- The System's Arena -->>" + "\033[0m");
@@ -3120,7 +3271,7 @@ public class ConsoleApp {
 
 
 
-                case "13":
+                case "14":
                     System.out.println();
                     ArrayList<Dungeon> dungeons1 = dungeonService.getDungeonByPlayerId(id);
                     for (int i = 0; i < dungeons1.size(); i++) {
@@ -3200,7 +3351,7 @@ public class ConsoleApp {
                     System.out.println();
                     break;
 
-                case "14":
+                case "15":
                     System.out.println();
                     System.out.println("\033[0;34m" + "<<-- The Player's Achievements -->>" + "\033[0m");
                     System.out.println();
@@ -3263,7 +3414,7 @@ public class ConsoleApp {
                     System.out.println();
                     break;
 
-                case "15":
+                case "16":
                     System.out.println();
 
                     System.out.println("\033[0;34m" + "<<-- The Player's PVP Stats -->>" + "\033[0m");
@@ -3274,7 +3425,7 @@ public class ConsoleApp {
 
                     break;
 
-                case "16":
+                case "17":
                     System.out.println();
                     System.out.println("\033[0;35m" + "<<-- The System's Leaderboard -->>" + "\033[0m");
                     System.out.println();
@@ -3284,113 +3435,6 @@ public class ConsoleApp {
                         int playerNumber = i + 1;
                         System.out.println("\033[0;34m" + playerNumber + ". " + players.get(i).toString2() + "\033[0m");
                     }
-                    break;
-
-               case "17":
-                    System.out.println();
-
-                    System.out.println("\033[0;35m" + "<<-- The System's Player Tutorial -->>" + "\033[0m");
-                    System.out.println();
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 1:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Player's Profile." + "\033[0m");
-                    System.out.println();
-                    System.out.println("\033[0;35m" + "Command 2:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Player's Inventory." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 3:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Player's Shop." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 4:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Player's Shop (Sorted by Price)." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 5:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Player's Shop (Sorted by Damage)." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 6:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Player's Shop (Sorted by Health)." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 7:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Buy an Item." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Ensure that you have sufficient funds and the item is in stock." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 8:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Sell an Item." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> The selling price of an item is 75% of its initial price." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 9:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Play Dungeons." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Each dungeon can be played only once. ");
-                   System.out.println("\033[0;33m" + "-> All dungeons will be played in order." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Upon completing a dungeon, the next one will unlock." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> Complete all the Dungeons to unlock the Arena." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> Dungeons will reward you with money, experience, and items." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> One level gained results in +5 Damage and +10 Health." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> Max Level is 999, but even after this point, you will still get the stats bonus from a level up." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> Each Dungeon has normal enemies and a single Boss." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> You will always have the first attack in any Dungeon/Encounter." + "\033[0m");
-                     System.out.println("\033[0;33m" + "-> Bosses will drop unique items (stolen items)." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> Stolen items can be sold at the Shop for a higher price than any other item, but once sold, they will be lost." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 10:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Play Quests." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> The Daily Quest can be played for multiple times and the rewards will be given every time." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Active Quests can be played for multiple times, but rewards will be given only once, upon first completion." + "\033[0m");
-System.out.println("\033[0;33m" + "-> Passive Quests can't be played, but once the conditions are met, the rewards will be given." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Quests will reward you with money and experience." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 11:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Play PVP." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> PVP will reward you with stats regarding your wins and losses. " + "\033[0m");
-System.out.println("\033[0;33m" + "-> The first attack will be decided every round, it is not predefined." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> In PVP, both players have a missing attack chance. If the attack is missing, the player will deal 0 damage." + "\033[0m");
-                     System.out.println("\033[0;33m" + "-> The default missing attack chance is 35%, but it can be decreased by completing PVP Quests (-5% per quest)." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 12:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Play Arena." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> The Arena is a repeatable Dungeon, with a random generated combination of previous enemies." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> The Arena can contain multiple Bosses." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> The Arena will reward you with money and experience." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> The Arena will not reward you with items." + "\033[0m");
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 13:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Codex." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> The Codex contains information about its Enemies and its Lore." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> The Codex will unlock new information as you progress through the game." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> The Codex will contain information about encountered enemies." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> Enemies can be Assassins, Mages, or Tanks." + "\033[0m");
-                     System.out.println("\033[0;33m" + "-> Each enemy has unique abilities and stats." + "\033[0m");
-                     System.out.println("\033[0;33m" + "-> Assassins have a chance to deal critical damage. A critical strike will deal double damage." + "\033[0m");
-                        System.out.println("\033[0;33m" + "-> Mages have mana. Mages have a chance to deal increased damage (*1.5) or heal themselves (of 10% of their current health). Each ability will consume 20 mana." + "\033[0m");
-                   System.out.println("\033[0;33m" + "-> Tanks have armor. Tanks will reduce the incoming damage by the amount of armor they have. If the incoming damage is higher than the armor, the armor will be reduced to 0 and the remaining damage will be dealt to the Tank's Health." + "\033[0m");
-                   System.out.println();
-                   System.out.println("\033[0;35m" + "Command 14:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Achievements." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> The Achievements and the progress of each one." + "\033[0m");
-
-                   System.out.println();
-                   System.out.println("\033[0;35m" + "Command 15:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View PVP Stats." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> The Player's PVP Stats." + "\033[0m");
-
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 16:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Leaderboard." + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> The Leaderboard will display all the Players sorted by their level." + "\033[0m");
-
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 17:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> View Tutorial." + "\033[0m");
-
-                   System.out.println();
-                    System.out.println("\033[0;35m" + "Command 18:" + "\033[0m");
-                    System.out.println("\033[0;33m" + "-> Exit." + "\033[0m");
-
-                   System.out.println();
-                   System.out.println("\033[0;33m" + "Press 'Enter' to continue..." + "\033[0m");
-                   scanner.nextLine();
-
-                    System.out.println();
                     break;
 
 
@@ -3721,9 +3765,9 @@ System.out.println("\033[0;33m" + "-> The first attack will be decided every rou
 
     // Display Player or Architect Menu
     public void displayPlayerOrArchitectMenu() {
-        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to choose between Player or Architect..." + "\033[0m");
-        System.out.println("\033[0;33m" + "1. Player" + "\033[0m");
-        System.out.println("\033[0;33m" + "2. Architect" + "\033[0m");
+        System.out.println("\033[0;35m" + "The System " + "\033[0;33m" + "requires you to choose..." + "\033[0m");
+        System.out.println("\033[0;33m" + "1. " + "\033[0;34m" + "Player" + "\033[0m");
+        System.out.println("\033[0;33m" + "2. " + "\033[0;35m" + "Architect" + "\033[0m");
         System.out.println("\033[0;33m" + "Enter command: " + "\033[0m");
     }
 

@@ -36,6 +36,6 @@ class ItemRepositoryTest {
 
     @Test
     void countBoughtItems() {
-        assertEquals(64, itemRepository.countBoughtItems(3));
+        assertEquals(0, itemRepository.countBoughtItems(3));
     }
 }

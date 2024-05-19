@@ -33,7 +33,7 @@ class PlayerRepositoryTest {
 
     @Test
     void checkLogin() {
-        assertEquals(3, playerRepository.checkLogin("Alexco", "2003"));
+        assertEquals(3, playerRepository.checkLogin("Andrei", "ANDREI"));
     }
 
     @Test

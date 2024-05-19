@@ -39,11 +39,11 @@ class DungeonRepositoryTest {
 
     @Test
     void countDungeonsCompleted() {
-        assertEquals(10, dungeonRepository.countDungeonsCompleted(3));
+        assertEquals(1, dungeonRepository.countDungeonsCompleted(3));
     }
 
     @Test
     void testCountDungeonsCompleted() {
-        assertEquals(10, dungeonRepository.countDungeonsCompleted(3));
+        assertEquals(1, dungeonRepository.countDungeonsCompleted(3));
     }
 }

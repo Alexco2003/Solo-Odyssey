@@ -1,4 +1,8 @@
+![Logo](/logo/logo.png)
+
 # Solo Odyssey
+
+
 
 Welcome to "Solo Odyssey", an interactive console game inspired by the anime "Solo Leveling". This unique adventure, written in Java, will embark you on a journey to get stronger, face challenges, and level up your character.
 
